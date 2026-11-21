@@ -3,120 +3,590 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CueVerse Trajectory Pathfinder</title>
-  
-  <!-- PART 1: The Design Framework (Tailwind CSS CDN) -->
-  <script src="https://tailwindcss.com"></script>
+  <title>North Country Cash Queen | Official Shop & Memberships</title>
+  <link rel="preconnect" href="https://googleapis.com">
+  <link rel="preconnect" href="https://gstatic.com" crossorigin>
+  <link href="https://googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fdf8f9;            /* Soft Blush Cream */
+      --surface: #ffffff;       /* Crisp White Cards */
+      --primary: #b85d79;       /* Dusty Rose Mauve */
+      --primary-hover: #9c4762; /* Deeper Berry Rose */
+      --accent: #d4a373;        /* Warm Champagne Gold */
+      --soft-tint: #f9eef1;     /* Light Rose Badge & Card Tint */
+      --text: #36282c;          /* Warm Espresso Plum */
+      --muted: #756368;         /* Soft Mauve Grey */
+      --border: #eedce1;        /* Delicate Rose Border */
+      --radius: 16px;
+      --shadow: 0 8px 24px rgba(184, 93, 121, 0.07);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, .logo {
+      font-family: 'Playfair Display', Georgia, serif;
+    }
+
+    /* Navigation */
+    header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.35rem;
+      color: var(--primary);
+      text-decoration: none;
+      letter-spacing: 0.3px;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.4rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+    }
+    /* YouTube Channel Banner Space */
+    .banner-wrapper {
+      max-width: 1100px;
+      margin: 1.5rem auto 0;
+      padding: 0 1.25rem;
+    }
+
+    .channel-banner {
+      width: 100%;
+      aspect-ratio: 16 / 3;
+      min-height: 140px;
+      max-height: 260px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, #d88c9a 0%, #b85d79 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: var(--shadow);
+    }
+
+    .channel-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    .banner-placeholder {
+      color: #ffffff;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .banner-placeholder h2 {
+      font-size: 1.65rem;
+      letter-spacing: 0.5px;
+    }
+
+    .banner-placeholder p {
+      font-size: 0.9rem;
+      opacity: 0.95;
+    }
+
+    /* Hero Section */
+    .hero {
+      max-width: 1100px;
+      margin: 1.5rem auto 2rem;
+      padding: 2.5rem 2rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: 2.2rem;
+      line-height: 1.25;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+
+    .hero p {
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 1.6rem;
+      border-radius: 999px;
+      font-weight: 600;
+      text-decoration: none;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(184, 93, 121, 0.25);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: var(--soft-tint);
+      color: var(--primary);
+      border: 1.5px solid var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .hero-card {
+      background: linear-gradient(145deg, #fdf3f5 0%, #f9e6eb 100%);
+      border-radius: var(--radius);
+      padding: 2.25rem 1.75rem;
+      text-align: center;
+      border: 1.5px dashed #dca3b4;
+    }
+
+    .hero-card h3 {
+      color: var(--primary);
+      font-size: 1.4rem;
+    }
+    /* Sections & Grids */
+    .section {
+      max-width: 1100px;
+      margin: 3.25rem auto;
+      padding: 0 1.25rem;
+    }
+
+    .section-title {
+      font-size: 1.85rem;
+      color: var(--text);
+      margin-bottom: 0.35rem;
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      margin-bottom: 1.75rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+    }
+
+    /* Product Image Slot */
+    .product-img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      border-radius: 12px;
+      background: var(--soft-tint);
+      border: 1px dashed #dca3b4;
+      margin-bottom: 1.1rem;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: center;
+      padding: 0.5rem;
+    }
+
+    .product-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--soft-tint);
+      color: var(--primary);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+      margin-bottom: 0.85rem;
+      width: fit-content;
+      letter-spacing: 0.3px;
+    }
+
+    .card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.4rem;
+      color: var(--text);
+    }
+
+    .price {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.85rem;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      margin-bottom: 1.35rem;
+    }
+
+    .card ul {
+      list-style: none;
+      margin-bottom: 1.6rem;
+      font-size: 0.92rem;
+    }
+
+    .card ul li {
+      margin-bottom: 0.5rem;
+      padding-left: 1.4rem;
+      position: relative;
+    }
+
+    .card ul li::before {
+      content: "♥";
+      color: var(--primary);
+      font-size: 0.85rem;
+      position: absolute;
+      left: 0;
+      top: 1px;
+    }
+
+    /* Member Shoutout Wall */
+    .member-wall {
+      background: linear-gradient(145deg, #ffffff 0%, #fdf3f5 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+    }
+
+    .newest-member-banner {
+      background: var(--soft-tint);
+      border: 1.5px dashed #dca3b4;
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .member-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+    }
+
+    .member-pill {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.45rem 0.95rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .member-pill span {
+      color: var(--primary);
+    }
+
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 2.25rem 1rem;
+      margin-top: 4rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* Mobile & Tablet Responsiveness */
+    @media (max-width: 850px) {
+      .hero {
+        grid-template-columns: 1fr;
+        margin: 1rem 1.25rem 2rem;
+        padding: 1.85rem 1.4rem;
+      }
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 550px) {
+      .banner-wrapper {
+        margin-top: 1rem;
+      }
+      .channel-banner {
+        aspect-ratio: 16 / 5;
+      }
+      .hero h1 {
+        font-size: 1.75rem;
+      }
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
-<body class="flex min-h-screen flex-col items-center justify-center bg-slate-950/95 p-4 font-sans text-slate-100 antialiased">
+<body>
 
-  <!-- PART 2: The Interface Layout (HTML) -->
-  <div class="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900/80 p-5 shadow-2xl backdrop-blur-xl">
-    <div class="mb-4 text-center">
-      <h1 class="text-xl font-bold tracking-tight bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">
-        Trajectory Path Finder
-      </h1>
-      <p class="mt-1 text-xs text-slate-400">
-        Click and drag on the grid below to trace and lock your vector geometry paths.
-      </p>
+  <!-- Top Navigation -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="logo">North Country Cash Queen</a>
+      <nav>
+        <a href="#memberships">Memberships</a>
+        <a href="#wall-of-fame">Member Wall</a>
+        <a href="#shop">Shop</a>
+        <a href="https://youtube.com" target="_blank">YouTube</a>
+      </nav>
     </div>
+  </header>
 
-    <!-- The Interactive Vector Canvas -->
-    <div class="relative overflow-hidden rounded-xl border-2 border-slate-800 bg-black shadow-inner">
-      <!-- Background grid layout for matching physical table markers -->
-      <div class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:40px_40px] opacity-30"></div>
-      
-      <canvas id="overlayCanvas" width="400" height="250" class="relative block w-full cursor-crosshair"></canvas>
-    </div>
-
-    <!-- Active Control Tray -->
-    <div class="mt-4 flex items-center justify-between gap-2">
-      <div class="font-mono text-[10px] text-slate-500 uppercase">
-        Vectors: <span id="vectorStatus" class="text-cyan-400">Ready</span>
+  <!-- Header Picture / YouTube Banner Space -->
+  <div class="banner-wrapper">
+    <div class="channel-banner">
+      <img src="banner.jpg" alt="North Country Cash Queen Banner" onerror="this.style.display='none'; document.getElementById('fallback-banner').style.display='block';">
+      <div id="fallback-banner" class="banner-placeholder" style="display: none;">
+        <h2>North Country Cash Queen</h2>
+        <p>Upload <strong>banner.jpg</strong> to your GitHub repo to display your YouTube header here</p>
       </div>
-      <button id="clearBtn" class="rounded-lg bg-slate-800 px-3 py-1.5 text-xs font-semibold text-slate-200 border border-slate-700/60 hover:bg-slate-700 hover:text-white active:scale-95 transition-all">
-        Clear Lines
-      </button>
     </div>
   </div>
 
-  <!-- PART 3: The Logic Engine (JavaScript) -->
-  <script>
-    const canvas = document.getElementById('overlayCanvas');
-    const ctx = canvas.getContext('2d');
-    const clearBtn = document.getElementById('clearBtn');
-    const statusLabel = document.getElementById('vectorStatus');
+  <!-- Hero Section -->
+  <section class="hero">
+    <div>
+      <span class="badge">Zero-Based Budgeting &amp; Cash Stuffing</span>
+      <h1>Make Budgeting Pretty, Fun &amp; Stress-Free</h1>
+      <p>Grab cute printable savings challenges, custom A6 cash binders, and join the Queen's Club for monthly exclusive trackers.</p>
+      <div class="btn-group">
+        <a href="#shop" class="btn btn-primary">Shop Challenges</a>
+        <a href="#memberships" class="btn btn-outline">Join the Club</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <h3>Featured on YouTube</h3>
+      <p style="margin-top: 0.5rem;">Watch weekly cash-stuffing &amp; debt payoff videos on <strong>@Northcountrycashqueen</strong>.</p>
+      <a href="https://youtube.com" target="_blank" class="btn btn-primary">Watch Latest Video</a>
+    </div>
+  </section>
+  <!-- Memberships Section -->
+  <section id="memberships" class="section">
+    <h2 class="section-title">Channel Memberships</h2>
+    <p class="section-subtitle">Support the channel and unlock monthly printable trackers and behind-the-scenes updates.</p>
+    
+    <div class="grid">
+      <div class="card">
+        <div>
+          <span class="badge">Starter Tier</span>
+          <h3>Cash Stuffer</h3>
+          <div class="price">$3 / month</div>
+          <ul>
+            <li>Loyalty badge &amp; custom emojis</li>
+            <li>Early access to YouTube videos</li>
+            <li>1 exclusive mini printable per month</li>
+          </ul>
+        </div>
+        <a href="https://youtube.com" target="_blank" class="btn btn-outline">Join Tier</a>
+      </div>
 
-    let startX = 0;
-    let startY = 0;
-    let isDrawing = false;
-    let lines = []; // Memory cache to hold persistent paths
+      <div class="card" style="border: 2px solid var(--primary);">
+        <div>
+          <span class="badge">Most Popular</span>
+          <h3>Budget Bestie</h3>
+          <div class="price">$7 / month</div>
+          <ul>
+            <li>Everything in Cash Stuffer</li>
+            <li>Monthly themed savings bundle (PDF)</li>
+            <li>Members-only live Q&amp;A chats</li>
+          </ul>
+        </div>
+        <a href="https://youtube.com" target="_blank" class="btn btn-primary">Join Tier</a>
+      </div>
 
-    // Redraw Loop to maintain layout vectors
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      <div class="card">
+        <div>
+          <span class="badge">VIP Access</span>
+          <h3>North Country Queen</h3>
+          <div class="price">$15 / month</div>
+          <ul>
+            <li>All digital printables included</li>
+            <li>15% off physical binders &amp; envelopes</li>
+            <li>Shoutout on the Wall of Fame &amp; videos</li>
+          </ul>
+        </div>
+        <a href="https://youtube.com" target="_blank" class="btn btn-outline">Join Tier</a>
+      </div>
+    </div>
+  </section>
 
-      // Render permanently stored vectors
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = '#00ffff'; // High-contrast neon cyan
-      
-      lines.forEach(line => {
-        ctx.beginPath();
-        ctx.moveTo(line.x1, line.y1);
-        ctx.lineTo(line.x2, line.y2);
-        ctx.stroke();
-      });
-    }
+  <!-- Member Shoutout Wall -->
+  <section id="wall-of-fame" class="section">
+    <div class="member-wall">
+      <h2 class="section-title">The Queen's Club Wall of Fame</h2>
+      <p class="section-subtitle" style="margin-bottom: 1.25rem;">A huge thank you to the wonderful ladies supporting the channel!</p>
 
-    // Capture cursor click-down coordinates
-    canvas.addEventListener('mousedown', (e) => {
-      const rect = canvas.getBoundingClientRect();
-      startX = (e.clientX - rect.left) * (canvas.width / rect.width);
-      startY = (e.clientY - rect.top) * (canvas.height / rect.height);
-      isDrawing = true;
-      statusLabel.innerText = "Drawing...";
-    });
+      <!-- Highlighted Newest Member -->
+      <div class="newest-member-banner">
+        <div>
+          <span class="badge" style="margin-bottom: 0.25rem;">✨ Welcome Our Newest Member!</span>
+          <div style="font-size: 1.15rem; font-weight: 700; color: var(--primary);">@BudgetingWithBrenda <span style="font-weight: 400; font-size: 0.9rem; color: var(--muted);">• Joined Budget Bestie</span></div>
+        </div>
+        <a href="#memberships" class="btn btn-primary" style="padding: 0.55rem 1.2rem; font-size: 0.88rem;">Join Her in the Club</a>
+      </div>
 
-    // Handle real-time dragging updates
-    canvas.addEventListener('mousemove', (e) => {
-      if (!isDrawing) return;
+      <!-- Existing Members List -->
+      <p style="font-size: 0.88rem; font-weight: 700; color: var(--muted); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Current Club Members</p>
+      <div class="member-pills">
+        <div class="member-pill"><span>👑</span> Lisa M.</div>
+        <div class="member-pill"><span>♥</span> @CozyCashTracker</div>
+        <div class="member-pill"><span>♥</span> Tammy R.</div>
+        <div class="member-pill"><span>👑</span> Jennifer K.</div>
+        <div class="member-pill"><span>♥</span> @SavingWithSue</div>
+        <div class="member-pill"><span>♥</span> Patricia D.</div>
+      </div>
+    </div>
+  </section>
+  <!-- Shop Products Section -->
+  <section id="shop" class="section">
+    <h2 class="section-title">Savings Challenges &amp; Binders</h2>
+    <p class="section-subtitle">Instant digital downloads and handmade cash-stuffing essentials.</p>
 
-      const rect = canvas.getBoundingClientRect();
-      const currentX = (e.clientX - rect.left) * (canvas.width / rect.width);
-      const currentY = (e.clientY - rect.top) * (canvas.height / rect.height);
+    <div class="grid">
+      <div class="card">
+        <div>
+          <div class="product-img">
+            <img src="product1.jpg" alt="$1,000 Mini Savings Bundle" onerror="this.style.display='none'; this.parentElement.innerText='Upload product1.jpg to show photo';">
+          </div>
+          <span class="badge">Digital PDF</span>
+          <h3>$1,000 Mini Savings Bundle</h3>
+          <div class="price">$5.00</div>
+          <p>Includes 4 printable A6 dashboards designed to help you save $1,000 at your own pace.</p>
+        </div>
+        <a href="https://ko-fi.com" target="_blank" class="btn btn-primary">Buy Digital PDF</a>
+      </div>
 
-      draw(); // Render existing lines first
+      <div class="card">
+        <div>
+          <div class="product-img">
+            <img src="product2.jpg" alt="A6 Frosted Cash Binder Set" onerror="this.style.display='none'; this.parentElement.innerText='Upload product2.jpg to show photo';">
+          </div>
+          <span class="badge">Physical Item</span>
+          <h3>A6 Frosted Cash Binder Set</h3>
+          <div class="price">$18.00</div>
+          <p>Durable A6 binder complete with 6 zippered cash envelopes and custom category labels.</p>
+        </div>
+        <a href="https://ko-fi.com" target="_blank" class="btn btn-primary">Order Binder</a>
+      </div>
 
-      // Draw the real-time temporary line preview
-      ctx.beginPath();
-      ctx.moveTo(startX, startY);
-      ctx.lineTo(currentX, currentY);
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = 'rgba(0, 255, 255, 0.4)'; // semi-transparent cyan
-      ctx.stroke();
-    });
+      <div class="card">
+        <div>
+          <div class="product-img">
+            <img src="product3.jpg" alt="Seasonal Holiday Savings Pack" onerror="this.style.display='none'; this.parentElement.innerText='Upload product3.jpg to show photo';">
+          </div>
+          <span class="badge">Digital PDF</span>
+          <h3>Seasonal Holiday Savings Pack</h3>
+          <div class="price">$6.50</div>
+          <p>Scratch-off style printable trackers for Christmas, birthdays, and sinking funds.</p>
+        </div>
+        <a href="https://ko-fi.com" target="_blank" class="btn btn-primary">Buy Digital PDF</a>
+      </div>
+    </div>
+  </section>
 
-    // Lock vector path into memory array upon mouse release
-    window.addEventListener('mouseup', (e) => {
-      if (!isDrawing) return;
-      isDrawing = false;
-      statusLabel.innerText = "Active";
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 North Country Cash Queen. All rights reserved.</p>
+  </footer>
 
-      const rect = canvas.getBoundingClientRect();
-      const endX = (e.clientX - rect.left) * (canvas.width / rect.width);
-      const endY = (e.clientY - rect.top) * (canvas.height / rect.height);
-
-      // Push vector data coordinates to the persistence cache
-      lines.push({ x1: startX, y1: startY, x2: endX, y2: endY });
-      draw();
-    });
-
-    // Reset logic
-    clearBtn.addEventListener('click', () => {
-      lines = [];
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      statusLabel.innerText = "Ready";
-    });
-  </script>
 </body>
 </html>
