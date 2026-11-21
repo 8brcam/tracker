@@ -39,9 +39,9 @@
       font-family: 'Playfair Display', Georgia, serif;
     }
 
-    /* Navigation */
+    /* Navigation & Classic Shopping Trolley Icon */
     header {
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.96);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border);
       position: sticky;
@@ -52,7 +52,7 @@
     .nav-container {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 1rem 1.25rem;
+      padding: 0.95rem 1.25rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -70,7 +70,8 @@
 
     nav {
       display: flex;
-      gap: 1.4rem;
+      align-items: center;
+      gap: 1.35rem;
     }
 
     nav a {
@@ -83,6 +84,45 @@
 
     nav a:hover {
       color: var(--primary);
+    }
+
+    /* Universal Shopping Trolley Icon + Round Counter Badge */
+    .cart-icon-btn {
+      position: relative;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
+      padding: 0.45rem;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .cart-icon-btn:hover {
+      background: var(--soft-tint);
+      color: var(--primary);
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -1px;
+      right: -3px;
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 5px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #ffffff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
     /* YouTube Channel Banner Space */
     .banner-wrapper {
@@ -165,7 +205,10 @@
     }
 
     .btn {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
       padding: 0.8rem 1.6rem;
       border-radius: 999px;
       font-weight: 600;
@@ -174,6 +217,7 @@
       cursor: pointer;
       border: none;
       font-size: 0.95rem;
+      font-family: inherit;
       transition: all 0.2s ease;
     }
 
@@ -375,6 +419,122 @@
       color: var(--primary);
     }
 
+    /* Slide-Out Shopping Basket Drawer */
+    .cart-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(54, 40, 44, 0.45);
+      z-index: 999;
+      display: none;
+    }
+
+    .cart-overlay.open {
+      display: block;
+    }
+
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      right: -420px;
+      width: 100%;
+      max-width: 400px;
+      height: 100vh;
+      background: #ffffff;
+      box-shadow: -8px 0 30px rgba(0, 0, 0, 0.12);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      transition: right 0.3s ease;
+    }
+
+    .cart-drawer.open {
+      right: 0;
+    }
+
+    .cart-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cart-header h3 {
+      font-size: 1.35rem;
+      color: var(--text);
+    }
+
+    .close-cart {
+      background: var(--soft-tint);
+      border: none;
+      color: var(--primary);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .cart-items {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.25rem 1.5rem;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cart-item-info h4 {
+      font-size: 0.98rem;
+      color: var(--text);
+      margin-bottom: 0.2rem;
+    }
+
+    .cart-item-price {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .qty-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .cart-footer {
+      padding: 1.25rem 1.5rem;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
     footer {
       background: var(--surface);
       border-top: 1px solid var(--border);
@@ -427,6 +587,15 @@
         <a href="#wall-of-fame">Member Wall</a>
         <a href="#shop">Shop</a>
         <a href="https://youtube.com" target="_blank">YouTube</a>
+        <!-- Classic Shopping Trolley Icon + Counter Badge -->
+        <button class="cart-icon-btn" onclick="openCart()" aria-label="Open Shopping Basket">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span id="cart-count" class="cart-badge">0</span>
+        </button>
       </nav>
     </div>
   </header>
@@ -539,9 +708,10 @@
   <!-- Shop Products Section -->
   <section id="shop" class="section">
     <h2 class="section-title">Savings Challenges &amp; Binders</h2>
-    <p class="section-subtitle">Instant digital downloads and handmade cash-stuffing essentials.</p>
+    <p class="section-subtitle">Add multiple challenges or binders to your basket for one easy checkout.</p>
 
     <div class="grid">
+      <!-- Product 1 -->
       <div class="card">
         <div>
           <div class="product-img">
@@ -552,9 +722,12 @@
           <div class="price">$5.00</div>
           <p>Includes 4 printable A6 dashboards designed to help you save $1,000 at your own pace.</p>
         </div>
-        <a href="https://ko-fi.com" target="_blank" class="btn btn-primary">Buy Digital PDF</a>
+        <button class="btn btn-primary" onclick="addToCart('$1,000 Mini Savings Bundle', 5.00)">
+          Add to Basket
+        </button>
       </div>
 
+      <!-- Product 2 -->
       <div class="card">
         <div>
           <div class="product-img">
@@ -565,9 +738,12 @@
           <div class="price">$18.00</div>
           <p>Durable A6 binder complete with 6 zippered cash envelopes and custom category labels.</p>
         </div>
-        <a href="https://ko-fi.com" target="_blank" class="btn btn-primary">Order Binder</a>
+        <button class="btn btn-primary" onclick="addToCart('A6 Frosted Cash Binder Set', 18.00)">
+          Add to Basket
+        </button>
       </div>
 
+      <!-- Product 3 -->
       <div class="card">
         <div>
           <div class="product-img">
@@ -578,15 +754,108 @@
           <div class="price">$6.50</div>
           <p>Scratch-off style printable trackers for Christmas, birthdays, and sinking funds.</p>
         </div>
-        <a href="https://ko-fi.com" target="_blank" class="btn btn-primary">Buy Digital PDF</a>
+        <button class="btn btn-primary" onclick="addToCart('Seasonal Holiday Savings Pack', 6.50)">
+          Add to Basket
+        </button>
       </div>
     </div>
   </section>
+
+  <!-- Slide-Out Shopping Basket Drawer -->
+  <div id="cart-overlay" class="cart-overlay" onclick="closeCart()"></div>
+  <aside id="cart-drawer" class="cart-drawer" aria-label="Shopping Basket">
+    <div class="cart-header">
+      <h3>Your Basket</h3>
+      <button class="close-cart" onclick="closeCart()" aria-label="Close Basket">&times;</button>
+    </div>
+    <div id="cart-items" class="cart-items">
+      <p style="color: var(--muted); text-align: center; margin-top: 2rem;">Your basket is currently empty.</p>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span>Subtotal</span>
+        <span id="cart-total">$0.00</span>
+      </div>
+      <a href="https://ko-fi.com" target="_blank" class="btn btn-primary" style="width: 100%;">
+        Proceed to Checkout
+      </a>
+    </div>
+  </aside>
 
   <!-- Footer -->
   <footer>
     <p>&copy; 2026 North Country Cash Queen. All rights reserved.</p>
   </footer>
+
+  <!-- Built-In Shopping Basket Script (Works Immediately) -->
+  <script>
+    let basket = [];
+
+    function openCart() {
+      document.getElementById('cart-overlay').classList.add('open');
+      document.getElementById('cart-drawer').classList.add('open');
+    }
+
+    function closeCart() {
+      document.getElementById('cart-overlay').classList.remove('open');
+      document.getElementById('cart-drawer').classList.remove('open');
+    }
+
+    function addToCart(name, price) {
+      const existing = basket.find(item => item.name === name);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        basket.push({ name, price, qty: 1 });
+      }
+      renderCart();
+      openCart();
+    }
+
+    function changeQty(index, delta) {
+      basket[index].qty += delta;
+      if (basket[index].qty <= 0) {
+        basket.splice(index, 1);
+      }
+      renderCart();
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cart-items');
+      const countBadge = document.getElementById('cart-count');
+      const totalEl = document.getElementById('cart-total');
+
+      let totalItems = 0;
+      let totalCost = 0;
+
+      basket.forEach(item => {
+        totalItems += item.qty;
+        totalCost += item.price * item.qty;
+      });
+
+      countBadge.innerText = totalItems;
+      totalEl.innerText = '$' + totalCost.toFixed(2);
+
+      if (basket.length === 0) {
+        container.innerHTML = '<p style="color: var(--muted); text-align: center; margin-top: 2rem;">Your basket is currently empty.</p>';
+        return;
+      }
+
+      container.innerHTML = basket.map((item, idx) => `
+        <div class="cart-item">
+          <div class="cart-item-info">
+            <h4>${item.name}</h4>
+            <div class="cart-item-price">$${(item.price * item.qty).toFixed(2)}</div>
+          </div>
+          <div class="qty-controls">
+            <button class="qty-btn" onclick="changeQty(${idx}, -1)">−</button>
+            <span>${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty(${idx}, 1)">+</button>
+          </div>
+        </div>
+      `).join('');
+    }
+  </script>
 
 </body>
 </html>
