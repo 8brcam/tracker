@@ -116,7 +116,7 @@
 
         .neon-glow-outer {
             fill: none;
-            stroke: #ff1493;
+            stroke: #e8a2b0; /* Soft rose-gold glow matching the border */
             stroke-width: 8;
             stroke-linecap: round;
             stroke-dasharray: 5 95;
@@ -128,14 +128,15 @@
 
         .neon-runner {
             fill: none;
-            stroke: #fff0f7;
+            stroke: #fffaf5; /* Warm champagne-white shimmer core */
             stroke-width: 3.5;
             stroke-linecap: round;
             stroke-dasharray: 5 95;
             stroke-dashoffset: 100;
-            filter: drop-shadow(0 0 3px #d6006e) drop-shadow(0 0 8px #ff1493) drop-shadow(0 0 16px #ff1493);
+            filter: drop-shadow(0 0 3px #c97b88) drop-shadow(0 0 8px #e5a9b4) drop-shadow(0 0 15px #f5c6ce);
             animation: traceRectangle 25s linear infinite;
         }
+
 
         @keyframes traceRectangle {
             0% { stroke-dashoffset: 100; }
@@ -152,10 +153,10 @@
 
         .banner-inner img {
             width: 100%;
-            max-height: 350px;
-            object-fit: cover;
+            height: auto;
             display: block;
         }
+
 
         .channel-intro {
             margin-top: 24px;
