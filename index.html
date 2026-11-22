@@ -779,7 +779,7 @@
         }
 
         function handleImageUpload(event, idx) {
-            const file = event.target.files;
+            const file = event.target.files[0];
             if (!file) return;
 
             const status = document.getElementById(`edStatus-${idx}`);
