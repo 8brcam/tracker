@@ -12,7 +12,6 @@
             --primary-pink: #d85a82;
             --soft-pink: #f8dce4;
             --rose-gold: #b76e79;
-            --neon-glow: #ff1493;
             --text-dark: #3a2e32;
             --text-muted: #7a666d;
         }
@@ -87,7 +86,7 @@
             border-radius: 12px;
         }
 
-        /* --- Header & Travelling Neon Border --- */
+        /* --- Header & Rose-Gold Shimmer Border --- */
         header {
             max-width: 1100px;
             margin: 25px auto 20px;
@@ -116,7 +115,7 @@
 
         .neon-glow-outer {
             fill: none;
-            stroke: #e8a2b0; /* Soft rose-gold glow matching the border */
+            stroke: #e8a2b0;
             stroke-width: 8;
             stroke-linecap: round;
             stroke-dasharray: 5 95;
@@ -128,7 +127,7 @@
 
         .neon-runner {
             fill: none;
-            stroke: #fffaf5; /* Warm champagne-white shimmer core */
+            stroke: #fffaf5;
             stroke-width: 3.5;
             stroke-linecap: round;
             stroke-dasharray: 5 95;
@@ -136,7 +135,6 @@
             filter: drop-shadow(0 0 3px #c97b88) drop-shadow(0 0 8px #e5a9b4) drop-shadow(0 0 15px #f5c6ce);
             animation: traceRectangle 25s linear infinite;
         }
-
 
         @keyframes traceRectangle {
             0% { stroke-dashoffset: 100; }
@@ -156,7 +154,6 @@
             height: auto;
             display: block;
         }
-
 
         .channel-intro {
             margin-top: 24px;
@@ -308,7 +305,6 @@
         .btn-pink:hover {
             opacity: 0.9;
         }
-
         /* --- Product Detail Pop-Up Modal --- */
         .modal-overlay {
             display: none;
@@ -467,6 +463,59 @@
             border-top: 1px solid var(--soft-pink);
             margin-top: 60px;
         }
+
+        /* --- Mobile Phone Optimizations --- */
+        @media (max-width: 600px) {
+            .top-nav {
+                padding: 10px 14px;
+            }
+            .brand-logo {
+                font-size: 1.05rem;
+            }
+            .basket-btn {
+                padding: 6px 12px;
+                font-size: 0.85rem;
+            }
+            header {
+                margin: 15px auto 15px;
+                padding: 0 12px;
+            }
+            .banner-frame {
+                padding: 5px;
+                border-radius: 14px;
+            }
+            .banner-inner {
+                border-radius: 10px;
+            }
+            .channel-intro p {
+                font-size: 0.95rem;
+                padding: 0 5px;
+            }
+            .container {
+                margin: 25px auto;
+                padding: 0 14px;
+            }
+            .section-title {
+                font-size: 1.65rem;
+                margin-bottom: 22px;
+            }
+            .product-card {
+                height: auto;
+            }
+            .modal-img {
+                min-height: 220px;
+                max-height: 260px;
+            }
+            .modal-content {
+                padding: 22px 20px;
+            }
+            .modal-title {
+                font-size: 1.45rem;
+            }
+            .basket-drawer {
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -502,7 +551,7 @@
 
         <div class="channel-intro">
             <p>Welcome to my official boutique! Click any product below to view a larger photo and full details.</p>
-            <a href="https://youtube.com" target="_blank" class="yt-btn">Subscribe on YouTube</a>
+            <a href="https://www.youtube.com/@Northcountrycashqueen" target="_blank" class="yt-btn">Subscribe on YouTube</a>
         </div>
     </header>
 
@@ -558,7 +607,6 @@
                     <button class="btn-pink" onclick="addToBasket('North Country Queen Mug', 12.00)">Add to Basket</button>
                 </div>
             </div>
-
             <!-- PRODUCT 4 -->
             <div class="product-card" id="product-4">
                 <div class="clickable-area" onclick="openModal('product-4')">
