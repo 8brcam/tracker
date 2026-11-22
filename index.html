@@ -1,867 +1,760 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>North Country Cash Queen | Official Shop & Memberships</title>
-  <link rel="preconnect" href="https://googleapis.com">
-  <link rel="preconnect" href="https://gstatic.com" crossorigin>
-  <link href="https://googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #fdf8f9;            /* Soft Blush Cream */
-      --surface: #ffffff;       /* Crisp White Cards */
-      --primary: #b85d79;       /* Dusty Rose Mauve */
-      --primary-hover: #9c4762; /* Deeper Berry Rose */
-      --accent: #d4a373;        /* Warm Champagne Gold */
-      --soft-tint: #f9eef1;     /* Light Rose Badge & Card Tint */
-      --text: #36282c;          /* Warm Espresso Plum */
-      --muted: #756368;         /* Soft Mauve Grey */
-      --border: #eedce1;        /* Delicate Rose Border */
-      --radius: 16px;
-      --shadow: 0 8px 24px rgba(184, 93, 121, 0.07);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
-
-    h1, h2, h3, .logo {
-      font-family: 'Playfair Display', Georgia, serif;
-    }
-
-    /* Navigation & Classic Shopping Trolley Icon */
-    header {
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .nav-container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0.95rem 1.25rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-    }
-
-    .logo {
-      font-weight: 700;
-      font-size: 1.35rem;
-      color: var(--primary);
-      text-decoration: none;
-      letter-spacing: 0.3px;
-    }
-
-    nav {
-      display: flex;
-      align-items: center;
-      gap: 1.35rem;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: var(--text);
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: color 0.2s;
-    }
-
-    nav a:hover {
-      color: var(--primary);
-    }
-
-    /* Universal Shopping Trolley Icon + Round Counter Badge */
-    .cart-icon-btn {
-      position: relative;
-      background: transparent;
-      border: none;
-      color: var(--text);
-      cursor: pointer;
-      padding: 0.45rem;
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s, color 0.2s;
-    }
-
-    .cart-icon-btn:hover {
-      background: var(--soft-tint);
-      color: var(--primary);
-    }
-
-    .cart-badge {
-      position: absolute;
-      top: -1px;
-      right: -3px;
-      background: var(--primary);
-      color: #ffffff;
-      font-size: 0.72rem;
-      font-weight: 700;
-      min-width: 20px;
-      height: 20px;
-      padding: 0 5px;
-      border-radius: 999px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid #ffffff;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    /* YouTube Channel Banner Space */
-    .banner-wrapper {
-      max-width: 1100px;
-      margin: 1.5rem auto 0;
-      padding: 0 1.25rem;
-    }
-
-    .channel-banner {
-      width: 100%;
-      aspect-ratio: 16 / 3;
-      min-height: 140px;
-      max-height: 260px;
-      border-radius: var(--radius);
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: linear-gradient(135deg, #d88c9a 0%, #b85d79 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      box-shadow: var(--shadow);
-    }
-
-    .channel-banner img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-    }
-
-    .banner-placeholder {
-      color: #ffffff;
-      text-align: center;
-      padding: 1rem;
-    }
-
-    .banner-placeholder h2 {
-      font-size: 1.65rem;
-      letter-spacing: 0.5px;
-    }
-
-    .banner-placeholder p {
-      font-size: 0.9rem;
-      opacity: 0.95;
-    }
-
-    /* Hero Section */
-    .hero {
-      max-width: 1100px;
-      margin: 1.5rem auto 2rem;
-      padding: 2.5rem 2rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      align-items: center;
-    }
-
-    .hero h1 {
-      font-size: 2.2rem;
-      line-height: 1.25;
-      color: var(--text);
-      margin-bottom: 0.75rem;
-    }
-
-    .hero p {
-      color: var(--muted);
-      margin-bottom: 1.5rem;
-    }
-
-    .btn-group {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 0.8rem 1.6rem;
-      border-radius: 999px;
-      font-weight: 600;
-      text-decoration: none;
-      text-align: center;
-      cursor: pointer;
-      border: none;
-      font-size: 0.95rem;
-      font-family: inherit;
-      transition: all 0.2s ease;
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(184, 93, 121, 0.25);
-    }
-
-    .btn-primary:hover {
-      background: var(--primary-hover);
-      transform: translateY(-1px);
-    }
-
-    .btn-outline {
-      background: var(--soft-tint);
-      color: var(--primary);
-      border: 1.5px solid var(--primary);
-    }
-
-    .btn-outline:hover {
-      background: var(--primary);
-      color: #ffffff;
-    }
-
-    .hero-card {
-      background: linear-gradient(145deg, #fdf3f5 0%, #f9e6eb 100%);
-      border-radius: var(--radius);
-      padding: 2.25rem 1.75rem;
-      text-align: center;
-      border: 1.5px dashed #dca3b4;
-    }
-
-    .hero-card h3 {
-      color: var(--primary);
-      font-size: 1.4rem;
-    }
-    /* Sections & Grids */
-    .section {
-      max-width: 1100px;
-      margin: 3.25rem auto;
-      padding: 0 1.25rem;
-    }
-
-    .section-title {
-      font-size: 1.85rem;
-      color: var(--text);
-      margin-bottom: 0.35rem;
-    }
-
-    .section-subtitle {
-      color: var(--muted);
-      margin-bottom: 1.75rem;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-    }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.75rem;
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: transform 0.2s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-3px);
-    }
-
-    /* Product Image Slot */
-    .product-img {
-      width: 100%;
-      aspect-ratio: 4 / 3;
-      border-radius: 12px;
-      background: var(--soft-tint);
-      border: 1px dashed #dca3b4;
-      margin-bottom: 1.1rem;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--primary);
-      font-size: 0.85rem;
-      font-weight: 600;
-      text-align: center;
-      padding: 0.5rem;
-    }
-
-    .product-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .badge {
-      display: inline-block;
-      background: var(--soft-tint);
-      color: var(--primary);
-      font-size: 0.78rem;
-      font-weight: 700;
-      padding: 0.3rem 0.75rem;
-      border-radius: 999px;
-      margin-bottom: 0.85rem;
-      width: fit-content;
-      letter-spacing: 0.3px;
-    }
-
-    .card h3 {
-      font-size: 1.3rem;
-      margin-bottom: 0.4rem;
-      color: var(--text);
-    }
-
-    .price {
-      font-size: 1.45rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 0.85rem;
-    }
-
-    .card p {
-      color: var(--muted);
-      font-size: 0.94rem;
-      margin-bottom: 1.35rem;
-    }
-
-    .card ul {
-      list-style: none;
-      margin-bottom: 1.6rem;
-      font-size: 0.92rem;
-    }
-
-    .card ul li {
-      margin-bottom: 0.5rem;
-      padding-left: 1.4rem;
-      position: relative;
-    }
-
-    .card ul li::before {
-      content: "♥";
-      color: var(--primary);
-      font-size: 0.85rem;
-      position: absolute;
-      left: 0;
-      top: 1px;
-    }
-
-    /* Member Shoutout Wall */
-    .member-wall {
-      background: linear-gradient(145deg, #ffffff 0%, #fdf3f5 100%);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2rem;
-      box-shadow: var(--shadow);
-    }
-
-    .newest-member-banner {
-      background: var(--soft-tint);
-      border: 1.5px dashed #dca3b4;
-      border-radius: 12px;
-      padding: 1rem 1.25rem;
-      margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-    }
-
-    .member-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.65rem;
-    }
-
-    .member-pill {
-      background: #ffffff;
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 0.45rem 0.95rem;
-      border-radius: 999px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    .member-pill span {
-      color: var(--primary);
-    }
-
-    /* Slide-Out Shopping Basket Drawer */
-    .cart-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(54, 40, 44, 0.45);
-      z-index: 999;
-      display: none;
-    }
-
-    .cart-overlay.open {
-      display: block;
-    }
-
-    .cart-drawer {
-      position: fixed;
-      top: 0;
-      right: -420px;
-      width: 100%;
-      max-width: 400px;
-      height: 100vh;
-      background: #ffffff;
-      box-shadow: -8px 0 30px rgba(0, 0, 0, 0.12);
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      transition: right 0.3s ease;
-    }
-
-    .cart-drawer.open {
-      right: 0;
-    }
-
-    .cart-header {
-      padding: 1.25rem 1.5rem;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .cart-header h3 {
-      font-size: 1.35rem;
-      color: var(--text);
-    }
-
-    .close-cart {
-      background: var(--soft-tint);
-      border: none;
-      color: var(--primary);
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      font-size: 1.2rem;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .cart-items {
-      flex: 1;
-      overflow-y: auto;
-      padding: 1.25rem 1.5rem;
-    }
-
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.75rem;
-      padding-bottom: 1rem;
-      margin-bottom: 1rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .cart-item-info h4 {
-      font-size: 0.98rem;
-      color: var(--text);
-      margin-bottom: 0.2rem;
-    }
-
-    .cart-item-price {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--primary);
-    }
-
-    .qty-controls {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .qty-btn {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--text);
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .cart-footer {
-      padding: 1.25rem 1.5rem;
-      border-top: 1px solid var(--border);
-      background: var(--bg);
-    }
-
-    .cart-total-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
-
-    footer {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      text-align: center;
-      padding: 2.25rem 1rem;
-      margin-top: 4rem;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    /* Mobile & Tablet Responsiveness */
-    @media (max-width: 850px) {
-      .hero {
-        grid-template-columns: 1fr;
-        margin: 1rem 1.25rem 2rem;
-        padding: 1.85rem 1.4rem;
-      }
-      .grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 550px) {
-      .banner-wrapper {
-        margin-top: 1rem;
-      }
-      .channel-banner {
-        aspect-ratio: 16 / 5;
-      }
-      .hero h1 {
-        font-size: 1.75rem;
-      }
-      .grid {
-        grid-template-columns: 1fr;
-      }
-      .btn {
-        width: 100%;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>North Country Cash Queen | Official Store</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fdf6f8;
+            --card-bg: #ffffff;
+            --primary-pink: #d85a82;
+            --soft-pink: #f8dce4;
+            --rose-gold: #b76e79;
+            --neon-glow: #ff1493;
+            --text-dark: #3a2e32;
+            --text-muted: #7a666d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* --- Clean Top Navigation Bar --- */
+        .top-nav {
+            background-color: #ffffff;
+            border-bottom: 1px solid var(--soft-pink);
+            position: sticky;
+            top: 0;
+            z-index: 900;
+            padding: 12px 20px;
+            box-shadow: 0 2px 12px rgba(183, 110, 121, 0.06);
+        }
+
+        .nav-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--primary-pink);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .basket-btn {
+            background-color: var(--bg-color);
+            border: 1.5px solid var(--rose-gold);
+            color: var(--text-dark);
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .basket-btn:hover {
+            background-color: var(--soft-pink);
+        }
+
+        .basket-badge {
+            background-color: var(--primary-pink);
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 1px 8px;
+            border-radius: 12px;
+        }
+
+        /* --- Header & Travelling Neon Border --- */
+        header {
+            max-width: 1100px;
+            margin: 25px auto 20px;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .banner-frame {
+            position: relative;
+            width: 100%;
+            border-radius: 20px;
+            padding: 7px;
+            background: linear-gradient(135deg, #e5a9b4, #c97b88, #f2c6ce);
+            box-shadow: 0 10px 30px rgba(216, 90, 130, 0.25);
+        }
+
+        .neon-border-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
+            overflow: visible;
+        }
+
+        .neon-glow-outer {
+            fill: none;
+            stroke: #ff1493;
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dasharray: 5 95;
+            stroke-dashoffset: 100;
+            filter: blur(5px);
+            opacity: 0.95;
+            animation: traceRectangle 25s linear infinite;
+        }
+
+        .neon-runner {
+            fill: none;
+            stroke: #fff0f7;
+            stroke-width: 3.5;
+            stroke-linecap: round;
+            stroke-dasharray: 5 95;
+            stroke-dashoffset: 100;
+            filter: drop-shadow(0 0 3px #d6006e) drop-shadow(0 0 8px #ff1493) drop-shadow(0 0 16px #ff1493);
+            animation: traceRectangle 25s linear infinite;
+        }
+
+        @keyframes traceRectangle {
+            0% { stroke-dashoffset: 100; }
+            100% { stroke-dashoffset: 0; }
+        }
+
+        .banner-inner {
+            position: relative;
+            z-index: 2;
+            border-radius: 14px;
+            overflow: hidden;
+            background-color: #fff;
+        }
+
+        .banner-inner img {
+            width: 100%;
+            max-height: 350px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .channel-intro {
+            margin-top: 24px;
+        }
+
+        .channel-intro p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 650px;
+            margin: 0 auto 16px;
+        }
+
+        .yt-btn {
+            display: inline-block;
+            background-color: #ff0000;
+            color: white;
+            text-decoration: none;
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        /* --- Product Grid (2 Rows of 3 Identical Cards) --- */
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            font-size: 2rem;
+            color: var(--rose-gold);
+            margin-bottom: 35px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        @media (max-width: 850px) {
+            .product-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 550px) {
+            .product-grid { grid-template-columns: 1fr; }
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid var(--soft-pink);
+            box-shadow: 0 8px 20px rgba(183, 110, 121, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 410px;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(216, 90, 130, 0.18);
+        }
+
+        .clickable-area {
+            cursor: pointer;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 200px;
+            min-height: 200px;
+            max-height: 200px;
+            object-fit: cover;
+            background-color: #f9ebef;
+            display: block;
+        }
+
+        .product-info {
+            padding: 16px 18px 8px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .product-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .view-details-hint {
+            font-size: 0.78rem;
+            color: var(--rose-gold);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .product-desc {
+            font-size: 0.86rem;
+            color: var(--text-muted);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.4;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #f5e6ea;
+            padding: 12px 18px 16px;
+            height: 62px;
+        }
+
+        .price {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--primary-pink);
+        }
+
+        .btn-pink {
+            background: linear-gradient(135deg, var(--primary-pink), var(--rose-gold));
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 25px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.84rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .btn-pink:hover {
+            opacity: 0.9;
+        }
+
+        /* --- Product Detail Pop-Up Modal --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(58, 46, 50, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: white;
+            max-width: 800px;
+            width: 100%;
+            border-radius: 22px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 680px) {
+            .modal-box { grid-template-columns: 1fr; max-height: 90vh; overflow-y: auto; }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 18px;
+            background: var(--soft-pink);
+            color: var(--primary-pink);
+            border: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .modal-img {
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+            object-fit: cover;
+            background: #f9ebef;
+        }
+
+        .modal-content {
+            padding: 35px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .modal-price {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-pink);
+            margin-bottom: 15px;
+        }
+
+        .modal-full-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+
+        /* --- Slide-Out Basket Drawer --- */
+        .basket-drawer {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 100%;
+            max-width: 380px;
+            height: 100vh;
+            background: white;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.15);
+            z-index: 1100;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            padding: 25px;
+        }
+
+        .basket-drawer.open {
+            right: 0;
+        }
+
+        .basket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--soft-pink);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .basket-header h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-pink);
+        }
+
+        .basket-items {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .basket-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f5e6ea;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #b05a68;
+            cursor: pointer;
+            font-size: 0.85rem;
+            text-decoration: underline;
+        }
+
+        .basket-footer {
+            border-top: 2px solid var(--soft-pink);
+            padding-top: 15px;
+        }
+
+        .basket-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--soft-pink);
+            margin-top: 60px;
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Top Navigation -->
-  <header>
-    <div class="nav-container">
-      <a href="#" class="logo">North Country Cash Queen</a>
-      <nav>
-        <a href="#memberships">Memberships</a>
-        <a href="#wall-of-fame">Member Wall</a>
-        <a href="#shop">Shop</a>
-        <a href="https://youtube.com" target="_blank">YouTube</a>
-        <!-- Classic Shopping Trolley Icon + Counter Badge -->
-        <button class="cart-icon-btn" onclick="openCart()" aria-label="Open Shopping Basket">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="21" r="1"></circle>
-            <circle cx="20" cy="21" r="1"></circle>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-          </svg>
-          <span id="cart-count" class="cart-badge">0</span>
-        </button>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Header Picture / YouTube Banner Space -->
-  <div class="banner-wrapper">
-    <div class="channel-banner">
-      <img src="northcountrycashqueenbanner.jpg" alt="North Country Cash Queen Banner" onerror="this.style.display='none'; document.getElementById('fallback-banner').style.display='block';">
-      <div id="fallback-banner" class="banner-placeholder" style="display: none;">
-        <h2>North Country Cash Queen</h2>
-        <p>Upload <strong>banner.jpg</strong> to your GitHub repo to display your YouTube header here</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Hero Section -->
-  <section class="hero">
-    <div>
-      <span class="badge">Zero-Based Budgeting &amp; Cash Stuffing</span>
-      <h1>Make Budgeting Pretty, Fun &amp; Stress-Free</h1>
-      <p>Grab cute printable savings challenges, custom A6 cash binders, and join the Queen's Club for monthly exclusive trackers.</p>
-      <div class="btn-group">
-        <a href="#shop" class="btn btn-primary">Shop Challenges</a>
-        <a href="#memberships" class="btn btn-outline">Join the Club</a>
-      </div>
-    </div>
-    <div class="hero-card">
-      <h3>Featured on YouTube</h3>
-      <p style="margin-top: 0.5rem;">Watch weekly cash-stuffing &amp; debt payoff videos on <strong>@Northcountrycashqueen</strong>.</p>
-      <a href="https://youtube.com" target="_blank" class="btn btn-primary">Watch Latest Video</a>
-    </div>
-  </section>
-  <!-- Memberships Section -->
-  <section id="memberships" class="section">
-    <h2 class="section-title">Channel Memberships</h2>
-    <p class="section-subtitle">Support the channel and unlock weekly digital challenges and monthly Happy Mail.</p>
-    
-    <div class="grid">
-      <!-- Tier 1: Trail Head Tracker -->
-      <div class="card">
-        <div>
-          <span class="badge">Exclusive Content</span>
-          <h3>Trail Head Tracker</h3>
-          <div class="price">$4 / month</div>
-          <p><small>41 members</small></p>
-          <ul>
-            <li>Access to my exclusive monthly challenge/group play bundle (digital)</li>
-            <li>Access to exclusive challenges uploaded once a week (digital)</li>
-          </ul>
+    <nav class="top-nav">
+        <div class="nav-inner">
+            <a href="#" class="brand-logo">North Country Cash Queen</a>
+            <button class="basket-btn" onclick="toggleBasket()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 10l3.5-6"></path>
+                    <path d="M19 10l-3.5-6"></path>
+                    <path d="M2 10h20l-2 9a2 2 0 0 1-2 1H6a2 2 0 0 1-2-1l-2-9z"></path>
+                    <line x1="8" y1="14" x2="8" y2="17"></line>
+                    <line x1="12" y1="14" x2="12" y2="17"></line>
+                    <line x1="16" y1="14" x2="16" y2="17"></line>
+                </svg>
+                <span>Basket</span>
+                <span class="basket-badge" id="basketCount">0</span>
+            </button>
         </div>
-        <a href="https://youtube.com" target="_blank" class="btn btn-outline">Join</a>
-      </div>
+    </nav>
 
-      <!-- Tier 2: Campfire Counter -->
-      <div class="card" style="border: 2px solid var(--primary);">
-        <div>
-          <span class="badge">Exclusive Content &bull; Merchandise</span>
-          <h3>Campfire Counter</h3>
-          <div class="price">$7 / month</div>
-          <p><small>25 members &middot; <strong>10 places left</strong><br><em>*US Shipping Only*</em></small></p>
-          <ul>
-            <li>Access to all Trail Head Tracker benefits</li>
-            <li>(Physical) Happy Mail: 3 exclusive non-laminated A6 challenges</li>
-            <li>3 exclusive non-laminated tiny challenges</li>
-          </ul>
-          <p><small>🩷📬✨ If you renew or sub after the 21st you will be included in the next month's mailing.</small></p>
+    <header>
+        <div class="banner-frame">
+            <svg class="neon-border-svg">
+                <rect class="neon-glow-outer" x="3.5" y="3.5" width="calc(100% - 7px)" height="calc(100% - 7px)" rx="17" ry="17" pathLength="100" />
+                <rect class="neon-runner" x="3.5" y="3.5" width="calc(100% - 7px)" height="calc(100% - 7px)" rx="17" ry="17" pathLength="100" />
+            </svg>
+            <div class="banner-inner">
+                <img src="northcountrycashqueenbanner.jpg" alt="North Country Cash Queen Banner">
+            </div>
         </div>
-        <a href="https://youtube.com" target="_blank" class="btn btn-primary">Join</a>
-      </div>
 
-      <!-- Tier 3: Summit Saver -->
-      <div class="card">
-        <div>
-          <span class="badge">Exclusive Content &bull; Merchandise</span>
-          <h3>Summit Saver</h3>
-          <div class="price">$10 / month</div>
-          <p><small>30 members &middot; <strong>6 places left</strong><br><em>*US Shipping Only*</em></small></p>
-          <ul>
-            <li>Access to all Campfire Counter benefits and Happy Mail</li>
-            <li>1 Exclusive A6 laminated scratch-off challenge</li>
-          </ul>
-          <p><small>🩷📬✨ If you renew or sub after the 21st you will be included in the next month's mailing.</small></p>
+        <div class="channel-intro">
+            <p>Welcome to my official boutique! Click any product below to view a larger photo and full details.</p>
+            <a href="https://youtube.com" target="_blank" class="yt-btn">Subscribe on YouTube</a>
         </div>
-        <a href="https://youtube.com" target="_blank" class="btn btn-outline">Join</a>
-      </div>
+    </header>
+
+    <main class="container">
+        <h2 class="section-title">Featured Goodies</h2>
+        
+        <div class="product-grid">
+
+            <!-- PRODUCT 1 -->
+            <div class="product-card" id="product-1">
+                <div class="clickable-area" onclick="openModal('product-1')">
+                    <img src="https://placehold.co" alt="Rose Gold A6 Cash Binder" class="product-img">
+                    <div class="product-info">
+                        <h3 class="product-title">Rose Gold A6 Cash Binder</h3>
+                        <span class="view-details-hint">Click to view larger photo & details</span>
+                        <p class="product-desc">Sparkly faux-leather budget binder with 8 zipper envelopes.</p>
+                    </div>
+                </div>
+                <div class="product-footer">
+                    <span class="price">£18.99</span>
+                    <button class="btn-pink" onclick="addToBasket('Rose Gold A6 Cash Binder', 18.99)">Add to Basket</button>
+                </div>
+            </div>
+
+            <!-- PRODUCT 2 -->
+            <div class="product-card" id="product-2">
+                <div class="clickable-area" onclick="openModal('product-2')">
+                    <img src="https://placehold.co" alt="Floral 52-Week Savings Box" class="product-img">
+                    <div class="product-info">
+                        <h3 class="product-title">Floral 52-Week Savings Box</h3>
+                        <span class="view-details-hint">Click to view larger photo & details</span>
+                        <p class="product-desc">Laminated floral challenge cards to help you save every week.</p>
+                    </div>
+                </div>
+                <div class="product-footer">
+                    <span class="price">£14.50</span>
+                    <button class="btn-pink" onclick="addToBasket('Floral 52-Week Savings Box', 14.50)">Add to Basket</button>
+                </div>
+            </div>
+
+            <!-- PRODUCT 3 -->
+            <div class="product-card" id="product-3">
+                <div class="clickable-area" onclick="openModal('product-3')">
+                    <img src="https://placehold.co" alt="North Country Queen Mug" class="product-img">
+                    <div class="product-info">
+                        <h3 class="product-title">North Country Queen Mug</h3>
+                        <span class="view-details-hint">Click to view larger photo & details</span>
+                        <p class="product-desc">Oversized blush pink ceramic mug with gold foil lettering.</p>
+                    </div>
+                </div>
+                <div class="product-footer">
+                    <span class="price">£12.00</span>
+                    <button class="btn-pink" onclick="addToBasket('North Country Queen Mug', 12.00)">Add to Basket</button>
+                </div>
+            </div>
+
+            <!-- PRODUCT 4 -->
+            <div class="product-card" id="product-4">
+                <div class="clickable-area" onclick="openModal('product-4')">
+                    <img src="https://placehold.co" alt="Blush Pink Zipper Envelopes" class="product-img">
+                    <div class="product-info">
+                        <h3 class="product-title">Blush Pink Zipper Envelopes</h3>
+                        <span class="view-details-hint">Click to view larger photo & details</span>
+                        <p class="product-desc">Set of 12 frosted A6 cash envelopes with rose-gold labels.</p>
+                    </div>
+                </div>
+                <div class="product-footer">
+                    <span class="price">£9.50</span>
+                    <button class="btn-pink" onclick="addToBasket('Blush Pink Zipper Envelopes', 9.50)">Add to Basket</button>
+                </div>
+            </div>
+
+            <!-- PRODUCT 5 -->
+            <div class="product-card" id="product-5">
+                <div class="clickable-area" onclick="openModal('product-5')">
+                    <img src="https://placehold.co" alt="100 Envelope Challenge Book" class="product-img">
+                    <div class="product-info">
+                        <h3 class="product-title">100 Envelope Challenge Book</h3>
+                        <span class="view-details-hint">Click to view larger photo & details</span>
+                        <p class="product-desc">Save £5,050 with this luxury quilted pink challenge binder.</p>
+                    </div>
+                </div>
+                <div class="product-footer">
+                    <span class="price">£22.00</span>
+                    <button class="btn-pink" onclick="addToBasket('100 Envelope Challenge Book', 22.00)">Add to Basket</button>
+                </div>
+            </div>
+
+            <!-- PRODUCT 6 -->
+            <div class="product-card" id="product-6">
+                <div class="clickable-area" onclick="openModal('product-6')">
+                    <img src="https://placehold.co" alt="Rose Gold Crystal Pen" class="product-img">
+                    <div class="product-info">
+                        <h3 class="product-title">Rose Gold Crystal Pen</h3>
+                        <span class="view-details-hint">Click to view larger photo & details</span>
+                        <p class="product-desc">Sparkling crystal-filled ballpoint pen for budget tracking.</p>
+                    </div>
+                </div>
+                <div class="product-footer">
+                    <span class="price">£6.50</span>
+                    <button class="btn-pink" onclick="addToBasket('Rose Gold Crystal Pen', 6.50)">Add to Basket</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Product Detail Pop-Up Window -->
+    <div class="modal-overlay" id="productModal" onclick="if(event.target.id==='productModal') closeModal()">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <img src="" alt="" id="modalImg" class="modal-img">
+            <div class="modal-content">
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <div class="modal-price" id="modalPrice"></div>
+                <p class="modal-full-desc" id="modalDesc"></p>
+                <button class="btn-pink" id="modalAddBtn" style="padding: 14px 25px; font-size: 1rem;">Add to Basket</button>
+            </div>
+        </div>
     </div>
-  </section>
 
-  <!-- Member Shoutout Wall -->
-  <section id="wall-of-fame" class="section">
-    <div class="member-wall">
-      <h2 class="section-title">The Queen's Club Wall of Fame</h2>
-      <p class="section-subtitle" style="margin-bottom: 1.25rem;">A huge thank you to the wonderful ladies supporting the channel!</p>
-
-      <!-- Highlighted Newest Member -->
-      <div class="newest-member-banner">
-        <div>
-          <span class="badge" style="margin-bottom: 0.25rem;">✨ Welcome Our Newest Member!</span>
-          <div style="font-size: 1.15rem; font-weight: 700; color: var(--primary);">@BudgetingWithBrenda <span style="font-weight: 400; font-size: 0.9rem; color: var(--muted);">• Joined Budget Bestie</span></div>
+    <div class="basket-drawer" id="basketDrawer">
+        <div class="basket-header">
+            <h2>Your Basket</h2>
+            <button onclick="toggleBasket()" style="background:none; border:none; font-size:1.5rem; cursor:pointer;">&times;</button>
         </div>
-        <a href="#memberships" class="btn btn-primary" style="padding: 0.55rem 1.2rem; font-size: 0.88rem;">Join Her in the Club</a>
-      </div>
-
-      <!-- Existing Members List -->
-      <p style="font-size: 0.88rem; font-weight: 700; color: var(--muted); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Current Club Members</p>
-      <div class="member-pills">
-        <div class="member-pill"><span>👑</span> Lisa M.</div>
-        <div class="member-pill"><span>♥</span> @CozyCashTracker</div>
-        <div class="member-pill"><span>♥</span> Tammy R.</div>
-        <div class="member-pill"><span>👑</span> Jennifer K.</div>
-        <div class="member-pill"><span>♥</span> @SavingWithSue</div>
-        <div class="member-pill"><span>♥</span> Patricia D.</div>
-      </div>
-    </div>
-  </section>
-  <!-- Shop Products Section -->
-  <section id="shop" class="section">
-    <h2 class="section-title">Savings Challenges &amp; Binders</h2>
-    <p class="section-subtitle">Add multiple challenges or binders to your basket for one easy checkout.</p>
-
-    <div class="grid">
-      <!-- Product 1 -->
-      <div class="card">
-        <div>
-          <div class="product-img">
-            <img src="product1.jpg" alt="$1,000 Mini Savings Bundle" onerror="this.style.display='none'; this.parentElement.innerText='Upload product1.jpg to show photo';">
-          </div>
-          <span class="badge">Digital PDF</span>
-          <h3>$1,000 Mini Savings Bundle</h3>
-          <div class="price">$5.00</div>
-          <p>Includes 4 printable A6 dashboards designed to help you save $1,000 at your own pace.</p>
+        <div class="basket-items" id="basketItems">
+            <p style="color: var(--text-muted); text-align: center; margin-top: 40px;">Your basket is currently empty.</p>
         </div>
-        <button class="btn btn-primary" onclick="addToCart('$1,000 Mini Savings Bundle', 5.00)">
-          Add to Basket
-        </button>
-      </div>
-
-      <!-- Product 2 -->
-      <div class="card">
-        <div>
-          <div class="product-img">
-            <img src="product2.jpg" alt="A6 Frosted Cash Binder Set" onerror="this.style.display='none'; this.parentElement.innerText='Upload product2.jpg to show photo';">
-          </div>
-          <span class="badge">Physical Item</span>
-          <h3>A6 Frosted Cash Binder Set</h3>
-          <div class="price">$18.00</div>
-          <p>Durable A6 binder complete with 6 zippered cash envelopes and custom category labels.</p>
+        <div class="basket-footer">
+            <div class="basket-total">
+                <span>Total:</span>
+                <span id="basketTotal">£0.00</span>
+            </div>
+            <button class="btn-pink" style="width: 100%; padding: 14px; font-size: 1rem;" onclick="checkout()">Proceed to Checkout</button>
         </div>
-        <button class="btn btn-primary" onclick="addToCart('A6 Frosted Cash Binder Set', 18.00)">
-          Add to Basket
-        </button>
-      </div>
-
-      <!-- Product 3 -->
-      <div class="card">
-        <div>
-          <div class="product-img">
-            <img src="product3.jpg" alt="Seasonal Holiday Savings Pack" onerror="this.style.display='none'; this.parentElement.innerText='Upload product3.jpg to show photo';">
-          </div>
-          <span class="badge">Digital PDF</span>
-          <h3>Seasonal Holiday Savings Pack</h3>
-          <div class="price">$6.50</div>
-          <p>Scratch-off style printable trackers for Christmas, birthdays, and sinking funds.</p>
-        </div>
-        <button class="btn btn-primary" onclick="addToCart('Seasonal Holiday Savings Pack', 6.50)">
-          Add to Basket
-        </button>
-      </div>
     </div>
-  </section>
 
-  <!-- Slide-Out Shopping Basket Drawer -->
-  <div id="cart-overlay" class="cart-overlay" onclick="closeCart()"></div>
-  <aside id="cart-drawer" class="cart-drawer" aria-label="Shopping Basket">
-    <div class="cart-header">
-      <h3>Your Basket</h3>
-      <button class="close-cart" onclick="closeCart()" aria-label="Close Basket">&times;</button>
-    </div>
-    <div id="cart-items" class="cart-items">
-      <p style="color: var(--muted); text-align: center; margin-top: 2rem;">Your basket is currently empty.</p>
-    </div>
-    <div class="cart-footer">
-      <div class="cart-total-row">
-        <span>Subtotal</span>
-        <span id="cart-total">$0.00</span>
-      </div>
-      <a href="https://ko-fi.com" target="_blank" class="btn btn-primary" style="width: 100%;">
-        Proceed to Checkout
-      </a>
-    </div>
-  </aside>
+    <footer>
+        <p>&copy; 2026 North Country Cash Queen. All rights reserved.</p>
+    </footer>
+    <script>
+        const productDetails = {
+            "product-1": {
+                name: "Rose Gold A6 Cash Binder",
+                price: 18.99,
+                image: "https://placehold.co",
+                fullDesc: "Organise your cash stuffing in style! This gorgeous rose-gold sparkly A6 binder features sturdy 6-ring hardware, hidden card pockets, a pen loop, 8 frosted zipper cash envelopes, and 12 rose-gold expense tracker sheets."
+            },
+            "product-2": {
+                name: "Floral 52-Week Savings Box",
+                price: 14.50,
+                image: "https://placehold.co",
+                fullDesc: "Make saving money fun and stress-free! Includes 52 reusable, wipe-clean laminated floral challenge cards inside a keepsake blush gift box. Save over £1,300 by the end of the year!"
+            },
+            "product-3": {
+                name: "North Country Queen Mug",
+                price: 12.00,
+                image: "https://placehold.co",
+                fullDesc: "Enjoy your morning tea or coffee while budgeting! This 15oz blush pink ceramic mug features real metallic gold lettering on both sides. Hand wash recommended to keep the gold sparkling."
+            },
+            "product-4": {
+                name: "Blush Pink Zipper Envelopes",
+                price: 9.50,
+                image: "https://placehold.co",
+                fullDesc: "Upgrade your binder with this set of 12 tear-resistant, waterproof frosted PVC cash envelopes with smooth rose-gold zippers and pre-printed category labels."
+            },
+            "product-5": {
+                name: "100 Envelope Challenge Book",
+                price: 22.00,
+                image: "https://placehold.co",
+                fullDesc: "Save £5,050 effortlessly! Features a quilted blush pink vegan-leather cover, 100 numbered cash slots, and a reusable laminated tracker dashboard."
+            },
+            "product-6": {
+                name: "Rose Gold Crystal Pen",
+                price: 6.50,
+                image: "https://placehold.co",
+                fullDesc: "Add a touch of sparkle to your budgeting sessions! Weighted metal barrel filled with shimmering pink crystals and smooth black gel ink."
+            }
+        };
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2026 North Country Cash Queen. All rights reserved.</p>
-  </footer>
+        let basket = [];
 
-  <!-- Built-In Shopping Basket Script (Works Immediately) -->
-  <script>
-    let basket = [];
+        function openModal(id) {
+            const item = productDetails[id];
+            if (!item) return;
+            document.getElementById('modalImg').src = item.image;
+            document.getElementById('modalTitle').innerText = item.name;
+            document.getElementById('modalPrice').innerText = '£' + item.price.toFixed(2);
+            document.getElementById('modalDesc').innerText = item.fullDesc;
+            document.getElementById('modalAddBtn').onclick = function() {
+                addToBasket(item.name, item.price);
+                closeModal();
+            };
+            document.getElementById('productModal').style.display = 'flex';
+        }
 
-    function openCart() {
-      document.getElementById('cart-overlay').classList.add('open');
-      document.getElementById('cart-drawer').classList.add('open');
-    }
+        function closeModal() {
+            document.getElementById('productModal').style.display = 'none';
+        }
 
-    function closeCart() {
-      document.getElementById('cart-overlay').classList.remove('open');
-      document.getElementById('cart-drawer').classList.remove('open');
-    }
+        function addToBasket(name, price) {
+            basket.push({ name: name, price: price });
+            updateBasketUI();
+            document.getElementById('basketDrawer').classList.add('open');
+        }
 
-    function addToCart(name, price) {
-      const existing = basket.find(item => item.name === name);
-      if (existing) {
-        existing.qty += 1;
-      } else {
-        basket.push({ name, price, qty: 1 });
-      }
-      renderCart();
-      openCart();
-    }
+        function removeFromBasket(index) {
+            basket.splice(index, 1);
+            updateBasketUI();
+        }
 
-    function changeQty(index, delta) {
-      basket[index].qty += delta;
-      if (basket[index].qty <= 0) {
-        basket.splice(index, 1);
-      }
-      renderCart();
-    }
+        function updateBasketUI() {
+            document.getElementById('basketCount').innerText = basket.length;
+            const container = document.getElementById('basketItems');
+            if (basket.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; margin-top: 40px;">Your basket is currently empty.</p>';
+                document.getElementById('basketTotal').innerText = '£0.00';
+                return;
+            }
+            let total = 0;
+            container.innerHTML = basket.map((item, idx) => {
+                total += item.price;
+                return `
+                    <div class="basket-item">
+                        <div>
+                            <div style="font-weight: 500;">${item.name}</div>
+                            <div style="color: var(--primary-pink); font-size: 0.9rem;">£${item.price.toFixed(2)}</div>
+                        </div>
+                        <button class="remove-btn" onclick="removeFromBasket(${idx})">Remove</button>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('basketTotal').innerText = '£' + total.toFixed(2);
+        }
 
-    function renderCart() {
-      const container = document.getElementById('cart-items');
-      const countBadge = document.getElementById('cart-count');
-      const totalEl = document.getElementById('cart-total');
+        function toggleBasket() {
+            document.getElementById('basketDrawer').classList.toggle('open');
+        }
 
-      let totalItems = 0;
-      let totalCost = 0;
+        function checkout() {
+            if (basket.length === 0) return alert("Your basket is empty!");
+            const summary = basket.map(i => `- ${i.name} (£${i.price.toFixed(2)})`).join('%0A');
+            const total = document.getElementById('basketTotal').innerText;
+            window.location.href = `mailto:your-email@://example.com Order - North Country Cash Queen&body=Hi! I would like to order:%0A%0A${summary}%0A%0ATotal: ${total}`;
+        }
 
-      basket.forEach(item => {
-        totalItems += item.qty;
-        totalCost += item.price * item.qty;
-      });
-
-      countBadge.innerText = totalItems;
-      totalEl.innerText = '$' + totalCost.toFixed(2);
-
-      if (basket.length === 0) {
-        container.innerHTML = '<p style="color: var(--muted); text-align: center; margin-top: 2rem;">Your basket is currently empty.</p>';
-        return;
-      }
-
-      container.innerHTML = basket.map((item, idx) => `
-        <div class="cart-item">
-          <div class="cart-item-info">
-            <h4>${item.name}</h4>
-            <div class="cart-item-price">$${(item.price * item.qty).toFixed(2)}</div>
-          </div>
-          <div class="qty-controls">
-            <button class="qty-btn" onclick="changeQty(${idx}, -1)">−</button>
-            <span>${item.qty}</span>
-            <button class="qty-btn" onclick="changeQty(${idx}, 1)">+</button>
-          </div>
-        </div>
-      `).join('');
-    }
-  </script>
-
+        window.addEventListener('load', function() {
+            const hashId = window.location.hash.replace('#', '');
+            if (hashId && productDetails[hashId]) {
+                openModal(hashId);
+            }
+        });
+    </script>
 </body>
 </html>
