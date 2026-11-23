@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Luxury Cute Fortune Scratch Card</title>
   <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
     body {
       font-family: "Quicksand", "Trebuchet MS", sans-serif;
       display: flex;
@@ -16,6 +21,7 @@
       background: transparent;
       overflow: hidden;
       user-select: none;
+      -webkit-user-select: none;
     }
 
     .stage {
@@ -36,11 +42,6 @@
         0 12px 24px rgba(230, 25, 96, 0.22),
         inset 0 3px 8px rgba(255, 255, 255, 0.95),
         inset 0 -4px 10px rgba(214, 51, 108, 0.2);
-      transition: transform 0.25s ease;
-    }
-
-    .card-frame:hover {
-      transform: scale(1.03);
     }
 
     .card-frame.revealed {
@@ -73,6 +74,7 @@
       padding: 12px 16px;
       color: #e61960;
       z-index: 1;
+      pointer-events: none;
     }
 
     .prize-icon {
@@ -102,9 +104,9 @@
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 2;
+      width: 244px;
+      height: 134px;
+      z-index: 5;
       cursor: crosshair;
       touch-action: none;
       transition: opacity 0.55s ease;
@@ -151,11 +153,6 @@
       opacity: 1;
       pointer-events: auto;
     }
-
-    .reset-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 5px 12px rgba(230, 25, 96, 0.25);
-    }
   </style>
 </head>
 <body>
@@ -164,10 +161,10 @@
       <div class="inner-card">
         <div class="prize-content">
           <div class="prize-icon" id="prizeIcon">👑</div>
-          <div class="prize-text" id="prizeText">Main Character Energy</div>
-          <div class="prize-sub" id="prizeSub">Sparkle & shine today!</div>
+          <div class="prize-text" id="prizeText">Queen Vibes Only</div>
+          <div class="prize-sub" id="prizeSub">You’re doing amazing sweetie</div>
         </div>
-        <canvas id="foilCanvas"></canvas>
+        <canvas id="foilCanvas" width="244" height="134"></canvas>
       </div>
     </div>
 
@@ -176,7 +173,6 @@
       <button class="reset-btn" id="resetBtn" onclick="resetCard()">↻ scratch another</button>
     </div>
   </div>
-
   <script>
     const fortunes = [
       { icon: "👑", text: "Queen Vibes Only", sub: "You’re doing amazing sweetie" },
@@ -201,20 +197,21 @@
     let strokeCounter = 0;
     let lastIndex = -1;
 
-    // Web Audio setup
     let audioCtx = null;
     let scratchNoiseNode = null;
     let scratchGain = null;
 
     function initAudio() {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (!audioCtx) audioCtx = new AudioContext();
-      if (audioCtx.state === "suspended") audioCtx.resume();
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!audioCtx) audioCtx = new AudioContext();
+        if (audioCtx.state === "suspended") audioCtx.resume();
+      } catch (e) {}
     }
 
     function startScratchSound() {
       initAudio();
-      if (scratchNoiseNode) return;
+      if (!audioCtx || scratchNoiseNode) return;
 
       const bufferSize = audioCtx.sampleRate * 1.5;
       const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
@@ -248,6 +245,7 @@
 
     function playSparkleChime() {
       initAudio();
+      if (!audioCtx) return;
       const notes = [880, 1108.73, 1318.51, 1760];
       const now = audioCtx.currentTime;
       notes.forEach((freq, idx) => {
@@ -266,26 +264,23 @@
     }
 
     function setupCanvas() {
-      const rect = canvas.parentElement.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const w = canvas.width;
+      const h = canvas.height;
 
-      const grad = ctx.createLinearGradient(0, 0, rect.width, rect.height);
+      ctx.globalCompositeOperation = "source-over";
+      const grad = ctx.createLinearGradient(0, 0, w, h);
       grad.addColorStop(0, "#ff9ebb");
       grad.addColorStop(0.35, "#ffcce0");
       grad.addColorStop(0.5, "#ffe6f0");
       grad.addColorStop(0.7, "#ff8fb3");
       grad.addColorStop(1, "#ff6b9d");
 
-      ctx.globalCompositeOperation = "source-over";
       ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, rect.width, rect.height);
+      ctx.fillRect(0, 0, w, h);
 
       for (let i = 0; i < 160; i++) {
-        const x = Math.random() * rect.width;
-        const y = Math.random() * rect.height;
+        const x = Math.random() * w;
+        const y = Math.random() * h;
         const r = Math.random() * 1.4 + 0.4;
         ctx.fillStyle = i % 2 === 0 ? "rgba(255,255,255,0.75)" : "rgba(230,25,96,0.22)";
         ctx.beginPath();
@@ -297,7 +292,7 @@
       ctx.font = "bold 13px 'Quicksand', 'Trebuchet MS', sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText("♥  SCRATCH ME  ♥", rect.width / 2, rect.height / 2);
+      ctx.fillText("♥  SCRATCH ME  ♥", w / 2, h / 2);
     }
 
     function pickRandomFortune() {
@@ -313,16 +308,100 @@
       document.getElementById("prizeSub").textContent = item.sub;
     }
 
-    function getPointerPos(e) {
+    function getCoords(e) {
       const rect = canvas.getBoundingClientRect();
-      return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+      const touch = e.touches && e.touches.length > 0 ? e.touches[0] : null;
+      const clientX = touch ? touch.clientX : e.clientX;
+      const clientY = touch ? touch.clientY : e.clientY;
+      return {
+        x: (clientX - rect.left) * (canvas.width / rect.width),
+        y: (clientY - rect.top) * (canvas.height / rect.height)
+      };
     }
 
-    function scratchLine(from, to) {
+    function scratchAt(from, to) {
       ctx.globalCompositeOperation = "destination-out";
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
-      ctx.lineWidth = 32;
+      ctx.lineWidth = 34;
+
       ctx.beginPath();
       ctx.moveTo(from.x, from.y);
       ctx.lineTo(to.x, to.y);
+      ctx.stroke();
+
+      strokeCounter++;
+      if (strokeCounter % 6 === 0 && !isRevealed) checkRevealProgress();
+    }
+
+    function checkRevealProgress() {
+      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      let cleared = 0;
+      const step = 32;
+      for (let i = 3; i < imgData.length; i += step) {
+        if (imgData[i] === 0) cleared++;
+      }
+      if (cleared / (imgData.length / step) > 0.45) revealCard();
+    }
+
+    function revealCard() {
+      isRevealed = true;
+      updateScratchVolume(false);
+      canvas.classList.add("fade-out");
+      cardFrame.classList.add("revealed");
+      statusLabel.textContent = "✨ cute! ✨";
+      resetBtn.classList.add("visible");
+      playSparkleChime();
+    }
+
+    function resetCard() {
+      isRevealed = false;
+      strokeCounter = 0;
+      canvas.classList.remove("fade-out");
+      cardFrame.classList.remove("revealed");
+      statusLabel.textContent = "✨ rub to scratch ✨";
+      resetBtn.classList.remove("visible");
+      pickRandomFortune();
+      setupCanvas();
+    }
+
+    function startScratch(e) {
+      if (isRevealed) return;
+      if (e.cancelable) e.preventDefault();
+      isDrawing = true;
+      lastPoint = getCoords(e);
+      startScratchSound();
+      updateScratchVolume(true);
+      scratchAt(lastPoint, { x: lastPoint.x + 0.1, y: lastPoint.y + 0.1 });
+    }
+
+    function moveScratch(e) {
+      if (!isDrawing || isRevealed) return;
+      if (e.cancelable) e.preventDefault();
+      const currentPoint = getCoords(e);
+      scratchAt(lastPoint, currentPoint);
+      lastPoint = currentPoint;
+    }
+
+    function endScratch() {
+      if (!isDrawing) return;
+      isDrawing = false;
+      lastPoint = null;
+      updateScratchVolume(false);
+      if (!isRevealed) checkRevealProgress();
+    }
+
+    canvas.addEventListener("mousedown", startScratch);
+    window.addEventListener("mousemove", moveScratch);
+    window.addEventListener("mouseup", endScratch);
+
+    canvas.addEventListener("touchstart", startScratch, { passive: false });
+    canvas.addEventListener("touchmove", moveScratch, { passive: false });
+    window.addEventListener("touchend", endScratch);
+    window.addEventListener("touchcancel", endScratch);
+
+    pickRandomFortune();
+    setupCanvas();
+  </script>
+</body>
+</html>
