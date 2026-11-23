@@ -51,29 +51,20 @@
             max-width: 1100px;
             margin: 0 auto;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            gap: 12px;
-        }
-
-        .brand-logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
-            color: var(--primary-pink);
-            font-weight: 600;
-            text-decoration: none;
         }
 
         .nav-actions {
+            width: 100%;
             display: flex;
             align-items: center;
-            gap: 18px;
+            gap: 20px;
         }
 
         .nav-link {
             text-decoration: none;
             color: var(--text-dark);
-            font-size: 0.92rem;
+            font-size: 0.94rem;
             font-weight: 500;
             transition: color 0.2s ease;
         }
@@ -83,6 +74,7 @@
         }
 
         .basket-btn {
+            margin-left: auto;
             background-color: var(--bg-color);
             border: 1.5px solid var(--rose-gold);
             color: var(--text-dark);
@@ -456,7 +448,7 @@
             line-height: 1.7;
         }
 
-        /* --- Slide-Out Basket Drawer (Fixed Off-Screen Alignment) --- */
+        /* --- Slide-Out Basket Drawer --- */
         .basket-drawer {
             position: fixed;
             top: 0;
@@ -567,10 +559,9 @@
         /* --- Mobile Phone Optimizations --- */
         @media (max-width: 600px) {
             .top-nav { padding: 10px 14px; }
-            .brand-logo { font-size: 1rem; }
-            .nav-actions { gap: 10px; }
-            .nav-link { font-size: 0.82rem; }
-            .basket-btn { padding: 6px 11px; font-size: 0.82rem; }
+            .nav-actions { gap: 14px; }
+            .nav-link { font-size: 0.88rem; }
+            .basket-btn { padding: 6px 12px; font-size: 0.85rem; }
             header { margin: 15px auto 15px; padding: 0 12px; }
             .banner-frame { padding: 5px; border-radius: 14px; }
             .neon-border-svg { border-radius: 14px; }
@@ -591,8 +582,8 @@
 
     <nav class="top-nav">
         <div class="nav-inner">
-            <a href="#" class="brand-logo">North Country Cash Queen</a>
             <div class="nav-actions">
+                <a href="#fun" class="nav-link">Fun</a>
                 <a href="#shop" class="nav-link">Shop</a>
                 <a href="#contact" class="nav-link">Contact</a>
                 <button class="basket-btn" onclick="toggleBasket()">
