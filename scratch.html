@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luxury Cute Fortune Scratch Card</title>
+  <style>
+    body {
+      font-family: "Quicksand", "Trebuchet MS", sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: transparent;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    .stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .card-frame {
+      position: relative;
+      width: 260px;
+      height: 150px;
+      border-radius: 24px;
+      padding: 8px;
+      background: linear-gradient(145deg, #fff0f6 0%, #ffb3d1 55%, #ff8fab 100%);
+      border: 2.5px solid #ffd6e5;
+      box-shadow:
+        0 12px 24px rgba(230, 25, 96, 0.22),
+        inset 0 3px 8px rgba(255, 255, 255, 0.95),
+        inset 0 -4px 10px rgba(214, 51, 108, 0.2);
+      transition: transform 0.25s ease;
+    }
+
+    .card-frame:hover {
+      transform: scale(1.03);
+    }
+
+    .card-frame.revealed {
+      animation: popCelebrate 0.6s cubic-bezier(0.25, 0.85, 0.35, 1);
+    }
+
+    @keyframes popCelebrate {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.08); }
+      70% { transform: scale(0.97); }
+      100% { transform: scale(1); }
+    }
+
+    .inner-card {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 17px;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 30%, #ffffff 0%, #fff0f6 70%, #ffe0ec 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 2px 6px rgba(214, 51, 108, 0.15);
+    }
+
+    .prize-content {
+      text-align: center;
+      padding: 12px 16px;
+      color: #e61960;
+      z-index: 1;
+    }
+
+    .prize-icon {
+      font-size: 30px;
+      line-height: 1.1;
+      margin-bottom: 4px;
+      filter: drop-shadow(0 2px 4px rgba(230, 25, 96, 0.25));
+    }
+
+    .prize-text {
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: 0.3px;
+      text-shadow: 0 1px 0 #ffffff;
+    }
+
+    .prize-sub {
+      font-size: 11px;
+      font-weight: 700;
+      color: #ff5c93;
+      margin-top: 4px;
+      letter-spacing: 0.4px;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      cursor: crosshair;
+      touch-action: none;
+      transition: opacity 0.55s ease;
+    }
+
+    canvas.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .controls {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      color: #e63973;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    }
+
+    .reset-btn {
+      background: linear-gradient(145deg, #ffe5f0, #ffb3d1);
+      border: 1.5px solid #ffd6e5;
+      color: #d61c5e;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(230, 25, 96, 0.18);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .reset-btn.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .reset-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 12px rgba(230, 25, 96, 0.25);
+    }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="card-frame" id="cardFrame">
+      <div class="inner-card">
+        <div class="prize-content">
+          <div class="prize-icon" id="prizeIcon">👑</div>
+          <div class="prize-text" id="prizeText">Main Character Energy</div>
+          <div class="prize-sub" id="prizeSub">Sparkle & shine today!</div>
+        </div>
+        <canvas id="foilCanvas"></canvas>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="label" id="statusLabel">✨ rub to scratch ✨</div>
+      <button class="reset-btn" id="resetBtn" onclick="resetCard()">↻ scratch another</button>
+    </div>
+  </div>
+
+  <script>
+    const fortunes = [
+      { icon: "👑", text: "Queen Vibes Only", sub: "You’re doing amazing sweetie" },
+      { icon: "☕", text: "Cozy Coffee Break", sub: "Go grab your favorite sip" },
+      { icon: "🌲", text: "North Country Magic", sub: "Good luck is headed your way" },
+      { icon: "🎀", text: "Certified Cutie", sub: "100% that Cash Queen" },
+      { icon: "🍓", text: "Sweet Little Treat", sub: "You officially deserve a snack" },
+      { icon: "✨", text: "Lucky Charm Unlocked", sub: "Something fun will happen today" },
+      { icon: "💖", text: "Sending Sparkles", sub: "Thanks for stopping by!" },
+      { icon: "🌸", text: "Soft Life Era", sub: "Take a deep breath & relax" }
+    ];
+
+    const canvas = document.getElementById("foilCanvas");
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const cardFrame = document.getElementById("cardFrame");
+    const statusLabel = document.getElementById("statusLabel");
+    const resetBtn = document.getElementById("resetBtn");
+
+    let isDrawing = false;
+    let isRevealed = false;
+    let lastPoint = null;
+    let strokeCounter = 0;
+    let lastIndex = -1;
+
+    // Web Audio setup
+    let audioCtx = null;
+    let scratchNoiseNode = null;
+    let scratchGain = null;
+
+    function initAudio() {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!audioCtx) audioCtx = new AudioContext();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+    }
+
+    function startScratchSound() {
+      initAudio();
+      if (scratchNoiseNode) return;
+
+      const bufferSize = audioCtx.sampleRate * 1.5;
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+
+      scratchNoiseNode = audioCtx.createBufferSource();
+      scratchNoiseNode.buffer = buffer;
+      scratchNoiseNode.loop = true;
+
+      const bandpass = audioCtx.createBiquadFilter();
+      bandpass.type = "bandpass";
+      bandpass.frequency.setValueAtTime(3600, audioCtx.currentTime);
+      bandpass.Q.setValueAtTime(1.8, audioCtx.currentTime);
+
+      scratchGain = audioCtx.createGain();
+      scratchGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+
+      scratchNoiseNode.connect(bandpass);
+      bandpass.connect(scratchGain);
+      scratchGain.connect(audioCtx.destination);
+      scratchNoiseNode.start();
+    }
+
+    function updateScratchVolume(active) {
+      if (!scratchGain || !audioCtx) return;
+      const now = audioCtx.currentTime;
+      scratchGain.gain.cancelScheduledValues(now);
+      scratchGain.gain.setTargetAtTime(active ? 0.14 : 0.0001, now, 0.02);
+    }
+
+    function playSparkleChime() {
+      initAudio();
+      const notes = [880, 1108.73, 1318.51, 1760];
+      const now = audioCtx.currentTime;
+      notes.forEach((freq, idx) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, now + idx * 0.065);
+        gain.gain.setValueAtTime(0.001, now + idx * 0.065);
+        gain.gain.exponentialRampToValueAtTime(0.12, now + idx * 0.065 + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.065 + 0.45);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now + idx * 0.065);
+        osc.stop(now + idx * 0.065 + 0.5);
+      });
+    }
+
+    function setupCanvas() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const grad = ctx.createLinearGradient(0, 0, rect.width, rect.height);
+      grad.addColorStop(0, "#ff9ebb");
+      grad.addColorStop(0.35, "#ffcce0");
+      grad.addColorStop(0.5, "#ffe6f0");
+      grad.addColorStop(0.7, "#ff8fb3");
+      grad.addColorStop(1, "#ff6b9d");
+
+      ctx.globalCompositeOperation = "source-over";
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, rect.width, rect.height);
+
+      for (let i = 0; i < 160; i++) {
+        const x = Math.random() * rect.width;
+        const y = Math.random() * rect.height;
+        const r = Math.random() * 1.4 + 0.4;
+        ctx.fillStyle = i % 2 === 0 ? "rgba(255,255,255,0.75)" : "rgba(230,25,96,0.22)";
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
+      ctx.font = "bold 13px 'Quicksand', 'Trebuchet MS', sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("♥  SCRATCH ME  ♥", rect.width / 2, rect.height / 2);
+    }
+
+    function pickRandomFortune() {
+      let idx;
+      do {
+        idx = Math.floor(Math.random() * fortunes.length);
+      } while (idx === lastIndex && fortunes.length > 1);
+      lastIndex = idx;
+
+      const item = fortunes[idx];
+      document.getElementById("prizeIcon").textContent = item.icon;
+      document.getElementById("prizeText").textContent = item.text;
+      document.getElementById("prizeSub").textContent = item.sub;
+    }
+
+    function getPointerPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    }
+
+    function scratchLine(from, to) {
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.lineWidth = 32;
+      ctx.beginPath();
+      ctx.moveTo(from.x, from.y);
+      ctx.lineTo(to.x, to.y);
