@@ -187,39 +187,73 @@
   <script>
     let spins = 0;
     let audioCtx = null;
+    let noiseBuffer = null;
+
+    function initAudio() {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!audioCtx) {
+        audioCtx = new AudioContext();
+        // Create short white-noise buffer for realistic acrylic/wood clack texture
+        const bufferSize = audioCtx.sampleRate * 0.04;
+        noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (audioCtx.sampleRate * 0.008));
+        }
+      }
+      if (audioCtx.state === "suspended") audioCtx.resume();
+    }
+
+    function triggerClack(time, volume, pitch) {
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = noiseBuffer;
+
+      // Bandpass filter shapes the noise into a hard plastic/resin "clack"
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = "bandpass";
+      filter.frequency.setValueAtTime(pitch, time);
+      filter.Q.setValueAtTime(3.2, time);
+
+      // High-shelf boost adds crisp edge-hit snap
+      const highShelf = audioCtx.createBiquadFilter();
+      highShelf.type = "highshelf";
+      highShelf.frequency.setValueAtTime(2200, time);
+      highShelf.gain.setValueAtTime(6, time);
+
+      const gain = audioCtx.createGain();
+      gain.gain.setValueAtTime(volume, time);
+      gain.gain.exponentialRampToValueAtTime(0.001, time + 0.035);
+
+      noise.connect(filter);
+      filter.connect(highShelf);
+      highShelf.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      noise.start(time);
+      noise.stop(time + 0.04);
+    }
 
     function playRollSound() {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (!audioCtx) audioCtx = new AudioContext();
-      if (audioCtx.state === "suspended") audioCtx.resume();
-
+      initAudio();
       const now = audioCtx.currentTime;
-      // Continuous dice rattle/clacks synced to the 2.2s roll until it stops
-      const tapTimes = [
-        0.03, 0.11, 0.20, 0.30, 0.41, 0.54, 0.68,
-        0.84, 1.02, 1.22, 1.44, 1.68, 1.93, 2.16
+
+      // Irregular tumbling hits + tiny double-taps as corners/edges strike the table
+      const hits = [
+        { t: 0.02, v: 0.85 }, { t: 0.06, v: 0.45 },
+        { t: 0.14, v: 0.90 }, { t: 0.19, v: 0.50 },
+        { t: 0.29, v: 0.80 }, { t: 0.34, v: 0.40 },
+        { t: 0.46, v: 0.75 }, { t: 0.52, v: 0.35 },
+        { t: 0.67, v: 0.85 }, { t: 0.73, v: 0.45 }, // First bounce landing
+        { t: 0.91, v: 0.65 }, { t: 0.97, v: 0.30 },
+        { t: 1.18, v: 0.55 }, { t: 1.24, v: 0.25 },
+        { t: 1.48, v: 0.45 },
+        { t: 1.78, v: 0.32 },
+        { t: 2.08, v: 0.22 }  // Final settle tap
       ];
 
-      tapTimes.forEach((offset, i) => {
-        const t = now + offset;
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-
-        osc.type = "triangle";
-        const baseFreq = 340 + (i % 4) * 85 + Math.random() * 55;
-        osc.frequency.setValueAtTime(baseFreq, t);
-        osc.frequency.exponentialRampToValueAtTime(115, t + 0.042);
-
-        // Louder during fast spins and bounces, tapering off right as it stops
-        const progress = i / (tapTimes.length - 1);
-        const volume = Math.max(0.04, 0.22 * (1 - progress * 0.72));
-        gain.gain.setValueAtTime(volume, t);
-        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.045);
-
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start(t);
-        osc.stop(t + 0.05);
+      hits.forEach((hit) => {
+        const randomPitch = 1450 + Math.random() * 850;
+        triggerClack(now + hit.t, hit.v, randomPitch);
       });
     }
 
