@@ -39,14 +39,15 @@
     }
 
     .scene.tossing {
-      animation: tossBounce 0.9s cubic-bezier(0.28, 0.84, 0.42, 1);
+      animation: tossBounce 2.2s cubic-bezier(0.25, 0.85, 0.35, 1);
     }
 
     @keyframes tossBounce {
       0%   { transform: translateY(0) scale(1); }
-      30%  { transform: translateY(-28px) scale(1.1); }
-      65%  { transform: translateY(4px) scale(0.97); }
-      85%  { transform: translateY(-8px) scale(1.02); }
+      25%  { transform: translateY(-34px) scale(1.12); }
+      55%  { transform: translateY(4px) scale(0.97); }
+      75%  { transform: translateY(-12px) scale(1.03); }
+      90%  { transform: translateY(2px) scale(0.99); }
       100% { transform: translateY(0) scale(1); }
     }
 
@@ -56,7 +57,7 @@
       position: relative;
       transform-style: preserve-3d;
       transform: rotateX(-22deg) rotateY(28deg);
-      transition: transform 0.9s cubic-bezier(0.2, 0.9, 0.3, 1);
+      transition: transform 2.2s cubic-bezier(0.15, 0.88, 0.28, 1);
     }
 
     .face {
@@ -69,7 +70,6 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(3, 1fr);
-      /* Pearlescent pink + subtle glitter flecks + rose-gold rim */
       background:
         radial-gradient(circle at 25% 20%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 45%),
         radial-gradient(circle, rgba(255, 255, 255, 0.85) 1px, transparent 1.5px),
@@ -91,7 +91,6 @@
     .top    { transform: rotateX(90deg) translateZ(48px); }
     .bottom { transform: rotateX(-90deg) translateZ(48px); }
 
-    /* Heart-shaped pips */
     .heart {
       align-self: center;
       justify-self: center;
@@ -113,7 +112,6 @@
     .p6 { grid-area: 3 / 1; }
     .p7 { grid-area: 3 / 3; }
 
-    /* Soft floating floor shadow */
     .floor-shadow {
       width: 78px;
       height: 16px;
@@ -124,12 +122,14 @@
     }
 
     .floor-shadow.tossing {
-      animation: shadowPulse 0.9s ease;
+      animation: shadowPulse 2.2s ease;
     }
 
     @keyframes shadowPulse {
       0%, 100% { transform: scale(1); opacity: 1; }
-      30%      { transform: scale(0.65); opacity: 0.45; }
+      25%      { transform: scale(0.6); opacity: 0.4; }
+      55%      { transform: scale(1.05); opacity: 1; }
+      75%      { transform: scale(0.8); opacity: 0.65; }
     }
 
     .label {
@@ -192,7 +192,7 @@
       const scene = document.getElementById("scene");
       const shadow = document.getElementById("shadow");
       const roll = Math.floor(Math.random() * 6) + 1;
-      spins += 1;
+      spins += 3;
 
       scene.classList.remove("tossing");
       shadow.classList.remove("tossing");
