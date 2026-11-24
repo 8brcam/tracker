@@ -15,7 +15,7 @@ export default {
           });
         }
 
-        // Fetch live index.html to verify real product prices (prevents browser price tampering)
+        // Fetch live index.html to verify real product prices
         const assetRes = await env.ASSETS.fetch(new Request(`${url.origin}/`));
         const html = await assetRes.text();
         const match = html.match(/const storeProducts\s*=\s*(\[[\s\S]*?\]);/);
