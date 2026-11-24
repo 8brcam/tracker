@@ -55,7 +55,7 @@ export default {
           params.append(`line_items[${index}][quantity]`, item.qty || item.quantity || 1);
         });
 
-        const response = await fetch("https://stripe.com", {
+        const response = await fetch("https://api.stripe.com/v1/checkout/sessions", {
           method: "POST",
           headers: {
             "Authorization": `Bearer ${stripeKey}`,
