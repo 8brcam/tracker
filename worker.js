@@ -34,9 +34,9 @@ export default {
         params.append("success_url", `${url.origin}/?success=true`);
         params.append("cancel_url", `${url.origin}/?canceled=true`);
 
-        // Flat-rate US shipping charge (500 = $5.00)
+        // Flat-rate US shipping charge (100 = $1.00)
         params.append("shipping_options[0][shipping_rate_data][type]", "fixed_amount");
-        params.append("shipping_options[0][shipping_rate_data][fixed_amount][amount]", "500");
+        params.append("shipping_options[0][shipping_rate_data][fixed_amount][amount]", "100");
         params.append("shipping_options[0][shipping_rate_data][fixed_amount][currency]", "usd");
         params.append("shipping_options[0][shipping_rate_data][display_name]", "US Standard Shipping");
         params.append("shipping_options[0][shipping_rate_data][delivery_estimate][minimum][unit]", "business_day");
