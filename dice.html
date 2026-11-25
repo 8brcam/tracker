@@ -150,18 +150,19 @@
 <body>
   <div class="game-wrap" id="wrap">
     <div class="hud">
-      <div class="pill">🎄 $<span id="score">0</span></div>
+      <div class="pill">🎄 £<span id="score">0</span></div>
       <div class="pill" id="lives">❤️❤️❤️</div>
       <button class="mute-btn" id="muteBtn" type="button" title="Toggle Music">🔊</button>
     </div>
+
     <canvas id="game" width="310" height="430"></canvas>
 
     <div class="overlay" id="overlay">
       <div class="badge">🎅 North Country Cash Queen 🎄</div>
       <h2>Christmas Cash Catch</h2>
       <div class="rules">
-        <div class="good">✅ Catch every 💵 Bill</div>
-        <div class="bad">❌ Dodge the 💣 Bombs</div>
+        <div class="good">✅ Catch every 💵 Note</div>
+        <div class="bad">❌ Dodge the 🚫 Debt</div>
       </div>
       <button class="btn" id="startBtn" type="button">Play</button>
     </div>
@@ -315,6 +316,7 @@
           osc.stop(now + 0.16);
         }
       }
+
       wrap.addEventListener("pointermove", (e) => {
         const rect = canvas.getBoundingClientRect();
         const x = ((e.clientX - rect.left) / rect.width) * canvas.width;
@@ -325,7 +327,6 @@
         if (e.key === "ArrowLeft") playerX = Math.max(playerW / 2, playerX - 28);
         if (e.key === "ArrowRight") playerX = Math.min(canvas.width - playerW / 2, playerX + 28);
       });
-
       function addPopup(text, x, y, color) {
         popups.push({ text, x, y, color, alpha: 1 });
       }
@@ -347,7 +348,7 @@
             <h2>Merry Cash-Mas!</h2>
             <div class="rules">
               <div>${reason}</div>
-              <div style="margin-top:6px; font-size:16px;">Holiday Savings: <span class="good">$${score}</span></div>
+              <div style="margin-top:6px; font-size:16px;">Holiday Savings: <span class="good">£${score}</span></div>
             </div>
             <button class="btn" id="restartBtn" type="button">Play Again</button>
           `;
@@ -373,10 +374,10 @@
       startBtn.addEventListener("click", startGame);
 
       function spawnItem() {
-        const isBomb = Math.random() < 0.3;
+        const isDebt = Math.random() < 0.3;
         items.push({
-          icon: isBomb ? "💣" : "💵",
-          bad: isBomb,
+          icon: "💵",
+          bad: isDebt,
           x: 28 + Math.random() * (canvas.width - 56),
           y: -20,
           speed: 1.7 + Math.random() * 0.9 + Math.min(score / 300, 1.4)
@@ -451,13 +452,28 @@
         const catchY = canvas.height - 56;
         drawFestiveBinder(playerX, catchY);
 
-        ctx.font = "26px sans-serif";
         ctx.textAlign = "center";
 
         for (let i = items.length - 1; i >= 0; i--) {
           const it = items[i];
           it.y += it.speed;
-          ctx.fillText(it.icon, it.x, it.y);
+
+          if (it.bad) {
+            ctx.save();
+            ctx.fillStyle = "#d90429";
+            ctx.strokeStyle = "#ffd166";
+            ctx.lineWidth = 2;
+            drawRoundedBox(it.x - 24, it.y - 16, 48, 22, 11);
+            ctx.fill();
+            ctx.stroke();
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 11px Quicksand, sans-serif";
+            ctx.fillText("DEBT", it.x, it.y - 1);
+            ctx.restore();
+          } else {
+            ctx.font = "26px sans-serif";
+            ctx.fillText(it.icon, it.x, it.y);
+          }
 
           if (
             it.y >= catchY &&
@@ -466,12 +482,12 @@
           ) {
             items.splice(i, 1);
             if (it.bad) {
-              loseLife("Hit a Bomb! -1❤️", it.x, catchY - 10);
+              loseLife("Hit Debt! -1❤️", it.x, catchY - 10);
             } else {
               score += 10;
               scoreEl.textContent = score;
               playChime(false);
-              addPopup("+$10 🎄", it.x, catchY - 10, "#ffd166");
+              addPopup("+£10 🎄", it.x, catchY - 10, "#ffd166");
             }
             continue;
           }
@@ -479,7 +495,7 @@
           if (it.y > canvas.height - 15) {
             items.splice(i, 1);
             if (!it.bad) {
-              loseLife("Missed a Bill! -1❤️", it.x, canvas.height - 35);
+              loseLife("Missed a Note! -1❤️", it.x, canvas.height - 35);
             }
           }
         }
