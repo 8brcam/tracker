@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Luxury Cute Fortune Scratch Card</title>
+  <title>North Country Cash Queen - Christmas Fortune Scratch Card</title>
   <style>
     * {
       box-sizing: border-box;
@@ -32,16 +32,16 @@
 
     .card-frame {
       position: relative;
-      width: 260px;
-      height: 150px;
+      width: 266px;
+      height: 156px;
       border-radius: 24px;
       padding: 8px;
-      background: linear-gradient(145deg, #fff0f6 0%, #ffb3d1 55%, #ff8fab 100%);
-      border: 2.5px solid #ffd6e5;
+      background: linear-gradient(145deg, #d90429 0%, #9b2226 55%, #6a040f 100%);
+      border: 2.5px solid #ffd166;
       box-shadow:
-        0 12px 24px rgba(230, 25, 96, 0.22),
-        inset 0 3px 8px rgba(255, 255, 255, 0.95),
-        inset 0 -4px 10px rgba(214, 51, 108, 0.2);
+        0 12px 24px rgba(155, 34, 38, 0.28),
+        inset 0 2px 8px rgba(255, 230, 167, 0.6),
+        inset 0 -4px 10px rgba(80, 0, 15, 0.35);
     }
 
     .card-frame.revealed {
@@ -61,18 +61,18 @@
       height: 100%;
       border-radius: 17px;
       overflow: hidden;
-      background: radial-gradient(circle at 50% 30%, #ffffff 0%, #fff0f6 70%, #ffe0ec 100%);
+      background: radial-gradient(circle at 50% 30%, #ffffff 0%, #fffaf0 68%, #d8f3dc 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      box-shadow: inset 0 2px 6px rgba(214, 51, 108, 0.15);
+      box-shadow: inset 0 2px 6px rgba(27, 67, 50, 0.16);
     }
 
     .prize-content {
       text-align: center;
       padding: 12px 16px;
-      color: #e61960;
+      color: #9b2226;
       z-index: 1;
       pointer-events: none;
       visibility: hidden;
@@ -86,7 +86,7 @@
       font-size: 30px;
       line-height: 1.1;
       margin-bottom: 4px;
-      filter: drop-shadow(0 2px 4px rgba(230, 25, 96, 0.25));
+      filter: drop-shadow(0 2px 4px rgba(155, 34, 38, 0.22));
     }
 
     .prize-text {
@@ -100,17 +100,17 @@
     .prize-sub {
       font-size: 11px;
       font-weight: 700;
-      color: #ff5c93;
+      color: #1b4332;
       margin-top: 4px;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.3px;
     }
 
     canvas {
       position: absolute;
       top: 0;
       left: 0;
-      width: 244px;
-      height: 134px;
+      width: 250px;
+      height: 140px;
       z-index: 5;
       cursor: crosshair;
       touch-action: none;
@@ -132,23 +132,23 @@
 
     .label {
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 0.6px;
-      color: #e63973;
-      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+      color: #9b2226;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.85);
     }
 
     .reset-btn {
-      background: linear-gradient(145deg, #ffe5f0, #ffb3d1);
-      border: 1.5px solid #ffd6e5;
-      color: #d61c5e;
+      background: linear-gradient(145deg, #d90429, #9b2226);
+      border: 1.5px solid #ffd166;
+      color: #ffffff;
       font-family: inherit;
       font-size: 11px;
       font-weight: 700;
       padding: 5px 14px;
       border-radius: 999px;
       cursor: pointer;
-      box-shadow: 0 3px 8px rgba(230, 25, 96, 0.18);
+      box-shadow: 0 3px 8px rgba(155, 34, 38, 0.25);
       transition: transform 0.15s ease, box-shadow 0.15s ease;
       opacity: 0;
       pointer-events: none;
@@ -165,51 +165,51 @@
     <div class="card-frame" id="cardFrame">
       <div class="inner-card">
         <div class="prize-content" id="prizeContent">
-          <div class="prize-icon" id="prizeIcon">👑</div>
-          <div class="prize-text" id="prizeText">Queen Vibes Only</div>
-          <div class="prize-sub" id="prizeSub">You’re doing amazing sweetie</div>
+          <div class="prize-icon" id="prizeIcon">🎄</div>
+          <div class="prize-text" id="prizeText">Santa's VIP List</div>
+          <div class="prize-sub" id="prizeSub">You’re officially on the Nice List!</div>
         </div>
-        <canvas id="foilCanvas" width="244" height="134"></canvas>
+        <canvas id="foilCanvas" width="250" height="140"></canvas>
       </div>
     </div>
 
     <div class="controls">
-      <div class="label" id="statusLabel">✨ rub to scratch ✨</div>
+      <div class="label" id="statusLabel">🎄 rub gold foil to scratch 🎄</div>
       <button class="reset-btn" id="resetBtn" onclick="resetCard()">↻ scratch another</button>
     </div>
   </div>
   <script>
     const fortunes = [
-      { icon: "👑", text: "Queen Vibes Only", sub: "You’re doing amazing sweetie" },
-      { icon: "☕", text: "Cozy Coffee Break", sub: "Go grab your favorite sip" },
-      { icon: "🌲", text: "North Country Magic", sub: "Good luck is headed your way" },
-      { icon: "🎀", text: "Certified Cutie", sub: "100% that Cash Queen" },
-      { icon: "🍓", text: "Sweet Little Treat", sub: "You officially deserve a snack" },
-      { icon: "✨", text: "Lucky Charm Unlocked", sub: "Something fun will happen today" },
-      { icon: "💖", text: "Sending Sparkles", sub: "Thanks for stopping by!" },
-      { icon: "🌸", text: "Soft Life Era", sub: "Take a deep breath & relax" },
-      { icon: "🦋", text: "Main Character Energy", sub: "Today is all about you" },
-      { icon: "🧸", text: "Cozy Cabin Mood", sub: "Wrap up in your fuzziest blanket" },
-      { icon: "🌈", text: "Good Vibes Incoming", sub: "Smile—you look gorgeous today" },
-      { icon: "🧁", text: "Cupcake O'Clock", sub: "Life is short, eat the frosting" },
-      { icon: "💌", text: "Secret Admirer", sub: "Someone appreciates you a ton" },
-      { icon: "🌟", text: "Golden Star Day", sub: "You are crushing your goals" },
-      { icon: "🍒", text: "Cherry on Top", sub: "Today just got a whole lot sweeter" },
-      { icon: "🧖‍♀️", text: "Self-Care Pass", sub: "Permission to pamper yourself" },
-      { icon: "🍀", text: "Four-Leaf Clover", sub: "Extra luck sprinkled on your week" },
-      { icon: "🩰", text: "Pretty in Pink", sub: "Everything looks better in pink" },
-      { icon: "🌙", text: "Dream Big Tonight", sub: "Your future is looking bright" },
-      { icon: "🎶", text: "Dance Break!", sub: "Put on your favorite throwback song" },
-      { icon: "🍯", text: "Sweet as Honey", sub: "Keep spreading that kindness" },
-      { icon: "🏔️", text: "Mountain Air Vibes", sub: "Fresh start, clear mind" },
-      { icon: "🕯️", text: "Light Your Fav Candle", sub: "Instant cozy atmosphere unlocked" },
-      { icon: "🍑", text: "Peachy Keen", sub: "Nothing can dull your sparkle" },
-      { icon: "🦄", text: "Rare Unicorn Pull", sub: "You found the rarest card!" },
-      { icon: "🍩", text: "Donut Worry", sub: "Everything is going to work out" },
-      { icon: "🌻", text: "Pure Sunshine", sub: "You brighten every room you enter" },
-      { icon: "💎", text: "Diamond Status", sub: "Shine bright like the queen you are" },
-      { icon: "🐱", text: "Purr-fect Day", sub: "Sending virtual snuggles your way" },
-      { icon: "🎉", text: "Confetti Moment", sub: "Celebrate the little wins today!" }
+      { icon: "🎄", text: "Santa's VIP List", sub: "You’re officially on the Nice List!" },
+      { icon: "☕", text: "Hot Cocoa Break", sub: "Add extra marshmallows—you earned it" },
+      { icon: "❄️", text: "North Country Magic", sub: "A cozy winter miracle is on the way" },
+      { icon: "🎅", text: "Christmas Cash Queen", sub: "Your holiday savings are glowing!" },
+      { icon: "🍪", text: "Freshly Baked Luck", sub: "Santa left an extra cookie just for you" },
+      { icon: "✨", text: "Mistletoe Miracle", sub: "Something magical will happen today" },
+      { icon: "🎁", text: "Wrapped in Joy", sub: "The best gift this season is YOU" },
+      { icon: "🕯️", text: "Festive Candle Glow", sub: "Light a pine candle & take a deep breath" },
+      { icon: "🦌", text: "Rudolph's Guidance", sub: "Your brightest ideas are leading the way" },
+      { icon: "🧣", text: "Cozy Cabin Vibes", sub: "Wrap up in your fuzziest Christmas socks" },
+      { icon: "🌟", text: "North Star Wish", sub: "Make a wish—luck is on your side" },
+      { icon: "🧁", text: "Gingerbread Sweet", sub: "Life is short, eat the Christmas treat" },
+      { icon: "💌", text: "Holiday Secret Admirer", sub: "Someone is extra thankful for you today" },
+      { icon: "🔔", text: "Jingle Bell Joy", sub: "Good news is ringing your way soon!" },
+      { icon: "🍒", text: "Holly & Berry Cheer", sub: "Today just got a whole lot merrier" },
+      { icon: "🛁", text: "Winter Spa Pass", sub: "Permission to pamper yourself tonight" },
+      { icon: "🍀", text: "Lucky Yule Charm", sub: "Extra holiday luck sprinkled on your week" },
+      { icon: "🎀", text: "Tied With a Bow", sub: "Everything is falling neatly into place" },
+      { icon: "🌙", text: "Silent Night Peace", sub: "A calm, joyful season awaits you" },
+      { icon: "🎶", text: "Christmas Carol Break!", sub: "Put on your favorite holiday song right now" },
+      { icon: "🍯", text: "Spiced Cider Warmth", sub: "Keep spreading that festive kindness" },
+      { icon: "🏔️", text: "Snowy Mountain Air", sub: "Fresh snow, fresh start, clear mind" },
+      { icon: "🧦", text: "Stocking Stuffer Luck", sub: "A sweet little surprise is headed your way" },
+      { icon: "🥂", text: "Festive Toast!", sub: "Cheers to crushing your savings goals" },
+      { icon: "🦄", text: "Rare Snow Unicorn!", sub: "You pulled the rarest Christmas card!" },
+      { icon: "🍩", text: "Festive Treat O'Clock", sub: "Zero guilt, 100% holiday cheer" },
+      { icon: "🔥", text: "Fireside Glow", sub: "You bring warmth to every room you enter" },
+      { icon: "💎", text: "Ice Queen Sparkle", sub: "Shine bright like tinsel on the tree" },
+      { icon: "🐾", text: "Cozy Pet Snuggles", sub: "Sending warm holiday hugs your way" },
+      { icon: "🎉", text: "Merry Cash-Mas!", sub: "Celebrate every little win this season!" }
     ];
 
     const canvas = document.getElementById("foilCanvas");
@@ -296,11 +296,11 @@
 
       ctx.globalCompositeOperation = "source-over";
       const grad = ctx.createLinearGradient(0, 0, w, h);
-      grad.addColorStop(0, "#ff9ebb");
-      grad.addColorStop(0.35, "#ffcce0");
-      grad.addColorStop(0.5, "#ffe6f0");
-      grad.addColorStop(0.7, "#ff8fb3");
-      grad.addColorStop(1, "#ff6b9d");
+      grad.addColorStop(0, "#e6b84c");
+      grad.addColorStop(0.3, "#ffe082");
+      grad.addColorStop(0.5, "#fff3b0");
+      grad.addColorStop(0.75, "#f4c44e");
+      grad.addColorStop(1, "#d49b27");
 
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, w, h);
@@ -309,17 +309,17 @@
         const x = Math.random() * w;
         const y = Math.random() * h;
         const r = Math.random() * 1.4 + 0.4;
-        ctx.fillStyle = i % 2 === 0 ? "rgba(255,255,255,0.75)" : "rgba(230,25,96,0.22)";
+        ctx.fillStyle = i % 2 === 0 ? "rgba(255,255,255,0.85)" : "rgba(155,34,38,0.22)";
         ctx.beginPath();
         ctx.arc(x, y, r, 0, Math.PI * 2);
         ctx.fill();
       }
 
-      ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
-      ctx.font = "bold 13px 'Quicksand', 'Trebuchet MS', sans-serif";
+      ctx.fillStyle = "#9b2226";
+      ctx.font = "bold 12px 'Quicksand', 'Trebuchet MS', sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText("♥  SCRATCH ME  ♥", w / 2, h / 2);
+      ctx.fillText("🎄 SCRATCH FOR XMAS LUCK 🎄", w / 2, h / 2);
     }
 
     function pickRandomFortune() {
@@ -337,7 +337,7 @@
 
     function getCoords(e) {
       const rect = canvas.getBoundingClientRect();
-      const touch = e.touches && e.touches.length > 0 ? e.touches[0] : null;
+      const touch = e.touches && e.touches.length > 0 ? e.touches : null;
       const clientX = touch ? touch.clientX : e.clientX;
       const clientY = touch ? touch.clientY : e.clientY;
       return {
@@ -376,7 +376,7 @@
       updateScratchVolume(false);
       canvas.classList.add("fade-out");
       cardFrame.classList.add("revealed");
-      statusLabel.textContent = "✨ cute! ✨";
+      statusLabel.textContent = "🎅 merry cash-mas! 🎄";
       resetBtn.classList.add("visible");
       playSparkleChime();
     }
@@ -388,7 +388,7 @@
       setupCanvas();
       canvas.classList.remove("fade-out");
       cardFrame.classList.remove("revealed");
-      statusLabel.textContent = "✨ rub to scratch ✨";
+      statusLabel.textContent = "🎄 rub gold foil to scratch 🎄";
       resetBtn.classList.remove("visible");
       pickRandomFortune();
       prizeContent.classList.add("ready");
