@@ -29,7 +29,7 @@ export default {
         let catalog = [];
         if (match) {
           try {
-            catalog = JSON.parse(match);
+            catalog = JSON.parse(match[1]);
           } catch (e) {
             catalog = [];
           }
@@ -37,7 +37,7 @@ export default {
 
         const params = new URLSearchParams();
         params.append("mode", "payment");
-        params.append("shipping_address_collection[allowed_countries]", "US");
+        params.append("shipping_address_collection[allowed_countries][0]", "US");
         params.append("success_url", `${url.origin}/?success=true`);
         params.append("cancel_url", `${url.origin}/?canceled=true`);
 
@@ -73,14 +73,14 @@ export default {
           ? (finalShippingCents === 0 ? "Free Standard Shipping" : "Discounted Standard Shipping")
           : "US Standard Shipping";
 
-        params.append("shipping_options[shipping_rate_data][type]", "fixed_amount");
-        params.append("shipping_options[shipping_rate_data][fixed_amount][amount]", finalShippingCents.toString());
-        params.append("shipping_options[shipping_rate_data][fixed_amount][currency]", "usd");
-        params.append("shipping_options[shipping_rate_data][display_name]", shippingName);
-        params.append("shipping_options[shipping_rate_data][delivery_estimate][minimum][unit]", "business_day");
-        params.append("shipping_options[shipping_rate_data][delivery_estimate][minimum][value]", "3");
-        params.append("shipping_options[shipping_rate_data][delivery_estimate][maximum][unit]", "business_day");
-        params.append("shipping_options[shipping_rate_data][delivery_estimate][maximum][value]", "7");
+        params.append("shipping_options[0][shipping_rate_data][type]", "fixed_amount");
+        params.append("shipping_options[0][shipping_rate_data][fixed_amount][amount]", finalShippingCents.toString());
+        params.append("shipping_options[0][shipping_rate_data][fixed_amount][currency]", "usd");
+        params.append("shipping_options[0][shipping_rate_data][display_name]", shippingName);
+        params.append("shipping_options[0][shipping_rate_data][delivery_estimate][minimum][unit]", "business_day");
+        params.append("shipping_options[0][shipping_rate_data][delivery_estimate][minimum][value]", "3");
+        params.append("shipping_options[0][shipping_rate_data][delivery_estimate][maximum][unit]", "business_day");
+        params.append("shipping_options[0][shipping_rate_data][delivery_estimate][maximum][value]", "7");
 
         const response = await fetch("https://api.stripe.com/v1/checkout/sessions", {
           method: "POST",
