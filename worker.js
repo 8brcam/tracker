@@ -29,7 +29,7 @@ export default {
         let catalog = [];
         if (match) {
           try {
-            catalog = JSON.parse(match[1]);
+            catalog = JSON.parse(match);
           } catch (e) {
             catalog = [];
           }
@@ -37,7 +37,7 @@ export default {
 
         const params = new URLSearchParams();
         params.append("mode", "payment");
-        params.append("shipping_address_collection[allowed_countries][0]", "US");
+        params.append("shipping_address_collection[allowed_countries]", "US");
         params.append("success_url", `${url.origin}/?success=true`);
         params.append("cancel_url", `${url.origin}/?canceled=true`);
 
@@ -58,10 +58,14 @@ export default {
           params.append(`line_items[${index}][quantity]`, qty);
         });
 
-        // --- TIERED SHIPPING CONFIGURATION (in cents) ---
-        const THRESHOLD_CENTS = 3000;          // Spend threshold (3000 = $30.00)
-        const STANDARD_SHIPPING_CENTS = 500;   // Shipping cost below $30.00 ($5.00)
-        const DISCOUNTED_SHIPPING_CENTS = 100; // Shipping cost at/above $30.00 ($1.00)
+        // ============================================================
+        // CHANGE YOUR SHIPPING PRICES HERE LATER (in cents)
+        // Examples: $1.00 = 100 | $3.50 = 350 | $4.99 = 499 | Free = 0
+        // ============================================================
+        const THRESHOLD_CENTS = 3000;          // Spend $30.00+ for the cheaper rate
+        const STANDARD_SHIPPING_CENTS = 100;   // $1.00 shipping if under $30.00
+        const DISCOUNTED_SHIPPING_CENTS = 0;   // $0.00 (Free) shipping if $30.00 or more
+        // ============================================================
 
         const qualifiesForDiscount = subtotalCents >= THRESHOLD_CENTS;
         const finalShippingCents = qualifiesForDiscount ? DISCOUNTED_SHIPPING_CENTS : STANDARD_SHIPPING_CENTS;
@@ -69,14 +73,14 @@ export default {
           ? (finalShippingCents === 0 ? "Free Standard Shipping" : "Discounted Standard Shipping")
           : "US Standard Shipping";
 
-        params.append("shipping_options[0][shipping_rate_data][type]", "fixed_amount");
-        params.append("shipping_options[0][shipping_rate_data][fixed_amount][amount]", finalShippingCents.toString());
-        params.append("shipping_options[0][shipping_rate_data][fixed_amount][currency]", "usd");
-        params.append("shipping_options[0][shipping_rate_data][display_name]", shippingName);
-        params.append("shipping_options[0][shipping_rate_data][delivery_estimate][minimum][unit]", "business_day");
-        params.append("shipping_options[0][shipping_rate_data][delivery_estimate][minimum][value]", "3");
-        params.append("shipping_options[0][shipping_rate_data][delivery_estimate][maximum][unit]", "business_day");
-        params.append("shipping_options[0][shipping_rate_data][delivery_estimate][maximum][value]", "7");
+        params.append("shipping_options[shipping_rate_data][type]", "fixed_amount");
+        params.append("shipping_options[shipping_rate_data][fixed_amount][amount]", finalShippingCents.toString());
+        params.append("shipping_options[shipping_rate_data][fixed_amount][currency]", "usd");
+        params.append("shipping_options[shipping_rate_data][display_name]", shippingName);
+        params.append("shipping_options[shipping_rate_data][delivery_estimate][minimum][unit]", "business_day");
+        params.append("shipping_options[shipping_rate_data][delivery_estimate][minimum][value]", "3");
+        params.append("shipping_options[shipping_rate_data][delivery_estimate][maximum][unit]", "business_day");
+        params.append("shipping_options[shipping_rate_data][delivery_estimate][maximum][value]", "7");
 
         const response = await fetch("https://api.stripe.com/v1/checkout/sessions", {
           method: "POST",
