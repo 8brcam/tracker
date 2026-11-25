@@ -15,6 +15,7 @@
       margin: 0;
       background: transparent;
       user-select: none;
+      overflow: hidden;
     }
 
     .game-wrap {
@@ -28,6 +29,7 @@
       box-shadow: 0 12px 28px rgba(155, 34, 38, 0.3);
       touch-action: none;
       transition: box-shadow 0.15s ease;
+      flex-shrink: 0;
     }
 
     .game-wrap.hurt {
@@ -175,6 +177,20 @@
       const startBtn = document.getElementById("startBtn");
       const muteBtn = document.getElementById("muteBtn");
 
+      function fitFrame() {
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        if (vw > 0 && vh > 0 && (vw < 320 || vh < 440)) {
+          const s = Math.min((vw - 8) / 310, (vh - 8) / 430, 1);
+          wrap.style.transform = "scale(" + s + ")";
+          wrap.style.transformOrigin = "center center";
+        } else {
+          wrap.style.transform = "";
+        }
+      }
+      fitFrame();
+      window.addEventListener("resize", fitFrame);
+
       let running = false;
       let muted = false;
       let score = 0;
@@ -209,9 +225,9 @@
       ];
 
       function ensureAudio() {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (!audioCtx) audioCtx = new AudioContext();
-        if (audioCtx.state === "suspended") audioCtx.resume();
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!audioCtx && AC) audioCtx = new AC();
+        if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
       }
 
       function startMusic() {
@@ -224,7 +240,7 @@
           const [freq, beats] = jingleBells[noteIndex];
           const sec = beats * 0.24;
 
-          if (!muted && freq > 0) {
+          if (!muted && freq > 0 && audioCtx) {
             const now = audioCtx.currentTime;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
@@ -272,6 +288,7 @@
       function playChime(isBad) {
         if (muted) return;
         ensureAudio();
+        if (!audioCtx) return;
         const now = audioCtx.currentTime;
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
@@ -389,14 +406,27 @@
         }
       }
 
+      function drawRoundedBox(x, y, w, h, r) {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.lineTo(x + w - r, y);
+        ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+        ctx.lineTo(x + w, y + h - r);
+        ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+        ctx.lineTo(x + r, y + h);
+        ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+        ctx.lineTo(x, y + r);
+        ctx.quadraticCurveTo(x, y, x + r, y);
+        ctx.closePath();
+      }
+
       function drawFestiveBinder(x, y) {
         ctx.save();
         ctx.translate(x - playerW / 2, y);
         ctx.fillStyle = "#c1121f";
         ctx.strokeStyle = "#ffd166";
         ctx.lineWidth = 2.5;
-        ctx.beginPath();
-        ctx.roundRect(0, 0, playerW, playerH, 10);
+        drawRoundedBox(0, 0, playerW, playerH, 10);
         ctx.fill();
         ctx.stroke();
 
