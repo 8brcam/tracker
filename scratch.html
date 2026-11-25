@@ -75,6 +75,11 @@
       color: #e61960;
       z-index: 1;
       pointer-events: none;
+      visibility: hidden;
+    }
+
+    .prize-content.ready {
+      visibility: visible;
     }
 
     .prize-icon {
@@ -109,12 +114,12 @@
       z-index: 5;
       cursor: crosshair;
       touch-action: none;
-      transition: opacity 0.55s ease;
     }
 
     canvas.fade-out {
       opacity: 0;
       pointer-events: none;
+      transition: opacity 0.55s ease;
     }
 
     .controls {
@@ -159,7 +164,7 @@
   <div class="stage">
     <div class="card-frame" id="cardFrame">
       <div class="inner-card">
-        <div class="prize-content">
+        <div class="prize-content" id="prizeContent">
           <div class="prize-icon" id="prizeIcon">👑</div>
           <div class="prize-text" id="prizeText">Queen Vibes Only</div>
           <div class="prize-sub" id="prizeSub">You’re doing amazing sweetie</div>
@@ -210,6 +215,7 @@
     const canvas = document.getElementById("foilCanvas");
     const ctx = canvas.getContext("2d", { willReadFrequently: true });
     const cardFrame = document.getElementById("cardFrame");
+    const prizeContent = document.getElementById("prizeContent");
     const statusLabel = document.getElementById("statusLabel");
     const resetBtn = document.getElementById("resetBtn");
 
@@ -378,12 +384,14 @@
     function resetCard() {
       isRevealed = false;
       strokeCounter = 0;
+      prizeContent.classList.remove("ready");
+      setupCanvas();
       canvas.classList.remove("fade-out");
       cardFrame.classList.remove("revealed");
       statusLabel.textContent = "✨ rub to scratch ✨";
       resetBtn.classList.remove("visible");
       pickRandomFortune();
-      setupCanvas();
+      prizeContent.classList.add("ready");
     }
 
     function startScratch(e) {
@@ -421,8 +429,9 @@
     window.addEventListener("touchend", endScratch);
     window.addEventListener("touchcancel", endScratch);
 
-    pickRandomFortune();
     setupCanvas();
+    pickRandomFortune();
+    prizeContent.classList.add("ready");
   </script>
 </body>
 </html>
