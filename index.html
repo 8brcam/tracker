@@ -692,7 +692,7 @@
         </div>
     </div>
 
-        <!-- Slide-Out Basket -->
+            <!-- Slide-Out Basket -->
     <div class="basket-drawer" id="basketDrawer">
         <div class="basket-header">
             <h2>Your Basket</h2>
@@ -702,16 +702,24 @@
             <p style="color: var(--text-muted); text-align: center; margin-top: 40px;">Your basket is currently empty.</p>
         </div>
         <div class="basket-footer">
-            <div id="shipping-banner" style="padding: 10px 12px; margin-bottom: 12px; border-radius: 6px; font-size: 0.9rem; text-align: center; background: #f4f4f5; color: #18181b;">
-                Spend <strong>$30.00+</strong> for <strong>FREE shipping</strong> (otherwise $1.00).
+            <!-- Boutique Shipping Progress Card -->
+            <div id="shipping-card" style="background: #fff5f7; border: 1px solid #fbcfe8; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; text-align: center; transition: all 0.3s ease;">
+                <p id="shipping-text" style="margin: 0 0 8px 0; font-size: 0.88rem; color: #831843; letter-spacing: 0.2px;">
+                    Free shipping on orders <strong>$30.00+</strong> (otherwise $1.00)
+                </p>
+                <div style="width: 100%; height: 6px; background: #fce7f3; border-radius: 99px; overflow: hidden;">
+                    <div id="shipping-progress-bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #f472b6, #db2777); border-radius: 99px; transition: width 0.4s ease;"></div>
+                </div>
             </div>
-            <div class="basket-total">
-                <span>Total:</span>
+
+            <div class="basket-total" style="margin-bottom: 14px;">
+                <span>Subtotal:</span>
                 <span id="basketTotal">$0.00</span>
             </div>
-            <button class="btn-pink" style="width: 100%; padding: 14px; font-size: 1rem;" onclick="checkout()">Proceed to Checkout</button>
+            <button class="btn-pink" style="width: 100%; padding: 14px; font-size: 1rem; border-radius: 8px; letter-spacing: 0.3px;" onclick="checkout()">Proceed to Checkout</button>
         </div>
     </div>
+
 
     <!-- SECRET POP-UP EDITOR (Invisible unless URL ends with #cashqueen) -->
     <div id="secretEditorOverlay" style="display:none; position:fixed; inset:0; background:rgba(58,46,50,0.75); backdrop-filter:blur(4px); z-index:2000; overflow-y:auto; padding:20px;">
