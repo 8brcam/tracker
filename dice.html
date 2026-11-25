@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Luxury Cute 3D Dice</title>
+  <title>North Country Cash Queen - Christmas Edition</title>
   <style>
     body {
       font-family: "Quicksand", "Trebuchet MS", sans-serif;
@@ -14,277 +14,465 @@
       min-height: 100vh;
       margin: 0;
       background: transparent;
-      overflow: hidden;
+      user-select: none;
     }
 
-    .stage {
+    .game-wrap {
       position: relative;
+      width: 310px;
+      height: 430px;
+      border-radius: 26px;
+      overflow: hidden;
+      background: linear-gradient(180deg, #1b4332 0%, #2d6a4f 52%, #d8f3dc 88%, #ffffff 100%);
+      border: 3.5px solid #ffd166;
+      box-shadow: 0 12px 28px rgba(155, 34, 38, 0.3);
+      touch-action: none;
+      transition: box-shadow 0.15s ease;
+    }
+
+    .game-wrap.hurt {
+      box-shadow: 0 0 0 4px #e63946, 0 12px 28px rgba(230, 57, 70, 0.55);
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hud {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 800;
+      font-size: 13px;
+      color: #9b2226;
+      z-index: 2;
+    }
+
+    .pill {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 5px 11px;
+      border-radius: 14px;
+      border: 2px solid #ffd166;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+      pointer-events: none;
+    }
+
+    .mute-btn {
+      background: rgba(255, 255, 255, 0.95);
+      border: 2px solid #ffd166;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+      padding: 0;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 250, 250, 0.94);
+      backdrop-filter: blur(5px);
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 22px;
+      color: #9b2226;
+      z-index: 3;
     }
 
-    .scene {
-      width: 96px;
-      height: 96px;
-      perspective: 500px;
-      cursor: pointer;
-      user-select: none;
-      z-index: 2;
-      transition: transform 0.25s ease;
+    .badge {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: #1b4332;
+      background: #d8f3dc;
+      border: 1.5px solid #52b788;
+      padding: 4px 10px;
+      border-radius: 12px;
+      margin-bottom: 8px;
     }
 
-    .scene:hover {
-      transform: scale(1.06);
+    .overlay h2 {
+      margin: 0 0 12px;
+      font-size: 21px;
+      color: #9b2226;
     }
 
-    .scene.tossing {
-      animation: tossBounce 2.2s cubic-bezier(0.25, 0.85, 0.35, 1);
-    }
-
-    @keyframes tossBounce {
-      0%   { transform: translateY(0) scale(1); }
-      25%  { transform: translateY(-34px) scale(1.12); }
-      55%  { transform: translateY(4px) scale(0.97); }
-      75%  { transform: translateY(-12px) scale(1.03); }
-      90%  { transform: translateY(2px) scale(0.99); }
-      100% { transform: translateY(0) scale(1); }
-    }
-
-    .cube {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      transform-style: preserve-3d;
-      transform: rotateX(-22deg) rotateY(28deg);
-      transition: transform 2.2s cubic-bezier(0.15, 0.88, 0.28, 1);
-    }
-
-    .face {
-      position: absolute;
-      width: 96px;
-      height: 96px;
-      border-radius: 22px;
-      box-sizing: border-box;
-      padding: 15px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(3, 1fr);
-      background:
-        radial-gradient(circle at 25% 20%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 45%),
-        radial-gradient(circle, rgba(255, 255, 255, 0.85) 1px, transparent 1.5px),
-        radial-gradient(circle, rgba(255, 215, 230, 0.9) 1px, transparent 1.5px),
-        linear-gradient(145deg, #ffe5f0 0%, #ffb3d1 55%, #ff8fab 100%);
-      background-size: 100% 100%, 18px 18px, 24px 24px, 100% 100%;
-      background-position: 0 0, 0 0, 9px 11px, 0 0;
-      border: 2.5px solid #ffd6e5;
-      box-shadow:
-        inset 0 3px 8px rgba(255, 255, 255, 0.95),
-        inset 0 -5px 10px rgba(214, 51, 108, 0.25);
-      backface-visibility: hidden;
-    }
-
-    .front  { transform: rotateY(0deg) translateZ(48px); }
-    .back   { transform: rotateY(180deg) translateZ(48px); }
-    .right  { transform: rotateY(90deg) translateZ(48px); }
-    .left   { transform: rotateY(-90deg) translateZ(48px); }
-    .top    { transform: rotateX(90deg) translateZ(48px); }
-    .bottom { transform: rotateX(-90deg) translateZ(48px); }
-
-    .heart {
-      align-self: center;
-      justify-self: center;
-      font-size: 16px;
-      line-height: 1;
-      color: #e61960;
-      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.9), 0 2px 4px rgba(230, 25, 96, 0.35);
-    }
-
-    .front .heart {
-      font-size: 24px;
-    }
-
-    .p1 { grid-area: 1 / 1; }
-    .p2 { grid-area: 1 / 3; }
-    .p3 { grid-area: 2 / 1; }
-    .p4 { grid-area: 2 / 2; }
-    .p5 { grid-area: 2 / 3; }
-    .p6 { grid-area: 3 / 1; }
-    .p7 { grid-area: 3 / 3; }
-
-    .floor-shadow {
-      width: 78px;
-      height: 16px;
-      margin-top: 18px;
-      background: radial-gradient(ellipse at center, rgba(230, 25, 96, 0.32) 0%, rgba(230, 25, 96, 0) 72%);
-      border-radius: 50%;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-
-    .floor-shadow.tossing {
-      animation: shadowPulse 2.2s ease;
-    }
-
-    @keyframes shadowPulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      25%      { transform: scale(0.6); opacity: 0.4; }
-      55%      { transform: scale(1.05); opacity: 1; }
-      75%      { transform: scale(0.8); opacity: 0.65; }
-    }
-
-    .label {
-      margin-top: 8px;
-      font-size: 12px;
+    .rules {
+      background: #fff;
+      border: 2px solid #ffd166;
+      border-radius: 16px;
+      padding: 12px 16px;
+      margin-bottom: 18px;
+      font-size: 14px;
+      line-height: 1.7;
       font-weight: 700;
-      letter-spacing: 0.6px;
-      color: #e63973;
-      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    }
+
+    .rules .good { color: #1b4332; }
+    .rules .bad  { color: #d90429; }
+
+    .btn {
+      background: linear-gradient(135deg, #d90429, #9b2226);
+      color: #fff;
+      border: 2px solid #ffd166;
+      padding: 11px 28px;
+      border-radius: 22px;
+      font-family: inherit;
+      font-weight: 800;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(155, 34, 38, 0.35);
+      transition: transform 0.15s ease;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
     }
   </style>
 </head>
 <body>
-  <div class="stage">
-    <div class="scene" id="scene" onclick="rollDice()" title="Click to roll!">
-      <div class="cube" id="cube">
-        <!-- 1 -->
-        <div class="face front">
-          <span class="heart p4">♥</span>
-        </div>
-        <!-- 6 -->
-        <div class="face back">
-          <span class="heart p1">♥</span><span class="heart p2">♥</span>
-          <span class="heart p3">♥</span><span class="heart p5">♥</span>
-          <span class="heart p6">♥</span><span class="heart p7">♥</span>
-        </div>
-        <!-- 3 -->
-        <div class="face right">
-          <span class="heart p1">♥</span>
-          <span class="heart p4">♥</span>
-          <span class="heart p7">♥</span>
-        </div>
-        <!-- 4 -->
-        <div class="face left">
-          <span class="heart p1">♥</span><span class="heart p2">♥</span>
-          <span class="heart p6">♥</span><span class="heart p7">♥</span>
-        </div>
-        <!-- 2 -->
-        <div class="face top">
-          <span class="heart p1">♥</span>
-          <span class="heart p7">♥</span>
-        </div>
-        <!-- 5 -->
-        <div class="face bottom">
-          <span class="heart p1">♥</span><span class="heart p2">♥</span>
-          <span class="heart p4">♥</span>
-          <span class="heart p6">♥</span><span class="heart p7">♥</span>
-        </div>
-      </div>
+  <div class="game-wrap" id="wrap">
+    <div class="hud">
+      <div class="pill">🎄 $<span id="score">0</span></div>
+      <div class="pill" id="lives">❤️❤️❤️</div>
+      <button class="mute-btn" id="muteBtn" type="button" title="Toggle Music">🔊</button>
     </div>
-    <div class="floor-shadow" id="shadow"></div>
-    <div class="label">✨ tap to roll ✨</div>
+    <canvas id="game" width="310" height="430"></canvas>
+
+    <div class="overlay" id="overlay">
+      <div class="badge">🎅 North Country Cash Queen 🎄</div>
+      <h2>Christmas Cash Catch</h2>
+      <div class="rules">
+        <div class="good">✅ Catch every 💵 Bill</div>
+        <div class="bad">❌ Dodge the 💣 Bombs</div>
+      </div>
+      <button class="btn" id="startBtn" type="button">Play</button>
+    </div>
   </div>
-
   <script>
-    let spins = 0;
-    let audioCtx = null;
-    let noiseBuffer = null;
+    (function () {
+      const canvas = document.getElementById("game");
+      const ctx = canvas.getContext("2d");
+      const wrap = document.getElementById("wrap");
+      const overlay = document.getElementById("overlay");
+      const scoreEl = document.getElementById("score");
+      const livesEl = document.getElementById("lives");
+      const startBtn = document.getElementById("startBtn");
+      const muteBtn = document.getElementById("muteBtn");
 
-    function initAudio() {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (!audioCtx) {
-        audioCtx = new AudioContext();
-        // Create short white-noise buffer for realistic acrylic/wood clack texture
-        const bufferSize = audioCtx.sampleRate * 0.04;
-        noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-        const data = noiseBuffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (audioCtx.sampleRate * 0.008));
-        }
-      }
-      if (audioCtx.state === "suspended") audioCtx.resume();
-    }
+      let running = false;
+      let muted = false;
+      let score = 0;
+      let lives = 3;
+      let items = [];
+      let popups = [];
+      let flakes = [];
+      let spawnTimer = 0;
+      let playerX = 155;
+      const playerW = 86;
+      const playerH = 32;
+      let audioCtx = null;
+      let songTimer = null;
+      let noteIndex = 0;
 
-    function triggerClack(time, volume, pitch) {
-      const noise = audioCtx.createBufferSource();
-      noise.buffer = noiseBuffer;
-
-      // Bandpass filter shapes the noise into a hard plastic/resin "clack"
-      const filter = audioCtx.createBiquadFilter();
-      filter.type = "bandpass";
-      filter.frequency.setValueAtTime(pitch, time);
-      filter.Q.setValueAtTime(3.2, time);
-
-      // High-shelf boost adds crisp edge-hit snap
-      const highShelf = audioCtx.createBiquadFilter();
-      highShelf.type = "highshelf";
-      highShelf.frequency.setValueAtTime(2200, time);
-      highShelf.gain.setValueAtTime(6, time);
-
-      const gain = audioCtx.createGain();
-      gain.gain.setValueAtTime(volume, time);
-      gain.gain.exponentialRampToValueAtTime(0.001, time + 0.035);
-
-      noise.connect(filter);
-      filter.connect(highShelf);
-      highShelf.connect(gain);
-      gain.connect(audioCtx.destination);
-
-      noise.start(time);
-      noise.stop(time + 0.04);
-    }
-
-    function playRollSound() {
-      initAudio();
-      const now = audioCtx.currentTime;
-
-      // Irregular tumbling hits + tiny double-taps as corners/edges strike the table
-      const hits = [
-        { t: 0.02, v: 0.85 }, { t: 0.06, v: 0.45 },
-        { t: 0.14, v: 0.90 }, { t: 0.19, v: 0.50 },
-        { t: 0.29, v: 0.80 }, { t: 0.34, v: 0.40 },
-        { t: 0.46, v: 0.75 }, { t: 0.52, v: 0.35 },
-        { t: 0.67, v: 0.85 }, { t: 0.73, v: 0.45 }, // First bounce landing
-        { t: 0.91, v: 0.65 }, { t: 0.97, v: 0.30 },
-        { t: 1.18, v: 0.55 }, { t: 1.24, v: 0.25 },
-        { t: 1.48, v: 0.45 },
-        { t: 1.78, v: 0.32 },
-        { t: 2.08, v: 0.22 }  // Final settle tap
+      const N = {
+        C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99
+      };
+      const jingleBells = [
+        [N.E5, 1], [N.E5, 1], [N.E5, 2],
+        [N.E5, 1], [N.E5, 1], [N.E5, 2],
+        [N.E5, 1], [N.G5, 1], [N.C5, 1.5], [N.D5, 0.5], [N.E5, 4],
+        [N.F5, 1], [N.F5, 1], [N.F5, 1.5], [N.F5, 0.5],
+        [N.F5, 1], [N.E5, 1], [N.E5, 1], [N.E5, 0.5], [N.E5, 0.5],
+        [N.E5, 1], [N.D5, 1], [N.D5, 1], [N.E5, 1], [N.D5, 2], [N.G5, 2],
+        [N.E5, 1], [N.E5, 1], [N.E5, 2],
+        [N.E5, 1], [N.E5, 1], [N.E5, 2],
+        [N.E5, 1], [N.G5, 1], [N.C5, 1.5], [N.D5, 0.5], [N.E5, 4],
+        [N.F5, 1], [N.F5, 1], [N.F5, 1.5], [N.F5, 0.5],
+        [N.F5, 1], [N.E5, 1], [N.E5, 1], [N.E5, 0.5], [N.E5, 0.5],
+        [N.G5, 1], [N.G5, 1], [N.F5, 1], [N.D5, 1], [N.C5, 4]
       ];
 
-      hits.forEach((hit) => {
-        const randomPitch = 1450 + Math.random() * 850;
-        triggerClack(now + hit.t, hit.v, randomPitch);
+      function ensureAudio() {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!audioCtx) audioCtx = new AudioContext();
+        if (audioCtx.state === "suspended") audioCtx.resume();
+      }
+
+      function startMusic() {
+        stopMusic();
+        ensureAudio();
+        noteIndex = 0;
+
+        function playNextNote() {
+          if (!running) return;
+          const [freq, beats] = jingleBells[noteIndex];
+          const sec = beats * 0.24;
+
+          if (!muted && freq > 0) {
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = "triangle";
+            osc.frequency.setValueAtTime(freq, now);
+
+            gain.gain.setValueAtTime(0.001, now);
+            gain.gain.linearRampToValueAtTime(0.07, now + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.0008, now + sec * 0.92);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + sec);
+          }
+
+          noteIndex = (noteIndex + 1) % jingleBells.length;
+          songTimer = setTimeout(playNextNote, sec * 1000);
+        }
+
+        playNextNote();
+      }
+
+      function stopMusic() {
+        if (songTimer) {
+          clearTimeout(songTimer);
+          songTimer = null;
+        }
+      }
+
+      muteBtn.addEventListener("click", () => {
+        muted = !muted;
+        muteBtn.textContent = muted ? "🔇" : "🔊";
       });
-    }
 
-    function rollDice() {
-      playRollSound();
+      for (let i = 0; i < 35; i++) {
+        flakes.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: 1.5 + Math.random() * 2.5,
+          s: 0.45 + Math.random() * 0.75
+        });
+      }
 
-      const cube = document.getElementById("cube");
-      const scene = document.getElementById("scene");
-      const shadow = document.getElementById("shadow");
-      const roll = Math.floor(Math.random() * 6) + 1;
-      spins += 3;
+      function playChime(isBad) {
+        if (muted) return;
+        ensureAudio();
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
 
-      scene.classList.remove("tossing");
-      shadow.classList.remove("tossing");
-      void scene.offsetWidth;
-      scene.classList.add("tossing");
-      shadow.classList.add("tossing");
+        if (isBad) {
+          osc.type = "sawtooth";
+          osc.frequency.setValueAtTime(150, now);
+          osc.frequency.exponentialRampToValueAtTime(95, now + 0.24);
+          gain.gain.setValueAtTime(0.16, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.25);
+        } else {
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(1046.5, now);
+          osc.frequency.setValueAtTime(1318.5, now + 0.05);
+          gain.gain.setValueAtTime(0.11, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.16);
+        }
+      }
+      wrap.addEventListener("pointermove", (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * canvas.width;
+        playerX = Math.max(playerW / 2, Math.min(canvas.width - playerW / 2, x));
+      });
 
-      const targets = {
-        1: { x: -18, y: 22 },
-        2: { x: -108, y: 22 },
-        3: { x: -18, y: -68 },
-        4: { x: -18, y: 112 },
-        5: { x: 72, y: 22 },
-        6: { x: -18, y: 202 }
-      };
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") playerX = Math.max(playerW / 2, playerX - 28);
+        if (e.key === "ArrowRight") playerX = Math.min(canvas.width - playerW / 2, playerX + 28);
+      });
 
-      const extra = spins * 360;
-      const t = targets[roll];
-      cube.style.transform = `rotateX(${t.x + extra}deg) rotateY(${t.y + extra}deg)`;
-    }
+      function addPopup(text, x, y, color) {
+        popups.push({ text, x, y, color, alpha: 1 });
+      }
+
+      function loseLife(reason, x, y) {
+        lives--;
+        playChime(true);
+        livesEl.textContent = "❤️".repeat(Math.max(0, lives)) || "💔";
+        addPopup(reason, Math.max(58, Math.min(canvas.width - 58, x)), y, "#ffd166");
+
+        wrap.classList.add("hurt");
+        setTimeout(() => wrap.classList.remove("hurt"), 180);
+
+        if (lives <= 0) {
+          running = false;
+          stopMusic();
+          overlay.innerHTML = `
+            <div class="badge">🎅 North Country Cash Queen 🎄</div>
+            <h2>Merry Cash-Mas!</h2>
+            <div class="rules">
+              <div>${reason}</div>
+              <div style="margin-top:6px; font-size:16px;">Holiday Savings: <span class="good">$${score}</span></div>
+            </div>
+            <button class="btn" id="restartBtn" type="button">Play Again</button>
+          `;
+          overlay.style.display = "flex";
+          document.getElementById("restartBtn").addEventListener("click", startGame);
+        }
+      }
+
+      function startGame() {
+        score = 0;
+        lives = 3;
+        items = [];
+        popups = [];
+        spawnTimer = 0;
+        running = true;
+        scoreEl.textContent = "0";
+        livesEl.textContent = "❤️❤️❤️";
+        overlay.style.display = "none";
+        startMusic();
+        requestAnimationFrame(loop);
+      }
+
+      startBtn.addEventListener("click", startGame);
+
+      function spawnItem() {
+        const isBomb = Math.random() < 0.3;
+        items.push({
+          icon: isBomb ? "💣" : "💵",
+          bad: isBomb,
+          x: 28 + Math.random() * (canvas.width - 56),
+          y: -20,
+          speed: 1.7 + Math.random() * 0.9 + Math.min(score / 300, 1.4)
+        });
+      }
+
+      function drawBackground() {
+        ctx.fillStyle = "rgba(255, 209, 102, 0.75)";
+        ctx.font = "11px sans-serif";
+        ctx.fillText("✨", 35, 58);
+        ctx.fillText("✨", 265, 72);
+        ctx.fillText("✨", 150, 48);
+
+        ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+        flakes.forEach((f) => {
+          f.y += f.s;
+          if (f.y > canvas.height) f.y = -5;
+          ctx.beginPath();
+          ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        ctx.font = "24px sans-serif";
+        ctx.textAlign = "center";
+        for (let tx = 18; tx < canvas.width; tx += 38) {
+          ctx.fillText("🎄", tx, canvas.height - 6);
+        }
+      }
+
+      function drawFestiveBinder(x, y) {
+        ctx.save();
+        ctx.translate(x - playerW / 2, y);
+        ctx.fillStyle = "#c1121f";
+        ctx.strokeStyle = "#ffd166";
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.roundRect(0, 0, playerW, playerH, 10);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 12px Quicksand, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("🎅 BINDER 🎄", playerW / 2, 20);
+        ctx.restore();
+      }
+
+      function loop() {
+        if (!running) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBackground();
+
+        spawnTimer++;
+        if (spawnTimer > 48) {
+          spawnItem();
+          spawnTimer = 0;
+        }
+
+        const catchY = canvas.height - 56;
+        drawFestiveBinder(playerX, catchY);
+
+        ctx.font = "26px sans-serif";
+        ctx.textAlign = "center";
+
+        for (let i = items.length - 1; i >= 0; i--) {
+          const it = items[i];
+          it.y += it.speed;
+          ctx.fillText(it.icon, it.x, it.y);
+
+          if (
+            it.y >= catchY &&
+            it.y <= catchY + playerH + 10 &&
+            Math.abs(it.x - playerX) < playerW / 2 + 12
+          ) {
+            items.splice(i, 1);
+            if (it.bad) {
+              loseLife("Hit a Bomb! -1❤️", it.x, catchY - 10);
+            } else {
+              score += 10;
+              scoreEl.textContent = score;
+              playChime(false);
+              addPopup("+$10 🎄", it.x, catchY - 10, "#ffd166");
+            }
+            continue;
+          }
+
+          if (it.y > canvas.height - 15) {
+            items.splice(i, 1);
+            if (!it.bad) {
+              loseLife("Missed a Bill! -1❤️", it.x, canvas.height - 35);
+            }
+          }
+        }
+
+        for (let i = popups.length - 1; i >= 0; i--) {
+          const p = popups[i];
+          p.y -= 0.9;
+          p.alpha -= 0.022;
+          if (p.alpha <= 0) {
+            popups.splice(i, 1);
+            continue;
+          }
+          ctx.save();
+          ctx.globalAlpha = p.alpha;
+          ctx.font = "bold 13px Quicksand, sans-serif";
+          ctx.fillStyle = p.color;
+          ctx.fillText(p.text, p.x, p.y);
+          ctx.restore();
+        }
+
+        requestAnimationFrame(loop);
+      }
+    })();
   </script>
 </body>
 </html>
