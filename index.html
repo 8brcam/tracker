@@ -756,7 +756,7 @@
         ];
         /* === PRODUCT LIST END === */
 
-        let basket = [];
+        let basket = new Array();
         let productDetails = {};
 
         function renderStore() {
@@ -764,7 +764,7 @@
             productDetails = {};
             grid.innerHTML = storeProducts.map(item => {
                 productDetails[item.id] = item;
-                const mainPhoto = (item.images && item.images.length > 0) ? item.images[0] : item.image;
+                const mainPhoto = (item.images && item.images.length > 0) ? item.images.at(0) : item.image;
                 return `
                     <div class="product-card">
                         <div class="clickable-area" onclick="openModal('${item.id}')">
@@ -790,11 +790,11 @@
 
             const photos = (item.images && item.images.length > 0)
                 ? item.images.filter(Boolean)
-                : [item.image];
+                : new Array(item.image);
 
             const mainImg = document.getElementById('modalImg');
             const thumbsContainer = document.getElementById('modalThumbs');
-            mainImg.src = photos[0];
+            mainImg.src = photos.at(0);
 
             if (photos.length > 1) {
                 thumbsContainer.innerHTML = photos.map((src, index) => `
@@ -838,8 +838,8 @@
         }
 
         function changeQty(index, delta) {
-            basket[index].qty += delta;
-            if (basket[index].qty <= 0) {
+            basket.at(index).qty += delta;
+            if (basket.at(index).qty <= 0) {
                 basket.splice(index, 1);
             }
             updateBasketUI();
@@ -958,12 +958,13 @@
             window.history.replaceState({}, document.title, window.location.pathname);
         }
         /* --- Secret Editor Functions (Only opens when URL ends in #cashqueen) --- */
-        let editorItems = [...storeProducts];
+        let editorItems = new Array(...storeProducts);
 
         function renderEditor() {
             const list = document.getElementById('editorList');
+            const slots = new Array(0, 1, 2);
             list.innerHTML = editorItems.map((item, idx) => {
-                if (!item.images) item.images = item.image ? [item.image] : [];
+                if (!item.images) item.images = item.image ? new Array(item.image) : new Array();
 
                 return `
                 <div class="ed-item-box">
@@ -974,18 +975,18 @@
                     <div class="ed-row-2">
                         <div>
                             <label class="ed-label">Product Name</label>
-                            <input class="ed-input" type="text" value="${item.name.replace(/"/g, '&quot;')}" oninput="editorItems[${idx}].name = this.value">
+                            <input class="ed-input" type="text" value="${item.name.replace(/"/g, '&quot;')}" oninput="editorItems.at(${idx}).name = this.value">
                         </div>
                         <div>
                             <label class="ed-label">Price ($)</label>
-                            <input class="ed-input" type="number" step="0.01" value="${item.price}" oninput="editorItems[${idx}].price = parseFloat(this.value) || 0">
+                            <input class="ed-input" type="number" step="0.01" value="${item.price}" oninput="editorItems.at(${idx}).price = parseFloat(this.value) || 0">
                         </div>
                     </div>
 
                     <label class="ed-label">Product Photos (Up to 3 — Photo 1 shows on main grid)</label>
                     <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:10px; margin-bottom:8px;">
-                        {[0, 1, 2].map(slot => {
-                            const photoSrc = item.images[slot] || '';
+                        ${slots.map(slot => {
+                            const photoSrc = item.images.at(slot) || '';
                             return `
                             <div style="background:#fdf6f8; padding:8px; border-radius:10px; border:1px dashed #e5c5ce; text-align:center;">
                                 <div style="font-size:0.75rem; font-weight:600; color:#b76e79; margin-bottom:6px;">
@@ -1006,25 +1007,25 @@
                     </div>
                     
                     <label class="ed-label">Short Card Description (1-2 lines)</label>
-                    <input class="ed-input" type="text" value="${item.shortDesc.replace(/"/g, '&quot;')}" oninput="editorItems[${idx}].shortDesc = this.value">
+                    <input class="ed-input" type="text" value="${item.shortDesc.replace(/"/g, '&quot;')}" oninput="editorItems.at(${idx}).shortDesc = this.value">
                     
                     <label class="ed-label">Full Pop-Up Description</label>
-                    <textarea class="ed-textarea" oninput="editorItems[${idx}].fullDesc = this.value">${item.fullDesc}</textarea>
+                    <textarea class="ed-textarea" oninput="editorItems.at(${idx}).fullDesc = this.value">${item.fullDesc}</textarea>
                 </div>`;
             }).join('');
         }
 
         function removeSlotPhoto(idx, slot) {
-            editorItems[idx].images[slot] = '';
-            editorItems[idx].images = editorItems[idx].images.filter(Boolean);
-            editorItems[idx].image = editorItems[idx].images[0] || '';
+            const target = editorItems.at(idx);
+            target.images.splice(slot, 1);
+            target.image = target.images.at(0) || '';
             renderEditor();
         }
 
         function handleImageUpload(event, idx, slot) {
             const fileList = event.target.files;
             if (!fileList || fileList.length === 0) return;
-            const file = fileList[0];
+            const file = fileList.item(0);
 
             const status = document.getElementById(`edStatus-${idx}-${slot}`);
             status.innerText = "Optimizing...";
@@ -1051,10 +1052,11 @@
                 ctx.drawImage(img, 0, 0, width, height);
 
                 const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
-                if (!editorItems[idx].images) editorItems[idx].images = [];
-                editorItems[idx].images[slot] = compressedDataUrl;
-                editorItems[idx].images = editorItems[idx].images.filter(Boolean);
-                editorItems[idx].image = editorItems[idx].images[0];
+                const target = editorItems.at(idx);
+                if (!target.images) target.images = new Array();
+                target.images.splice(slot, 1, compressedDataUrl);
+                target.images = target.images.filter(Boolean);
+                target.image = target.images.at(0);
 
                 URL.revokeObjectURL(tempUrl);
                 renderEditor();
@@ -1076,7 +1078,7 @@
                 name: "New Product",
                 price: 10.00,
                 image: defaultImg,
-                images: [defaultImg],
+                images: new Array(defaultImg),
                 shortDesc: "Short description for the main page.",
                 fullDesc: "Full product details shown when clicked."
             });
