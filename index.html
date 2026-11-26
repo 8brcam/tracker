@@ -997,10 +997,24 @@
                 `;
             }).join('');
         }
-        function getYouTubeEmbedUrl(url) {
+         function getYouTubeEmbedUrl(url) {
             if (!url) return "";
-            const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/|v\/))([a-zA-Z0-9_-]{11})/);
-            return match ? "https://youtube.com" + match : "";
+            try {
+                const clean = url.trim();
+                let videoId = "";
+                if (clean.includes("youtu.be/")) {
+                    videoId = clean.split("youtu.be/").pop().split(/[?&#/]/).shift();
+                } else if (clean.includes("watch?v=")) {
+                    videoId = clean.split("watch?v=").pop().split(/[?&#/]/).shift();
+                } else if (clean.includes("/shorts/")) {
+                    videoId = clean.split("/shorts/").pop().split(/[?&#/]/).shift();
+                } else if (clean.includes("/embed/")) {
+                    videoId = clean.split("/embed/").pop().split(/[?&#/]/).shift();
+                }
+                return videoId ? "https://youtube.com" + videoId : "";
+            } catch (e) {
+                return "";
+            }
         }
         function openModal(id) {
             const item = productDetails[id];
