@@ -892,52 +892,54 @@
     </p>
 </footer>
    <script>
-        /* === STORE DATA START === */
-        const storeProducts = new Array(
-            {
-                "id": "product-1",
-                "name": "Rose Gold Glitter A6 Savings Binder",
-                "price": 18.50,
-                "image": "https://placehold.co",
-                "images": new Array(
-                    "https://placehold.co",
-                    "https://placehold.co",
-                    "https://placehold.co"
-                ),
-                "shortDesc": "Handmade sparkly rose-gold A6 budget binder with 6 zippered cash envelopes.",
-                "fullDesc": "Start your cash-stuffing journey in style! Each handmade A6 binder features a shimmer rose-gold finish, magnetic snap closure, 6 clear frosted cash envelopes, and custom rose-gold vinyl category labels. Fits easily in your purse or desk drawer."
-            },
-            {
-                "id": "product-2",
-                "name": "Mini $500 Scratch-Off Savings Challenge",
-                "price": 8.00,
-                "image": "https://placehold.co",
-                "images": new Array(
-                    "https://placehold.co",
-                    "https://placehold.co"
-                ),
-                "shortDesc": "Laminated A6 scratch-off dashboard to save $500 at your own pace.",
-                "fullDesc": "Printed on thick cardstock and laminated for durability! Scratch off a heart each payday to reveal a mystery dollar amount between $5 and $25. Once all hearts are scratched, you will have saved $500 toward your emergency fund or holiday budget."
-            }
-        );
-
-        const approvedReviews = new Array(
-            {
-                "name": "Sarah M.",
-                "stars": 5,
-                "comment": "Absolutely love my rose-gold savings binder! The quality is amazing, the shipping was super fast, and it makes cash stuffing every Friday so much fun."
-            },
-            {
-                "name": "Jessica T.",
-                "stars": 5,
-                "comment": "Ordered the mini scratch-off challenge after watching Michal on YouTube and already saved my first $100! Will definitely be ordering more soon."
-            },
-            {
-                "name": "Amanda K.",
-                "stars": 5,
-                "comment": "Such cute packaging and attention to detail! Everything fit perfectly into my A6 binder."
-            }
-        );
+                /* === STORE DATA START === */
+        const storeProducts = [
+          {
+            "id": "coming-soon-1",
+            "name": "Site Under Construction",
+            "price": 0,
+            "image": "https://placehold.co",
+            "images": [
+              "https://placehold.co"
+            ],
+            "shortDesc": "Our brand-new online boutique is currently under construction!",
+            "fullDesc": "We are working behind the scenes getting everything pretty and ready for launch. Check back soon!"
+          },
+          {
+            "id": "coming-soon-2",
+            "name": "Site Under Construction",
+            "price": 0,
+            "image": "https://placehold.co",
+            "images": [
+              "https://placehold.co"
+            ],
+            "shortDesc": "Putting the finishing touches on our new shop!",
+            "fullDesc": "Michal is getting everything ready behind the scenes. Stay tuned for updates and launch day!"
+          },
+          {
+            "id": "coming-soon-3",
+            "name": "Site Under Construction",
+            "price": 0,
+            "image": "https://placehold.co",
+            "images": [
+              "https://placehold.co"
+            ],
+            "shortDesc": "Our store is currently getting a makeover!",
+            "fullDesc": "Products will be added right here very soon. In the meantime, check out our customer reviews below!"
+          }
+        ];
+        const approvedReviews = [
+          {"name": "Karla", "stars": 5, "comment": "Love the bling color die! It makes the savings challenges more fun. And also thank you so much for the complimentary savings challenge and stickers can't wait to get starting on my savings journey!"},
+          {"name": "Vicky", "stars": 5, "comment": "Picked one up for myself and one up for a gift for a friend. Super cute and well made. Thank you for the extra treats too."},
+          {"name": "Trisha", "stars": 5, "comment": "Such a cute savings book! NCCQ is an amazing creator and I love all her stuff!"},
+          {"name": "Connie", "stars": 5, "comment": "I have not started this one yet but I love the quality and craftsmanship. Can't wait to play!"},
+          {"name": "Louise", "stars": 5, "comment": "Thank you so much. I love these cute savings challenges! Great quality! Free gifts greatly appreciated! 🌻"},
+          {"name": "Christine", "stars": 5, "comment": "The perfect addition to my savings binder. Love the design and well made. Ready to save!"},
+          {"name": "Narcy", "stars": 5, "comment": "Just what I expected, very good quality. Super cute. Thank you for the stickers and the freebies."},
+          {"name": "LuLu", "stars": 5, "comment": "This is my second purchase of these inserts, I just love them!"},
+          {"name": "Natasha", "stars": 5, "comment": "These are adorable! Went right into my Christmas savings binder!"},
+          {"name": "Holly", "stars": 5, "comment": "These are so cute for summer. Thank you for the extras they are so cute as well."}
+        ];
         /* === STORE DATA END === */
         let basket = new Array();
         const productDetails = {};
