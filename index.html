@@ -997,13 +997,11 @@
                 `;
             }).join('');
         }
-
         function getYouTubeEmbedUrl(url) {
             if (!url) return "";
             const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/|v\/))([a-zA-Z0-9_-]{11})/);
-            return match ? `https://youtube.com{match[1]}` : "";
+            return match ? "https://youtube.com" + match : "";
         }
-
         function openModal(id) {
             const item = productDetails[id];
             if (!item) return;
