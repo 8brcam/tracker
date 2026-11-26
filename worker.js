@@ -60,11 +60,11 @@ export default {
 
         // ============================================================
         // CHANGE YOUR SHIPPING PRICES HERE LATER (in cents)
-        // Examples: $1.00 = 100 | $3.50 = 350 | $4.99 = 499 | Free = 0
+        // Examples: $1.00 = 100 | $3.50 = 350 | $6.00 = 600 | Free = 0
         // ============================================================
-        const THRESHOLD_CENTS = 3000;          // Spend $30.00+ for the cheaper rate
-        const STANDARD_SHIPPING_CENTS = 100;   // $1.00 shipping if under $30.00
-        const DISCOUNTED_SHIPPING_CENTS = 0;   // $0.00 (Free) shipping if $30.00 or more
+        const THRESHOLD_CENTS = 5000;          // Spend $50.00+ for free shipping
+        const STANDARD_SHIPPING_CENTS = 600;   // $6.00 shipping if under $50.00
+        const DISCOUNTED_SHIPPING_CENTS = 0;   // $0.00 (Free) shipping if $50.00 or more
         // ============================================================
 
         const qualifiesForDiscount = subtotalCents >= THRESHOLD_CENTS;
