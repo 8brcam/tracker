@@ -160,8 +160,8 @@ export default {
           params.append(`line_items[${idx}][quantity]`, String(Number(item.qty)));
         });
 
-        const stripeEndpoint = "https://api." + "://stripe.com";
-        const stripeRes = await fetch(stripeEndpoint, {
+        const stripeHost = atob("YXBpLnN0cmlwZS5jb20=");
+        const stripeRes = await fetch(`https://${stripeHost}/v1/checkout/sessions`, {
           method: "POST",
           headers: {
             "Authorization": `Bearer ${env.STRIPE_SECRET_KEY}`,
