@@ -783,7 +783,7 @@
                 <h2 style="font-family: 'Playfair Display', serif; color: var(--rose-gold); font-size: 1.75rem; margin-bottom: 6px;">Get in Touch</h2>
                 <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 18px;">Have a question about a product or an order? Send me a quick message below!</p>
 
-                <form action="https://formsubmit.co" method="POST" style="text-align: left;">
+                <form action="https://formsubmit.co/michalcaron1@gmail.com" method="POST" style="text-align: left;">
                     <input type="hidden" name="_subject" value="New Message from North Country Cash Queen Store">
                     <input type="hidden" name="_captcha" value="false">
 
@@ -946,7 +946,7 @@
                 return `
                     <div class="review-card">
                         <div>
-                            ${r.photo ? `<img src="${r.photo}" alt="Customer review photo" style="width:100%; max-height:220px; object-fit:cover; border-radius:12px; margin-bottom:12px; border:1px solid #f8dce4;">` : ''}
+                            ${r.photo ? `<img src="${r.photo}" alt="Customer review photo" style="display:block; width:auto; max-width:100%; max-height:150px; object-fit:contain; border-radius:10px; margin-bottom:12px; border:1px solid #f8dce4;">` : ''}
                             <div class="review-stars">${'★'.repeat(count)}${'☆'.repeat(5 - count)}</div>
                             <p class="review-comment">"${r.comment}"</p>
                         </div>
