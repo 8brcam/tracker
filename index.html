@@ -1578,5 +1578,113 @@
         loadLiveStore();
         window.addEventListener('hashchange', checkUrlHash);
     </script>
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.body.insertAdjacentHTML("beforeend", `
+        <div class="modal-overlay" id="reviewThankYouModal" onclick="if(event.target.id==='reviewThankYouModal') this.style.display='none'">
+            <div style="background: linear-gradient(180deg, #fff5f8 0%, #ffffff 100%); border: 2px solid var(--soft-pink); border-radius: 24px; max-width: 420px; width: 100%; padding: 34px 26px; text-align: center; position: relative; box-shadow: 0 20px 45px rgba(216, 90, 130, 0.22); animation: popInReview 0.3s ease-out;">
+                <button type="button" class="modal-close" onclick="document.getElementById('reviewThankYouModal').style.display='none'">&times;</button>
+                <div style="font-size: 46px; margin-bottom: 10px;">👑💖✨</div>
+                <h3 style="font-family: 'Playfair Display', serif; color: var(--primary-pink); font-size: 1.65rem; margin-bottom: 10px;">Thank You So Much!</h3>
+                <p style="color: var(--text-muted); font-size: 0.94rem; line-height: 1.6; margin-bottom: 24px;">Your review has been sent straight to <strong style="color: var(--rose-gold);">Michal</strong>! It will pop up on the shop page just as soon as she gives it a quick peek and approves it. Happy budgeting! 💕</p>
+                <button type="button" class="btn-pink" onclick="document.getElementById('reviewThankYouModal').style.display='none'" style="padding: 12px 30px; font-size: 0.95rem;">Back to Shop ✨</button>
+            </div>
+        </div>
+        <div class="modal-overlay" id="adminLoginModal" onclick="if(event.target.id==='adminLoginModal') closeAdminLogin()">
+            <div style="background: linear-gradient(180deg, #fff5f8 0%, #ffffff 100%); border: 2px solid var(--soft-pink); border-radius: 24px; max-width: 390px; width: 100%; padding: 32px 26px; text-align: center; position: relative; box-shadow: 0 20px 45px rgba(216, 90, 130, 0.22); animation: popInReview 0.3s ease-out;">
+                <button type="button" class="modal-close" onclick="closeAdminLogin()">&times;</button>
+                <div style="font-size: 42px; margin-bottom: 8px;">👑🔐✨</div>
+                <h3 style="font-family: 'Playfair Display', serif; color: var(--primary-pink); font-size: 1.55rem; margin-bottom: 6px;">Welcome Back, Cash Queen!</h3>
+                <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 18px;">Enter your secret password to open the boutique editor 💕</p>
+                <form onsubmit="submitAdminLogin(event)">
+                    <input type="password" id="adminPwdInput" class="ed-input" placeholder="Enter your password..." required style="text-align: center; font-size: 1rem; padding: 11px 14px; border-radius: 14px; border: 1.5px solid var(--soft-pink); margin-bottom: 10px;">
+                    <p id="adminLoginError" style="display: none; color: #c04055; font-size: 0.82rem; margin-bottom: 10px; font-weight: 500;"></p>
+                    <button type="submit" id="adminLoginBtn" class="btn-pink" style="width: 100%; padding: 12px; font-size: 0.95rem;">Unlock Boutique ✨</button>
+                </form>
+            </div>
+        </div>
+        <style>@keyframes popInReview { 0% { transform: scale(0.85); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }</style>
+    `);
+
+    const editorTitle = document.querySelector("#secretEditorOverlay h2");
+    if (editorTitle) {
+        editorTitle.insertAdjacentHTML("afterend", `
+            <div id="adminWelcomeBanner" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; background: linear-gradient(135deg, #fff0f5, #ffe4ec); border: 1.5px solid #f2b8ca; border-radius: 14px; padding: 12px 16px; margin: 12px 0 18px; box-shadow: 0 4px 12px rgba(216, 90, 130, 0.08);">
+                <div style="font-size: 0.9rem; color: var(--text-dark); line-height: 1.45;">👑 <strong>Hey gorgeous!</strong> You're all logged in and ready to sparkle. Have fun updating your shop! 💖✨</div>
+                <button type="button" onclick="document.getElementById('adminWelcomeBanner').style.display='none'" style="background: #ffffff; border: 1px solid #f2b8ca; color: var(--primary-pink); width: 26px; height: 26px; min-width: 26px; border-radius: 50%; font-size: 1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;">&times;</button>
+            </div>
+        `);
+    }
+});
+
+const _origAlert = window.alert;
+window.alert = function(msg) {
+    if (typeof msg === "string" && msg.includes("review has been sent to Michal")) {
+        document.getElementById("reviewThankYouModal").style.display = "flex";
+        return;
+    }
+    _origAlert(msg);
+};
+
+window.closeAdminLogin = function() {
+    document.getElementById('adminLoginModal').style.display = 'none';
+    document.getElementById('adminPwdInput').value = '';
+    document.getElementById('adminLoginError').style.display = 'none';
+    if (window.location.hash === '#cashqueen') {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+};
+
+window.openSecretEditor = async function() {
+    const savedPwd = sessionStorage.getItem("nccq_admin_pwd");
+    if (savedPwd) { await fetchAndOpenEditor(savedPwd, false); return; }
+    document.getElementById('adminLoginError').style.display = 'none';
+    document.getElementById('adminPwdInput').value = '';
+    document.getElementById('adminLoginModal').style.display = 'flex';
+    setTimeout(() => document.getElementById('adminPwdInput').focus(), 100);
+};
+
+window.submitAdminLogin = async function(e) {
+    e.preventDefault();
+    const pwd = document.getElementById('adminPwdInput').value;
+    if (pwd) await fetchAndOpenEditor(pwd, true);
+};
+
+window.fetchAndOpenEditor = async function(pwd, isFreshLogin) {
+    const btn = document.getElementById('adminLoginBtn');
+    const errBox = document.getElementById('adminLoginError');
+    if (btn) { btn.innerText = "Unlocking..."; btn.disabled = true; }
+    try {
+        const res = await fetch("/api/admin/load", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ password: pwd })
+        });
+        if (res.status === 401) {
+            sessionStorage.removeItem("nccq_admin_pwd");
+            if (errBox) { errBox.innerText = "❌ Oops, wrong password! Try again 💕"; errBox.style.display = 'block'; }
+            document.getElementById('adminLoginModal').style.display = 'flex';
+            return;
+        }
+        const data = await res.json();
+        sessionStorage.setItem("nccq_admin_pwd", pwd);
+        editorItems = JSON.parse(JSON.stringify(data.products || []));
+        editorReviews = JSON.parse(JSON.stringify(data.approvedReviews || []));
+        pendingReviews = JSON.parse(JSON.stringify(data.pendingReviews || []));
+        renderPendingEditor();
+        renderEditor();
+        renderReviewsEditor();
+        document.getElementById('adminLoginModal').style.display = 'none';
+        document.getElementById('adminPwdInput').value = '';
+        document.getElementById('adminWelcomeBanner').style.display = 'flex';
+        document.getElementById('secretEditorOverlay').style.display = 'block';
+    } catch (err) {
+        if (errBox && isFreshLogin) { errBox.innerText = "Connection error: " + err.message; errBox.style.display = 'block'; }
+        else { _origAlert("Error loading editor: " + err.message); }
+    } finally {
+        if (btn) { btn.innerText = "Unlock Boutique ✨"; btn.disabled = false; }
+    }
+};
+</script>
 </body>
 </html>
