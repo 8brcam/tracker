@@ -2,7 +2,117 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // Handle Stripe Checkout API requests
+    // Helper: Load store data from KV (falls back to index.html defaults on first run)
+    async function getStoreData() {
+      let data = env.SHOP_DATA ? await env.SHOP_DATA.get("store_data", "json") : null;
+      if (!data) {
+        const assetRes = await env.ASSETS.fetch(new Request(`${url.origin}/`));
+        const html = await assetRes.text();
+        const prodMatch = html.match(/const storeProducts\s*=\s*(\[[\s\S]*?\]);/);
+        const revMatch = html.match(/const approvedReviews\s*=\s*(\[[\s\S]*?\]);/);
+        data = {
+          products: prodMatch ? JSON.parse(prodMatch[1]) : [],
+          approvedReviews: revMatch ? JSON.parse(revMatch[1]) : [],
+          pendingReviews: []
+        };
+      }
+      return data;
+    }
+
+    // 1. PUBLIC API: Fetch live products & approved reviews
+    if (url.pathname === "/api/store" && request.method === "GET") {
+      const data = await getStoreData();
+      return new Response(JSON.stringify({
+        products: data.products || [],
+        approvedReviews: data.approvedReviews || []
+      }), {
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+
+    // 2. PUBLIC API: Customer submits a review (with optional photo) -> Pending queue
+    if (url.pathname === "/api/review" && request.method === "POST") {
+      try {
+        const body = await request.json();
+        const name = (body.name || "").trim().slice(0, 60);
+        const comment = (body.comment || "").trim().slice(0, 500);
+        const stars = Math.min(5, Math.max(1, parseInt(body.stars || 5, 10)));
+        const photo = typeof body.photo === "string" && body.photo.startsWith("data:image/")
+          ? body.photo.slice(0, 350000)
+          : "";
+
+        if (!name || !comment) {
+          return new Response(JSON.stringify({ error: "Please enter your name and review." }), {
+            status: 400,
+            headers: { "Content-Type": "application/json" }
+          });
+        }
+
+        const data = await getStoreData();
+        data.pendingReviews = data.pendingReviews || [];
+        data.pendingReviews.unshift({
+          id: Date.now().toString(),
+          name,
+          stars,
+          comment,
+          photo
+        });
+
+        await env.SHOP_DATA.put("store_data", JSON.stringify(data));
+        return new Response(JSON.stringify({ success: true }), {
+          headers: { "Content-Type": "application/json" }
+        });
+      } catch (err) {
+        return new Response(JSON.stringify({ error: err.message }), {
+          status: 500,
+          headers: { "Content-Type": "application/json" }
+        });
+      }
+    }
+
+    // 3. ADMIN API: Load products + approved + pending reviews for Michal's Editor
+    if (url.pathname === "/api/admin/load" && request.method === "POST") {
+      const { password } = await request.json();
+      if (!env.ADMIN_PASSWORD || password !== env.ADMIN_PASSWORD) {
+        return new Response(JSON.stringify({ error: "Incorrect password" }), {
+          status: 401,
+          headers: { "Content-Type": "application/json" }
+        });
+      }
+      const data = await getStoreData();
+      return new Response(JSON.stringify(data), {
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+    // 4. ADMIN API: Save all changes live instantly
+    if (url.pathname === "/api/admin/save" && request.method === "POST") {
+      try {
+        const { password, products, approvedReviews, pendingReviews } = await request.json();
+        if (!env.ADMIN_PASSWORD || password !== env.ADMIN_PASSWORD) {
+          return new Response(JSON.stringify({ error: "Incorrect password" }), {
+            status: 401,
+            headers: { "Content-Type": "application/json" }
+          });
+        }
+
+        await env.SHOP_DATA.put("store_data", JSON.stringify({
+          products: products || [],
+          approvedReviews: approvedReviews || [],
+          pendingReviews: pendingReviews || []
+        }));
+
+        return new Response(JSON.stringify({ success: true }), {
+          headers: { "Content-Type": "application/json" }
+        });
+      } catch (err) {
+        return new Response(JSON.stringify({ error: err.message }), {
+          status: 500,
+          headers: { "Content-Type": "application/json" }
+        });
+      }
+    }
+
+    // 5. STRIPE CHECKOUT API: Verifies real prices from live KV catalog
     if (url.pathname === "/api/checkout" && request.method === "POST") {
       try {
         const { items } = await request.json();
@@ -22,22 +132,12 @@ export default {
           });
         }
 
-        // Fetch live index.html to verify real product prices
-        const assetRes = await env.ASSETS.fetch(new Request(`${url.origin}/`));
-        const html = await assetRes.text();
-        const match = html.match(/const storeProducts\s*=\s*(\[[\s\S]*?\]);/);
-        let catalog = [];
-        if (match) {
-          try {
-            catalog = JSON.parse(match[1]);
-          } catch (e) {
-            catalog = [];
-          }
-        }
+        const storeData = await getStoreData();
+        const catalog = storeData.products || [];
 
         const params = new URLSearchParams();
         params.append("mode", "payment");
-        params.append("shipping_address_collection[allowed_countries][0]", "US");
+        params.append("shipping_address_collection[allowed_countries]", "US");
         params.append("success_url", `${url.origin}/?success=true`);
         params.append("cancel_url", `${url.origin}/?canceled=true`);
 
@@ -73,14 +173,14 @@ export default {
           ? (finalShippingCents === 0 ? "Free Standard Shipping" : "Discounted Standard Shipping")
           : "US Standard Shipping";
 
-        params.append("shipping_options[0][shipping_rate_data][type]", "fixed_amount");
-        params.append("shipping_options[0][shipping_rate_data][fixed_amount][amount]", finalShippingCents.toString());
-        params.append("shipping_options[0][shipping_rate_data][fixed_amount][currency]", "usd");
-        params.append("shipping_options[0][shipping_rate_data][display_name]", shippingName);
-        params.append("shipping_options[0][shipping_rate_data][delivery_estimate][minimum][unit]", "business_day");
-        params.append("shipping_options[0][shipping_rate_data][delivery_estimate][minimum][value]", "3");
-        params.append("shipping_options[0][shipping_rate_data][delivery_estimate][maximum][unit]", "business_day");
-        params.append("shipping_options[0][shipping_rate_data][delivery_estimate][maximum][value]", "7");
+        params.append("shipping_options[shipping_rate_data][type]", "fixed_amount");
+        params.append("shipping_options[shipping_rate_data][fixed_amount][amount]", finalShippingCents.toString());
+        params.append("shipping_options[shipping_rate_data][fixed_amount][currency]", "usd");
+        params.append("shipping_options[shipping_rate_data][display_name]", shippingName);
+        params.append("shipping_options[shipping_rate_data][delivery_estimate][minimum][unit]", "business_day");
+        params.append("shipping_options[shipping_rate_data][delivery_estimate][minimum][value]", "3");
+        params.append("shipping_options[shipping_rate_data][delivery_estimate][maximum][unit]", "business_day");
+        params.append("shipping_options[shipping_rate_data][delivery_estimate][maximum][value]", "7");
 
         const response = await fetch("https://api.stripe.com/v1/checkout/sessions", {
           method: "POST",
