@@ -6,11 +6,5 @@
   "assets": {
     "directory": "./",
     "binding": "ASSETS"
-  },
-  "kv_namespaces": [
-    {
-      "binding": "SHOP_DATA",
-      "id": "PASTE_YOUR_ID_HERE"
-    }
-  ]
+  }
 }
