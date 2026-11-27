@@ -44,53 +44,56 @@
 
     .hud {
       position: absolute;
-      top: 12px;
-      left: 12px;
-      right: 12px;
+      top: 10px;
+      left: 10px;
+      right: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 4px;
       font-weight: 800;
-      font-size: 13px;
+      font-size: 12px;
       color: #9b2226;
       z-index: 2;
     }
 
     .pill {
       background: rgba(255, 255, 255, 0.95);
-      padding: 5px 11px;
+      padding: 5px 9px;
       border-radius: 14px;
       border: 2px solid #ffd166;
       box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
       pointer-events: none;
+      white-space: nowrap;
     }
 
     .mute-btn {
       background: rgba(255, 255, 255, 0.95);
       border: 2px solid #ffd166;
       border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      font-size: 14px;
+      width: 30px;
+      height: 30px;
+      font-size: 13px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
       padding: 0;
+      flex-shrink: 0;
     }
 
     .overlay {
       position: absolute;
       inset: 0;
-      background: rgba(255, 250, 250, 0.94);
+      background: rgba(255, 250, 250, 0.95);
       backdrop-filter: blur(5px);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 22px;
+      padding: 20px;
       color: #9b2226;
       z-index: 3;
     }
@@ -98,7 +101,7 @@
     .badge {
       font-size: 11px;
       font-weight: 800;
-      letter-spacing: 0.7px;
+      letter-spacing: 0.6px;
       text-transform: uppercase;
       color: #1b4332;
       background: #d8f3dc;
@@ -109,8 +112,8 @@
     }
 
     .overlay h2 {
-      margin: 0 0 12px;
-      font-size: 21px;
+      margin: 0 0 10px;
+      font-size: 20px;
       color: #9b2226;
     }
 
@@ -118,21 +121,28 @@
       background: #fff;
       border: 2px solid #ffd166;
       border-radius: 16px;
-      padding: 12px 16px;
-      margin-bottom: 18px;
-      font-size: 14px;
-      line-height: 1.7;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      font-size: 13.5px;
+      line-height: 1.6;
       font-weight: 700;
     }
 
     .rules .good { color: #1b4332; }
+    .rules .bonus { color: #b5651d; }
     .rules .bad  { color: #d90429; }
+    .rules .tip  {
+      color: #2d6a4f;
+      font-size: 13px;
+      line-height: 1.45;
+      margin-top: 6px;
+    }
 
     .btn {
       background: linear-gradient(135deg, #d90429, #9b2226);
       color: #fff;
       border: 2px solid #ffd166;
-      padding: 11px 28px;
+      padding: 10px 26px;
       border-radius: 22px;
       font-family: inherit;
       font-weight: 800;
@@ -150,7 +160,8 @@
 <body>
   <div class="game-wrap" id="wrap">
     <div class="hud">
-      <div class="pill">🎄 £<span id="score">0</span></div>
+      <div class="pill">🎄 $<span id="score">0</span></div>
+      <div class="pill">Lv <span id="levelNum">1</span>/5</div>
       <div class="pill" id="lives">❤️❤️❤️</div>
       <button class="mute-btn" id="muteBtn" type="button" title="Toggle Music">🔊</button>
     </div>
@@ -161,10 +172,12 @@
       <div class="badge">🎅 North Country Cash Queen 🎄</div>
       <h2>Christmas Cash Catch</h2>
       <div class="rules">
-        <div class="good">✅ Catch every 💵 Note</div>
+        <div class="good">✅ Catch every 💵 $10 Note</div>
+        <div class="bonus">✨ Rare 👑 $50 Queen Crown</div>
         <div class="bad">❌ Dodge the 🚫 Debt</div>
+        <div class="tip">Save $500 per level across 5 festive challenges!</div>
       </div>
-      <button class="btn" id="startBtn" type="button">Play</button>
+      <button class="btn" id="startBtn" type="button">Play Level 1</button>
     </div>
   </div>
   <script>
@@ -174,6 +187,7 @@
       const wrap = document.getElementById("wrap");
       const overlay = document.getElementById("overlay");
       const scoreEl = document.getElementById("score");
+      const levelEl = document.getElementById("levelNum");
       const livesEl = document.getElementById("lives");
       const startBtn = document.getElementById("startBtn");
       const muteBtn = document.getElementById("muteBtn");
@@ -195,7 +209,9 @@
       let running = false;
       let muted = false;
       let score = 0;
-      let lives = 3;
+      let level = 1;
+      const maxLevels = 5;
+      const goalPerLevel = 500;
       let items = [];
       let popups = [];
       let flakes = [];
@@ -206,6 +222,25 @@
       let audioCtx = null;
       let songTimer = null;
       let noteIndex = 0;
+
+      const levelMessages = {
+        1: {
+          title: "Level 1 Complete! 🎉",
+          msg: "First $500 stuffed! Small daily deposits turn into big holiday peace of mind."
+        },
+        2: {
+          title: "Level 2 Complete! 🌟",
+          msg: "$1,000 saved! Every envelope you fill brings you closer to a debt-free Christmas."
+        },
+        3: {
+          title: "Level 3 Complete! 🎄",
+          msg: "$1,500 stashed! Consistency beats perfection—your future self is cheering you on!"
+        },
+        4: {
+          title: "Level 4 Complete! 👑",
+          msg: "$2,000 banked! One final stretch to hit your ultimate $2,500 Cash Queen goal!"
+        }
+      };
 
       const N = {
         C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99
@@ -286,15 +321,15 @@
         });
       }
 
-      function playChime(isBad) {
+      function playChime(type) {
         if (muted) return;
         ensureAudio();
         if (!audioCtx) return;
         const now = audioCtx.currentTime;
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
 
-        if (isBad) {
+        if (type === "bad") {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
           osc.type = "sawtooth";
           osc.frequency.setValueAtTime(150, now);
           osc.frequency.exponentialRampToValueAtTime(95, now + 0.24);
@@ -304,7 +339,41 @@
           gain.connect(audioCtx.destination);
           osc.start(now);
           osc.stop(now + 0.25);
+        } else if (type === "crown") {
+          const notes = [1046.5, 1318.51, 1567.98, 2093.0];
+          notes.forEach((freq, idx) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            const t = now + idx * 0.055;
+            osc.type = "triangle";
+            osc.frequency.setValueAtTime(freq, t);
+            gain.gain.setValueAtTime(0.001, t);
+            gain.gain.linearRampToValueAtTime(0.14, t + 0.015);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(t);
+            osc.stop(t + 0.3);
+          });
+        } else if (type === "levelup") {
+          const notes = [523.25, 659.25, 783.99, 1046.5, 1318.51];
+          notes.forEach((freq, idx) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            const t = now + idx * 0.07;
+            osc.type = "triangle";
+            osc.frequency.setValueAtTime(freq, t);
+            gain.gain.setValueAtTime(0.001, t);
+            gain.gain.linearRampToValueAtTime(0.13, t + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(t);
+            osc.stop(t + 0.36);
+          });
         } else {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
           osc.type = "sine";
           osc.frequency.setValueAtTime(1046.5, now);
           osc.frequency.setValueAtTime(1318.5, now + 0.05);
@@ -327,14 +396,67 @@
         if (e.key === "ArrowLeft") playerX = Math.max(playerW / 2, playerX - 28);
         if (e.key === "ArrowRight") playerX = Math.min(canvas.width - playerW / 2, playerX + 28);
       });
+      function updateLivesUI() {
+        livesEl.textContent = "❤️".repeat(Math.max(0, lives)) || "💔";
+      }
+
       function addPopup(text, x, y, color) {
         popups.push({ text, x, y, color, alpha: 1 });
       }
 
+      function handleLevelProgress() {
+        const target = level * goalPerLevel;
+        if (score < target) return;
+
+        running = false;
+        stopMusic();
+        items = [];
+        popups = [];
+        playChime("levelup");
+
+        if (level >= maxLevels) {
+          overlay.innerHTML = `
+            <div class="badge">👑 Cash Queen Champion 🎄</div>
+            <h2>You Did It! $2,500 Saved!</h2>
+            <div class="rules">
+              <div class="good">🎉 All 5 Levels Completed!</div>
+              <div class="tip">You dodged the debt, stuffed every envelope, and proved that small, steady steps build real financial freedom. Wishing you a joyful, stress-free Christmas!</div>
+            </div>
+            <button class="btn" id="restartBtn" type="button">Play Again</button>
+          `;
+          overlay.style.display = "flex";
+          document.getElementById("restartBtn").addEventListener("click", startNewGame);
+        } else {
+          const info = levelMessages[level];
+          const nextLv = level + 1;
+          const bonusHeart = lives < 3 ? " (+1 ❤️ Restored!)" : "";
+          if (lives < 3) {
+            lives++;
+            updateLivesUI();
+          }
+
+          overlay.innerHTML = `
+            <div class="badge">🎅 North Country Cash Queen 🎄</div>
+            <h2>${info.title}</h2>
+            <div class="rules">
+              <div class="good">Savings: $${score} / $${nextLv * goalPerLevel} Goal${bonusHeart}</div>
+              <div class="tip">${info.msg}</div>
+            </div>
+            <button class="btn" id="nextLevelBtn" type="button">Start Level ${nextLv}</button>
+          `;
+          overlay.style.display = "flex";
+          document.getElementById("nextLevelBtn").addEventListener("click", () => {
+            level = nextLv;
+            levelEl.textContent = level;
+            resumeLevel();
+          });
+        }
+      }
+
       function loseLife(reason, x, y) {
         lives--;
-        playChime(true);
-        livesEl.textContent = "❤️".repeat(Math.max(0, lives)) || "💔";
+        playChime("bad");
+        updateLivesUI();
         addPopup(reason, Math.max(58, Math.min(canvas.width - 58, x)), y, "#ffd166");
 
         wrap.classList.add("hurt");
@@ -347,41 +469,69 @@
             <div class="badge">🎅 North Country Cash Queen 🎄</div>
             <h2>Merry Cash-Mas!</h2>
             <div class="rules">
-              <div>${reason}</div>
-              <div style="margin-top:6px; font-size:16px;">Holiday Savings: <span class="good">£${score}</span></div>
+              <div>${reason} (Reached Level ${level})</div>
+              <div style="margin-top:6px; font-size:15px;">Holiday Savings: <span class="good">$${score}</span></div>
             </div>
-            <button class="btn" id="restartBtn" type="button">Play Again</button>
+            <button class="btn" id="restartBtn" type="button">Try Again</button>
           `;
           overlay.style.display = "flex";
-          document.getElementById("restartBtn").addEventListener("click", startGame);
+          document.getElementById("restartBtn").addEventListener("click", startNewGame);
         }
       }
 
-      function startGame() {
-        score = 0;
-        lives = 3;
+      function resumeLevel() {
         items = [];
         popups = [];
         spawnTimer = 0;
         running = true;
-        scoreEl.textContent = "0";
-        livesEl.textContent = "❤️❤️❤️";
         overlay.style.display = "none";
         startMusic();
         requestAnimationFrame(loop);
       }
 
-      startBtn.addEventListener("click", startGame);
+      function startNewGame() {
+        score = 0;
+        level = 1;
+        lives = 3;
+        scoreEl.textContent = "0";
+        levelEl.textContent = "1";
+        updateLivesUI();
+        resumeLevel();
+      }
+
+      startBtn.addEventListener("click", startNewGame);
 
       function spawnItem() {
-        const isDebt = Math.random() < 0.3;
-        items.push({
-          icon: "💵",
-          bad: isDebt,
-          x: 28 + Math.random() * (canvas.width - 56),
-          y: -20,
-          speed: 1.7 + Math.random() * 0.9 + Math.min(score / 300, 1.4)
-        });
+        const levelBoost = (level - 1) * 0.25;
+        const debtChance = 0.24 + (level - 1) * 0.025;
+        const roll = Math.random();
+
+        if (roll < debtChance) {
+          items.push({
+            type: "debt",
+            x: 28 + Math.random() * (canvas.width - 56),
+            y: -20,
+            speed: 1.65 + Math.random() * 0.75 + levelBoost
+          });
+        } else if (roll < debtChance + 0.11) {
+          items.push({
+            type: "crown",
+            icon: "👑",
+            value: 50,
+            x: 28 + Math.random() * (canvas.width - 56),
+            y: -20,
+            speed: 2.0 + Math.random() * 0.7 + levelBoost
+          });
+        } else {
+          items.push({
+            type: "cash",
+            icon: "💵",
+            value: 10,
+            x: 28 + Math.random() * (canvas.width - 56),
+            y: -20,
+            speed: 1.65 + Math.random() * 0.75 + levelBoost
+          });
+        }
       }
 
       function drawBackground() {
@@ -443,8 +593,9 @@
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawBackground();
 
+        const spawnRate = Math.max(36, 48 - (level - 1) * 3);
         spawnTimer++;
-        if (spawnTimer > 48) {
+        if (spawnTimer > spawnRate) {
           spawnItem();
           spawnTimer = 0;
         }
@@ -458,7 +609,7 @@
           const it = items[i];
           it.y += it.speed;
 
-          if (it.bad) {
+          if (it.type === "debt") {
             ctx.save();
             ctx.fillStyle = "#d90429";
             ctx.strokeStyle = "#ffd166";
@@ -469,6 +620,13 @@
             ctx.fillStyle = "#ffffff";
             ctx.font = "bold 11px Quicksand, sans-serif";
             ctx.fillText("DEBT", it.x, it.y - 1);
+            ctx.restore();
+          } else if (it.type === "crown") {
+            ctx.save();
+            ctx.shadowColor = "#ffd166";
+            ctx.shadowBlur = 14;
+            ctx.font = "28px sans-serif";
+            ctx.fillText(it.icon, it.x, it.y);
             ctx.restore();
           } else {
             ctx.font = "26px sans-serif";
@@ -481,21 +639,30 @@
             Math.abs(it.x - playerX) < playerW / 2 + 12
           ) {
             items.splice(i, 1);
-            if (it.bad) {
+            if (it.type === "debt") {
               loseLife("Hit Debt! -1❤️", it.x, catchY - 10);
+            } else if (it.type === "crown") {
+              score += 50;
+              scoreEl.textContent = score;
+              playChime("crown");
+              addPopup("+$50 QUEEN! 👑", it.x, catchY - 10, "#ffd166");
+              handleLevelProgress();
             } else {
               score += 10;
               scoreEl.textContent = score;
-              playChime(false);
-              addPopup("+£10 🎄", it.x, catchY - 10, "#ffd166");
+              playChime("cash");
+              addPopup("+$10 🎄", it.x, catchY - 10, "#ffd166");
+              handleLevelProgress();
             }
+            if (!running) return;
             continue;
           }
 
           if (it.y > canvas.height - 15) {
             items.splice(i, 1);
-            if (!it.bad) {
+            if (it.type === "cash") {
               loseLife("Missed a Note! -1❤️", it.x, canvas.height - 35);
+              if (!running) return;
             }
           }
         }
