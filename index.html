@@ -703,9 +703,9 @@
         <div class="channel-intro">
             <p>Welcome to North Country Cash Queen! Browse handmade savings challenges and budgeting goodies below. Click any product for a closer look and full details.</p>
             <div class="social-links-row">
-                <a href="https://youtube.com" target="_blank" rel="noopener" class="yt-btn">▶ YouTube</a>
-                <a href="https://instagram.com" target="_blank" rel="noopener" class="social-pill-btn">Instagram</a>
-                <a href="https://ko-fi.com" target="_blank" rel="noopener" class="social-pill-btn">Ko-fi</a>
+                <a href="https://www.youtube.com/@Northcountrycashqueen" target="_blank" rel="noopener" class="yt-btn">▶ YouTube</a>
+                <a href="https://www.instagram.com/northcountrycashqueen/" target="_blank" rel="noopener" class="social-pill-btn">Instagram</a>
+                <a href="https://ko-fi.com/northcountrycashqueen" target="_blank" rel="noopener" class="social-pill-btn">Ko-fi</a>
             </div>
         </div>
     </header>
@@ -773,7 +773,7 @@
                 <h2 style="font-family: 'Playfair Display', serif; color: var(--rose-gold); font-size: 1.75rem; margin-bottom: 6px;">Get in Touch</h2>
                 <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 18px;">Have a question about a product or an order? Send me a quick message below!</p>
 
-                <form action="https://formsubmit.co" method="POST" style="text-align: left;">
+                <form action="https://formsubmit.co/michalcaron1@gmail.com" method="POST" style="text-align: left;">
                     <input type="hidden" name="_subject" value="New Message from North Country Cash Queen Store">
                     <input type="hidden" name="_captcha" value="false">
 
@@ -971,7 +971,7 @@
                 } else if (clean.includes("/embed/")) {
                     videoId = clean.split("/embed/").pop().split(/[?&#/]/).shift();
                 }
-                return videoId ? "https://youtube.com" + videoId : "";
+                return videoId ? "https://youtube.com/embed/" + videoId : "";
             } catch (e) {
                 return "";
             }
@@ -1657,7 +1657,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (editorTitle) {
         editorTitle.insertAdjacentHTML("afterend", `
             <div id="adminWelcomeBanner" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; background: linear-gradient(135deg, #fff0f5, #ffe4ec); border: 1.5px solid #f2b8ca; border-radius: 14px; padding: 12px 16px; margin: 12px 0 18px; box-shadow: 0 4px 12px rgba(216, 90, 130, 0.08);">
-                <div style="font-size: 1.12rem; color: var(--text-dark); line-height: 1.5;">💌 <strong>Secret Note from Bren</strong> <em style="font-size: 0.95rem; color: var(--rose-gold);">(I'll change this every now and then!)</em>: Hey gorgeous! i love you I'll be thinking about you with my hand down my pants tonight 😘💋💕</div>
+                <div style="font-size: 1.12rem; color: var(--text-dark); line-height: 1.5;">💌 <strong>Secret Note from Bren</strong> <em style="font-size: 0.95rem; color: var(--rose-gold);">(I'll change this every now and then!)</em>: Hey gorgeous! i love you 💋💕 added your stupid stock check OK </div>
                 <button type="button" onclick="document.getElementById('adminWelcomeBanner').style.display='none'" style="background: #ffffff; border: 1px solid #f2b8ca; color: var(--primary-pink); width: 26px; height: 26px; min-width: 26px; border-radius: 50%; font-size: 1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;">&times;</button>
             </div>
         `);
