@@ -58,7 +58,6 @@
             align-items: center;
             gap: 20px;
         }
-
         .nav-link {
             text-decoration: none;
             color: var(--text-dark);
@@ -128,7 +127,6 @@
             overflow: hidden;
             border-radius: 20px;
         }
-
         .neon-glow-outer {
             fill: none;
             stroke: #e8a2b0;
@@ -188,7 +186,6 @@
             gap: 10px;
             margin-top: 14px;
         }
-
         .yt-btn {
             display: inline-block;
             background-color: #ff0000;
@@ -254,7 +251,6 @@
             align-items: center;
             gap: 16px;
         }
-
         .fun-card {
             background: var(--bg-color);
             border: 1px solid var(--soft-pink);
@@ -308,7 +304,6 @@
             transform: translateY(-5px);
             box-shadow: 0 12px 25px rgba(216, 90, 130, 0.18);
         }
-
         .clickable-area {
             cursor: pointer;
             flex-grow: 1;
@@ -362,7 +357,6 @@
             overflow: hidden;
             line-height: 1.4;
         }
-
         .product-footer {
             display: flex;
             justify-content: space-between;
@@ -418,7 +412,6 @@
             letter-spacing: 2px;
             margin-bottom: 8px;
         }
-
         .review-comment {
             font-size: 0.92rem;
             color: var(--text-dark);
@@ -475,7 +468,6 @@
             cursor: pointer;
             font-weight: bold;
         }
-
         .modal-img {
             width: 100%;
             height: 100%;
@@ -532,7 +524,6 @@
             flex-direction: column;
             padding: 25px;
         }
-
         .basket-drawer.open { transform: translateX(0); }
         .basket-header {
             display: flex;
@@ -601,6 +592,7 @@
             margin-bottom: 15px;
         }
         .ed-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .ed-row-3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; }
         .ed-label { display: block; font-size: 0.8rem; font-weight: 500; margin: 8px 0 3px; color: #7a666d; }
         .ed-input, .ed-textarea {
             width: 100%;
@@ -643,7 +635,7 @@
             .modal-content { padding: 20px 18px 24px; }
             .modal-title { font-size: 1.45rem; }
             .basket-drawer { max-width: 100%; }
-            .ed-row-2 { grid-template-columns: 1fr; }
+            .ed-row-2, .ed-row-3 { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -698,7 +690,6 @@
             </div>
         </div>
     </nav>
-
     <header>
         <div class="banner-frame">
             <svg class="neon-border-svg" width="100%" height="100%">
@@ -712,9 +703,9 @@
         <div class="channel-intro">
             <p>Welcome to North Country Cash Queen! Browse handmade savings challenges and budgeting goodies below. Click any product for a closer look and full details.</p>
             <div class="social-links-row">
-                <a href="https://www.youtube.com/@Northcountrycashqueen" target="_blank" rel="noopener" class="yt-btn">▶ YouTube</a>
-                <a href="https://www.instagram.com/northcountrycashqueen/" target="_blank" rel="noopener" class="social-pill-btn">Instagram</a>
-                <a href="https://ko-fi.com/northcountrycashqueen" target="_blank" rel="noopener" class="social-pill-btn">Ko-fi</a>
+                <a href="https://youtube.com" target="_blank" rel="noopener" class="yt-btn">▶ YouTube</a>
+                <a href="https://instagram.com" target="_blank" rel="noopener" class="social-pill-btn">Instagram</a>
+                <a href="https://ko-fi.com" target="_blank" rel="noopener" class="social-pill-btn">Ko-fi</a>
             </div>
         </div>
     </header>
@@ -745,7 +736,6 @@
             <div style="text-align: center; margin-bottom: 18px;">
                 <button type="button" class="social-pill-btn" onclick="const w = document.getElementById('reviewFormWrapper'); w.style.display = (w.style.display === 'none' || !w.style.display) ? 'block' : 'none';" style="cursor: pointer; font-family: 'Poppins', sans-serif;">✍️ Leave a Review</button>
             </div>
-
             <div id="reviewFormWrapper" class="contact-card" style="display: none; max-width: 560px; margin: 0 auto;">
                 <h3 style="font-family: 'Playfair Display', serif; color: var(--rose-gold); font-size: 1.45rem; margin-bottom: 6px;">Share Your Experience</h3>
                 <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px;">Loved your budgeting goodies? Leave a rating below! Reviews appear on the site once Michal approves them.</p>
@@ -783,7 +773,7 @@
                 <h2 style="font-family: 'Playfair Display', serif; color: var(--rose-gold); font-size: 1.75rem; margin-bottom: 6px;">Get in Touch</h2>
                 <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 18px;">Have a question about a product or an order? Send me a quick message below!</p>
 
-                <form action="https://formsubmit.co/michalcaron1@gmail.com" method="POST" style="text-align: left;">
+                <form action="https://formsubmit.co" method="POST" style="text-align: left;">
                     <input type="hidden" name="_subject" value="New Message from North Country Cash Queen Store">
                     <input type="hidden" name="_captcha" value="false">
 
@@ -806,7 +796,6 @@
             </div>
         </section>
     </main>
-
     <div class="modal-overlay" id="productModal" onclick="if(event.target.id==='productModal') closeModal()">
         <div class="modal-box">
             <button class="modal-close" onclick="closeModal()">&times;</button>
@@ -855,7 +844,7 @@
         <div style="background:#fdf6f8; max-width:750px; margin:20px auto; border-radius:20px; padding:25px; border:2px solid #d85a82; position:relative;">
             <button onclick="document.getElementById('secretEditorOverlay').style.display='none'" style="position:absolute; top:15px; right:18px; background:#f8dce4; color:#d85a82; border:none; width:34px; height:34px; border-radius:50%; font-size:1.2rem; cursor:pointer; font-weight:bold;">&times;</button>
             <h2 style="font-family:'Playfair Display', serif; color:#d85a82; text-align:center; margin-bottom:6px;">Boutique Store &amp; Reviews Editor</h2>
-            <p style="font-size:0.88rem; color:#7a666d; text-align:center; margin-bottom:20px;">Manage products, approve pending reviews, and click <strong>Save &amp; Publish Live</strong> to update the shop instantly!</p>
+            <p style="font-size:0.88rem; color:#7a666d; text-align:center; margin-bottom:20px;">Manage products, stock quantities, approve pending reviews, and click <strong>Save &amp; Publish Live</strong> to update the shop instantly!</p>
 
             <h3 style="font-family:'Playfair Display', serif; color:#d85a82; margin-bottom:10px;">⏳ Pending Customer Reviews (<span id="pendingCount">0</span>)</h3>
             <div id="pendingReviewsList" style="margin-bottom:24px;"></div>
@@ -887,7 +876,6 @@
             Website designed &amp; built with 💖 by her boyfriend, <strong>Bren</strong>
         </p>
     </footer>
-
     <script>
         /* === STORE DATA START === */
         const storeProducts = new Array(
@@ -895,6 +883,7 @@
                 "id": "coming-soon-1",
                 "name": "Site Under Construction",
                 "price": 0,
+                "stock": 5,
                 "image": "https://placehold.co",
                 "images": new Array("https://placehold.co"),
                 "shortDesc": "Handmade savings challenges & budgeting goodies coming soon!",
@@ -914,24 +903,37 @@
             const grid = document.getElementById('productGrid');
             if (!grid) return;
 
-            grid.innerHTML = storeProducts.map(item => `
-                <div class="product-card" id="${item.id}">
+            grid.innerHTML = storeProducts.map(item => {
+                const stock = item.stock !== undefined ? Number(item.stock) : 99;
+                const isOut = stock <= 0;
+                const stockLabel = isOut 
+                    ? `<span style="color:#c04055; font-weight:600; font-size:0.78rem;">Sold Out</span>`
+                    : `<span style="color:var(--rose-gold); font-weight:500; font-size:0.78rem;">Only ${stock} left in stock!</span>`;
+
+                return `
+                <div class="product-card" id="${item.id}" style="${isOut ? 'opacity:0.75;' : ''}">
                     <div class="clickable-area" onclick="openModal('${item.id}')">
                         <img src="${item.image}" alt="${item.name.replace(/"/g, '&quot;')}" class="product-img">
                         <div class="product-info">
                             <h3 class="product-title">${item.name}</h3>
-                            <span class="view-details-hint">Click for closer look &amp; details</span>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                                <span class="view-details-hint" style="margin:0;">Click for details</span>
+                                ${stockLabel}
+                            </div>
                             <p class="product-desc">${item.shortDesc}</p>
                         </div>
                     </div>
                     <div class="product-footer">
                         <span class="price">$${Number(item.price).toFixed(2)}</span>
-                        <button class="btn-pink" onclick="addToBasket('${item.name.replace(/'/g, "\\'")}', ${item.price})">Add to Basket</button>
+                        <button class="btn-pink" 
+                            ${isOut ? 'disabled style="background:#ccc; cursor:not-allowed;"' : ''} 
+                            onclick="addToBasket('${item.id}')">
+                            ${isOut ? 'Sold Out' : 'Add to Basket'}
+                        </button>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
-
         function renderReviews() {
             const grid = document.getElementById('reviewsGrid');
             if (!grid) return;
@@ -969,7 +971,7 @@
                 } else if (clean.includes("/embed/")) {
                     videoId = clean.split("/embed/").pop().split(/[?&#/]/).shift();
                 }
-                return videoId ? "https://youtube.com/embed/" + videoId : "";
+                return videoId ? "https://youtube.com" + videoId : "";
             } catch (e) {
                 return "";
             }
@@ -978,6 +980,9 @@
         function openModal(id) {
             const item = productDetails[id];
             if (!item) return;
+
+            const stock = item.stock !== undefined ? Number(item.stock) : 99;
+            const isOut = stock <= 0;
 
             const photos = (item.images && item.images.length > 0) ? item.images : new Array(item.image);
             document.getElementById('modalImg').src = photos.at(0);
@@ -993,7 +998,7 @@
             }
 
             document.getElementById('modalTitle').innerText = item.name;
-            document.getElementById('modalPrice').innerText = '$' + Number(item.price).toFixed(2);
+            document.getElementById('modalPrice').innerHTML = `$${Number(item.price).toFixed(2)} <span style="font-size:0.9rem; font-weight:500; color:${isOut ? '#c04055' : 'var(--rose-gold)'}; margin-left:8px;">(${isOut ? 'Sold Out' : stock + ' available'})</span>`;
             document.getElementById('modalDesc').innerText = item.fullDesc;
 
             const ytWrap = document.getElementById('modalYoutubeWrap');
@@ -1008,13 +1013,25 @@
                 ytWrap.style.display = 'none';
             }
 
-            document.getElementById('modalAddBtn').onclick = function() {
-                addToBasket(item.name, item.price);
-                closeModal();
-            };
+            const addBtn = document.getElementById('modalAddBtn');
+            if (isOut) {
+                addBtn.innerText = 'Sold Out';
+                addBtn.disabled = true;
+                addBtn.style.background = '#ccc';
+                addBtn.style.cursor = 'not-allowed';
+                addBtn.onclick = null;
+            } else {
+                addBtn.innerText = 'Add to Basket';
+                addBtn.disabled = false;
+                addBtn.style.background = '';
+                addBtn.style.cursor = 'pointer';
+                addBtn.onclick = function() {
+                    addToBasket(item.id);
+                    closeModal();
+                };
+            }
             document.getElementById('productModal').style.display = 'flex';
         }
-
         function switchModalPhoto(src, clickedThumb) {
             document.getElementById('modalImg').src = src;
             const allThumbs = document.querySelectorAll('#modalThumbs img');
@@ -1027,20 +1044,37 @@
             document.getElementById('productModal').style.display = 'none';
         }
 
-        function addToBasket(name, price) {
-            const existing = basket.find(item => item.name === name);
+        function addToBasket(id) {
+            const item = productDetails[id];
+            if (!item) return;
+
+            const maxStock = item.stock !== undefined ? Number(item.stock) : 99;
+            if (maxStock <= 0) return alert("Sorry, this item is sold out!");
+
+            const existing = basket.find(b => b.id === id);
             if (existing) {
+                if (existing.qty >= maxStock) {
+                    return alert(`Sorry, only ${maxStock} left in stock!`);
+                }
                 existing.qty += 1;
             } else {
-                basket.push({ name: name, price: Number(price), qty: 1 });
+                basket.push({ id: item.id, name: item.name, price: Number(item.price), qty: 1 });
             }
             updateBasketUI();
             document.getElementById('basketDrawer').classList.add('open');
         }
 
         function changeQty(index, delta) {
-            basket.at(index).qty += delta;
-            if (basket.at(index).qty <= 0) {
+            const basketItem = basket.at(index);
+            const product = productDetails[basketItem.id];
+            const maxStock = product && product.stock !== undefined ? Number(product.stock) : 99;
+
+            if (delta > 0 && basketItem.qty + delta > maxStock) {
+                return alert(`Only ${maxStock} available in stock!`);
+            }
+
+            basketItem.qty += delta;
+            if (basketItem.qty <= 0) {
                 basket.splice(index, 1);
             }
             updateBasketUI();
@@ -1118,7 +1152,6 @@
                 text.innerHTML = `✨ You’ve unlocked <strong>free shipping!</strong>`;
             }
         }
-
         function toggleBasket() {
             document.getElementById('basketDrawer').classList.toggle('open');
         }
@@ -1313,7 +1346,7 @@
                         <span style="font-size:0.8rem; color:#b76e79; font-weight:600;">Direct Product Link Ending: #${item.id}</span>
                         <button onclick="deleteProduct(${idx})" style="background:none; border:none; color:#c04055; cursor:pointer; text-decoration:underline; font-size:0.8rem;">Remove</button>
                     </div>
-                    <div class="ed-row-2">
+                    <div class="ed-row-3">
                         <div>
                             <label class="ed-label">Product Name</label>
                             <input class="ed-input" type="text" value="${item.name.replace(/"/g, '&quot;')}" oninput="editorItems.at(${idx}).name = this.value">
@@ -1321,6 +1354,10 @@
                         <div>
                             <label class="ed-label">Price ($)</label>
                             <input class="ed-input" type="number" step="0.01" value="${item.price}" oninput="editorItems.at(${idx}).price = parseFloat(this.value) || 0">
+                        </div>
+                        <div>
+                            <label class="ed-label">Stock Qty</label>
+                            <input class="ed-input" type="number" min="0" step="1" value="${item.stock !== undefined ? item.stock : 10}" oninput="editorItems.at(${idx}).stock = parseInt(this.value) || 0">
                         </div>
                     </div>
 
@@ -1358,7 +1395,6 @@
                 </div>`;
             }).join('');
         }
-
         function renderReviewsEditor() {
             const list = document.getElementById('editorReviewsList');
             if (!list) return;
@@ -1398,7 +1434,6 @@
             target.image = target.images.at(0) || '';
             renderEditor();
         }
-
         function handleImageUpload(event, idx, slot) {
             const fileList = event.target.files;
             if (!fileList || fileList.length === 0) return;
@@ -1443,7 +1478,6 @@
             };
             img.src = tempUrl;
         }
-
         function addNewProduct() {
             const maxNum = editorItems.reduce((max, p) => {
                 const n = parseInt(p.id.replace('product-', ''));
@@ -1454,6 +1488,7 @@
                 id: "product-" + (maxNum + 1),
                 name: "New Product",
                 price: 10.00,
+                stock: 10,
                 image: defaultImg,
                 images: new Array(defaultImg),
                 shortDesc: "Short description for the main page.",
@@ -1521,7 +1556,6 @@
                 alert("Error loading editor: " + err.message);
             }
         }
-
         async function saveLiveStore() {
             const pwd = sessionStorage.getItem("nccq_admin_pwd");
             if (!pwd) return openSecretEditor();
