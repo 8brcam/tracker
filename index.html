@@ -1186,9 +1186,22 @@
             }
         }
 
-        if (window.location.search.includes("success=true")) {
-            alert("Thank you for your order! Your payment was successful.");
+                if (window.location.search.includes("success=true")) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sessionId = urlParams.get("session_id");
             window.history.replaceState({}, document.title, window.location.pathname);
+
+            if (sessionId) {
+                fetch("/api/confirm-order", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ sessionId })
+                })
+                .then(res => res.json())
+                .then(() => loadLiveStore())
+                .catch(err => console.warn("Order sync:", err));
+            }
+            alert("Thank you for your order! Your payment was successful.");
         }
         /* --- Live Store Loader & Secret Editor (#cashqueen) --- */
         let editorItems = new Array();
