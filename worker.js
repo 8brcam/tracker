@@ -164,11 +164,12 @@ export default {
 
         let subtotal = 0;
         const purchasedSummary = [];
+        const zeroIdx = 0;
         const params = new URLSearchParams();
         params.append("mode", "payment");
         params.append("success_url", `${url.origin}/?success=true`);
         params.append("cancel_url", `${url.origin}/`);
-        params.append("shipping_address_collection[allowed_countries]", "US");
+        params.append(`shipping_address_collection[allowed_countries][${zeroIdx}]`, "US");
 
         for (let idx = 0; idx < items.length; idx++) {
           const item = items[idx];
@@ -209,10 +210,10 @@ export default {
 
         const shippingAmount = subtotal >= 50 ? 0 : 600;
         const shippingLabel = subtotal >= 50 ? "Free Standard Shipping ($50+ Order)" : "Standard USA Shipping";
-        params.append("shipping_options[shipping_rate_data][type]", "fixed_amount");
-        params.append("shipping_options[shipping_rate_data][fixed_amount][amount]", String(shippingAmount));
-        params.append("shipping_options[shipping_rate_data][fixed_amount][currency]", "usd");
-        params.append("shipping_options[shipping_rate_data][display_name]", shippingLabel);
+        params.append(`shipping_options[${zeroIdx}][shipping_rate_data][type]`, "fixed_amount");
+        params.append(`shipping_options[${zeroIdx}][shipping_rate_data][fixed_amount][amount]`, String(shippingAmount));
+        params.append(`shipping_options[${zeroIdx}][shipping_rate_data][fixed_amount][currency]`, "usd");
+        params.append(`shipping_options[${zeroIdx}][shipping_rate_data][display_name]`, shippingLabel);
 
         const stripeHost = atob("YXBpLnN0cmlwZS5jb20=");
         const stripeRes = await fetch(`https://${stripeHost}/v1/checkout/sessions`, {
