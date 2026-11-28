@@ -1,23 +1,3 @@
-async function verifyStripeSignature(rawBody, sigHeader, secret) {
-  if (!sigHeader || !secret) return false;
-  const parts = Object.fromEntries(sigHeader.split(",").map(p => p.split("=")));
-  const timestamp = parts.t;
-  const signature = parts.v1;
-  if (!timestamp || !signature) return false;
-
-  const encoder = new TextEncoder();
-  const key = await crypto.subtle.importKey(
-    "raw",
-    encoder.encode(secret),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"]
-  );
-  const signed = await crypto.subtle.sign("HMAC", key, encoder.encode(`${timestamp}.${rawBody}`));
-  const expected = Array.from(new Uint8Array(signed)).map(b => b.toString(16).padStart(2, "0")).join("");
-  return expected === signature;
-}
-
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -129,10 +109,14 @@ export default {
           });
         }
 
+        const existingRaw = await env.SHOP_DATA.get("store_data");
+        const existingData = existingRaw ? JSON.parse(existingRaw) : {};
+
         const toSave = {
           products: Array.isArray(body.products) ? body.products : [],
           approvedReviews: Array.isArray(body.approvedReviews) ? body.approvedReviews : [],
           pendingReviews: Array.isArray(body.pendingReviews) ? body.pendingReviews : [],
+          processedOrders: Array.isArray(existingData.processedOrders) ? existingData.processedOrders : [],
         };
 
         await env.SHOP_DATA.put("store_data", JSON.stringify(toSave));
@@ -167,7 +151,7 @@ export default {
         const zeroIdx = 0;
         const params = new URLSearchParams();
         params.append("mode", "payment");
-        params.append("success_url", `${url.origin}/?success=true`);
+        params.append("success_url", `${url.origin}/?success=true&session_id={CHECKOUT_SESSION_ID}`);
         params.append("cancel_url", `${url.origin}/`);
         params.append(`shipping_address_collection[allowed_countries][${zeroIdx}]`, "US");
 
@@ -205,7 +189,7 @@ export default {
           params.append(`line_items[${idx}][quantity]`, String(qty));
         }
 
-        // Save purchased item IDs/quantities in Stripe metadata for automatic stock deduction
+        // Save exact product IDs & quantities in Stripe metadata
         params.append("metadata[purchased_items]", JSON.stringify(purchasedSummary));
 
         const shippingAmount = subtotal >= 50 ? 0 : 600;
@@ -244,43 +228,74 @@ export default {
       }
     }
 
-    // 6. STRIPE WEBHOOK — AUTO-SUBTRACT STOCK AFTER PAYMENT (POST /api/webhook)
-    if (url.pathname === "/api/webhook" && request.method === "POST") {
+    // 6. CONFIRM ORDER & SUBTRACT STOCK ON RETURN (POST /api/confirm-order)
+    if (url.pathname === "/api/confirm-order" && request.method === "POST") {
       try {
-        const rawBody = await request.text();
-        const sigHeader = request.headers.get("stripe-signature");
-
-        if (env.STRIPE_WEBHOOK_SECRET) {
-          const valid = await verifyStripeSignature(rawBody, sigHeader, env.STRIPE_WEBHOOK_SECRET);
-          if (!valid) {
-            return new Response("Invalid signature", { status: 400 });
-          }
+        const { sessionId } = await request.json();
+        if (!sessionId || typeof sessionId !== "string" || !sessionId.startsWith("cs_")) {
+          return new Response(JSON.stringify({ error: "Invalid session ID" }), {
+            status: 400,
+            headers: { "Content-Type": "application/json" },
+          });
         }
 
-        const event = JSON.parse(rawBody);
-        if (event.type === "checkout.session.completed") {
-          const session = event.data.object;
-          const purchasedJson = session.metadata?.purchased_items;
+        const raw = env.SHOP_DATA ? await env.SHOP_DATA.get("store_data") : null;
+        if (!raw) {
+          return new Response(JSON.stringify({ ok: false }), {
+            headers: { "Content-Type": "application/json" },
+          });
+        }
 
-          if (purchasedJson && env.SHOP_DATA) {
-            const purchased = JSON.parse(purchasedJson);
-            const raw = await env.SHOP_DATA.get("store_data");
-            if (raw) {
-              const storeData = JSON.parse(raw);
-              if (Array.isArray(storeData.products)) {
-                purchased.forEach(bought => {
-                  const prod = storeData.products.find(p => p.id === bought.id || p.name === bought.name);
-                  if (prod && prod.stock !== undefined) {
-                    prod.stock = Math.max(0, Number(prod.stock) - Number(bought.qty || 1));
-                  }
-                });
-                await env.SHOP_DATA.put("store_data", JSON.stringify(storeData));
+        const storeData = JSON.parse(raw);
+        if (!Array.isArray(storeData.processedOrders)) storeData.processedOrders = [];
+
+        // Prevent subtracting stock twice if the customer refreshes the page
+        if (storeData.processedOrders.includes(sessionId)) {
+          return new Response(JSON.stringify({ alreadyProcessed: true }), {
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+
+        // Verify payment directly with Stripe using your existing STRIPE_SECRET_KEY
+        const stripeHost = atob("YXBpLnN0cmlwZS5jb20=");
+        const verifyRes = await fetch(`https://${stripeHost}/v1/checkout/sessions/${encodeURIComponent(sessionId)}`, {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${env.STRIPE_SECRET_KEY}`,
+          },
+        });
+
+        if (!verifyRes.ok) {
+          return new Response(JSON.stringify({ error: "Could not verify session" }), {
+            status: 400,
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+
+        const session = await verifyRes.json();
+        if (session.payment_status === "paid" && session.metadata?.purchased_items) {
+          const purchased = JSON.parse(session.metadata.purchased_items);
+
+          if (Array.isArray(storeData.products)) {
+            purchased.forEach(bought => {
+              const prod = storeData.products.find(p => p.id === bought.id || p.name === bought.name);
+              if (prod && prod.stock !== undefined) {
+                prod.stock = Math.max(0, Number(prod.stock) - Number(bought.qty || 1));
               }
-            }
+            });
           }
+
+          storeData.processedOrders.unshift(sessionId);
+          // Keep only the last 200 processed order IDs so storage stays tiny
+          storeData.processedOrders = storeData.processedOrders.slice(0, 200);
+
+          await env.SHOP_DATA.put("store_data", JSON.stringify(storeData));
+          return new Response(JSON.stringify({ updated: true }), {
+            headers: { "Content-Type": "application/json" },
+          });
         }
 
-        return new Response(JSON.stringify({ received: true }), {
+        return new Response(JSON.stringify({ updated: false }), {
           headers: { "Content-Type": "application/json" },
         });
       } catch (err) {
